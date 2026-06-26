@@ -1,0 +1,48 @@
+:root {
+    --primary: #120f0e;       /* Very Dark Coffee (Navbar background) */
+    --primary-dark: #000000;  /* Pure Black */
+    --primary-light: #c89658; /* Warm Gold (Accent) */
+    --secondary: #724E32;     /* Muted soft chocolate */
+    --dark: #EDE8D0;          /* Cream-white text (Dark theme body text) */
+    --darker: #ffffff;        /* Pure white text */
+    --light: #0f0d0c;         /* Dark chocolate/black background */
+    --light-border: #2d2522;  /* Border Color */
+    --white: #1a1615;         /* Card Background */
+    --gray: #8c7e77;          /* Muted Gray */
+    --red: #C84B31;           /* Accent Red */
+    --red-light: #3d1c16;     /* Dark red background */
+    --green: #2D6A4F;         /* Accent Green */
+    --green-light: #162f23;
+    --orange: #c89658;        /* Brand Gold */
+    --orange-light: #2d2522;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.5);
+    --font-heading: 'Outfit', 'Inter', 'Noto Sans Myanmar', 'Pyidaungsu', sans-serif;
+    --font-body: 'Inter', 'Noto Sans Myanmar', 'Pyidaungsu', sans-serif;
+    --border-radius: 8px;
+    --border-radius-lg: 12px;
+    --transition-smooth: all 0.3s ease;
+}
+
+html.warm-theme {
+    --primary: #4C2D17;       /* Chocolate (Navbar background) */
+    --primary-dark: #351f0f;  /* Darker Chocolate */
+    --primary-light: #f5e6d3; /* Light Creamy Gold */
+    --secondary: #724E32;     /* Muted Soft Chocolate */
+    --dark: #4C2D17;          /* Chocolate text */
+    --darker: #2d180a;        /* Very Dark Chocolate text */
+    --light: #EDE8D0;         /* Cream Background */
+    --light-border: #DCD6BC;  /* Border Color */
+    --white: #ffffff;         /* Card background */
+    --gray: #8E6549;          /* Muted Chocolate Gray */
+    --red: #C84B31;           /* Accent Red */
+    --red-light: #fbeae6;
+    --green: #2D6A4F;         /* Accent Green */
+    --green-light: #eaf1ed;
+    --orange: #c89658;        /* Brand Gold */
+    --orange-light: #faf4eb;
+    --shadow-sm: 0 1px 2px 0 rgba(76, 45, 23, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(76, 45, 23, 0.1), 0 2px 4px -2px rgba(76, 45, 23, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(76, 45, 23, 0.1), 0 4px 6px -4px rgba(76, 45, 23, 0.1);
+}

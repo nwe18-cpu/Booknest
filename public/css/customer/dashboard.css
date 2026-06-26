@@ -1,0 +1,2636 @@
+/* ==========================================================================
+   Cream & Chocolate Theme Variables for Dashboard
+   ========================================================================== */
+:root {
+    --bg-cream: #EDE8D0;
+    --bg-cream-dark: #DCD6BC;
+    --card-cream: #FFFFFF;
+    --border-cream: #DCD6BC;
+    --text-chocolate-dark: #4C2D17;
+    --text-chocolate-mid: #724E32;
+    --text-chocolate-light: #8E6549;
+    --brand-chocolate: #4C2D17;
+    --brand-gold: #c89658;
+    --brand-gold-light: #f5e6d3;
+    --shadow-premium: 0 10px 30px rgba(76, 45, 23, 0.08);
+    --shadow-premium-hover: 0 15px 35px rgba(76, 45, 23, 0.15);
+    --transition-premium: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body {
+    background-color: var(--bg-cream);
+    color: var(--text-chocolate-dark);
+}
+
+/* ==========================================================================
+   1. DASHBOARD HEADER BANNER & AMBIENT WIDGET
+   ========================================================================== */
+.dashboard-banner {
+    position: relative;
+    padding: 4rem 0 7rem 0;
+    background: linear-gradient(135deg, #180d08 0%, #2b170e 50%, #3d2216 100%);
+    /* Chocolate theme gradient */
+    color: #fff;
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+}
+
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle at right center, rgba(200, 150, 88, 0.1) 0%, transparent 60%);
+    z-index: 1;
+}
+
+.banner-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.banner-title {
+    font-family: var(--font-heading);
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: var(--brand-gold-light);
+    letter-spacing: -0.5px;
+}
+
+.banner-subtitle {
+    font-size: 1.1rem;
+    color: #e2d3c9;
+    max-width: 550px;
+    margin-top: 0.5rem;
+}
+
+/* Wavy Bottom Shape Divider */
+.hero-shape-divider {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    z-index: 2;
+}
+
+.hero-shape-divider svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 75px;
+}
+
+.hero-shape-divider .shape-fill {
+    fill: var(--bg-cream);
+}
+
+/* Cozy Music Widget */
+.cozy-music-widget {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--border-radius-lg);
+    padding: 1.25rem 1.5rem;
+    min-width: 340px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: var(--transition-premium);
+}
+
+.music-widget-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--brand-gold-light);
+}
+
+.music-widget-header .music-icon {
+    font-size: 1.15rem;
+    color: var(--brand-gold);
+}
+
+.music-widget-header .music-icon.playing {
+    animation: spinSlow 6s linear infinite;
+}
+
+@keyframes spinSlow {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.music-widget-header #music-track-title {
+    font-size: 0.9rem;
+    color: #e2d3c9;
+    max-width: 260px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-weight: 500;
+}
+
+.music-widget-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.playback-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn-music-toggle {
+    padding: 0.5rem 1rem;
+    background-color: var(--brand-gold);
+    color: var(--text-chocolate-dark);
+    font-weight: 700;
+    font-size: 0.85rem;
+    border-radius: 30px;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(200, 150, 88, 0.2);
+    transition: all 0.2s ease;
+}
+
+.btn-music-toggle:hover {
+    background-color: var(--brand-gold-light);
+    transform: translateY(-1px);
+}
+
+.btn-music-toggle.playing {
+    background-color: #22c55e;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(34, 197, 94, 0.2);
+}
+
+.btn-music-nav {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.btn-music-nav:hover {
+    background-color: var(--brand-gold);
+    color: var(--text-chocolate-dark);
+    border-color: var(--brand-gold);
+    transform: translateY(-1px);
+}
+
+.btn-music-loop {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.btn-music-loop:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-music-loop.active {
+    background-color: var(--brand-gold);
+    color: var(--text-chocolate-dark);
+    border-color: var(--brand-gold);
+    box-shadow: 0 0 8px rgba(200, 150, 88, 0.4);
+}
+
+.volume-slider-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-grow: 1;
+    color: #d1dfd9;
+    font-size: 0.8rem;
+    min-width: 110px;
+}
+
+.volume-slider-wrapper input[type="range"] {
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 0.25);
+    outline: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+.volume-slider-wrapper input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--brand-gold);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+.volume-slider-wrapper input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.3);
+}
+
+/* ==========================================================================
+   2. UNIFIED STATISTICS STATUS DOCK
+   ========================================================================== */
+.stats-dock-wrapper {
+    margin-bottom: 3rem;
+}
+
+.dashboard-banner .stats-dock {
+    flex: 1;
+    max-width: 750px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    flex-wrap: nowrap;
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.dashboard-banner .stats-dock:hover {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+}
+
+.dashboard-banner .stat-dock-label {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.dashboard-banner .stat-dock-value {
+    color: #ffffff !important;
+}
+
+.dashboard-banner .stat-dock-divider {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.dashboard-banner .stat-dock-icon.icon-books {
+    background-color: rgba(45, 106, 79, 0.25) !important;
+    color: #52b788 !important;
+    border: 1px solid rgba(82, 183, 136, 0.2) !important;
+}
+
+.dashboard-banner .stat-dock-icon.icon-reading {
+    background-color: rgba(200, 150, 88, 0.25) !important;
+    color: #f5e6d3 !important;
+    border: 1px solid rgba(200, 150, 88, 0.3) !important;
+}
+
+.dashboard-banner .stat-dock-icon.icon-completed {
+    background-color: rgba(42, 111, 151, 0.25) !important;
+    color: #64b5f6 !important;
+    border: 1px solid rgba(100, 181, 246, 0.2) !important;
+}
+
+.dashboard-banner .stat-dock-icon.icon-progress {
+    background-color: rgba(200, 75, 49, 0.25) !important;
+    color: #ff8a65 !important;
+    border: 1px solid rgba(255, 138, 101, 0.2) !important;
+}
+
+.dashboard-banner .stat-dock-item {
+    min-width: auto;
+}
+
+.stats-dock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--card-cream);
+    border: 1px solid var(--border-cream);
+    border-radius: 50px;
+    padding: 0.85rem 2rem;
+    box-shadow: var(--shadow-premium);
+    flex-wrap: wrap;
+    gap: 1rem;
+    transition: var(--transition-premium);
+}
+
+.stats-dock:hover {
+    box-shadow: var(--shadow-premium-hover);
+}
+
+.stat-dock-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+    min-width: 150px;
+    justify-content: center;
+}
+
+.stat-dock-icon {
+    font-size: 1.1rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stat-dock-icon.icon-books {
+    background-color: #eaf1ed;
+    color: #2d6a4f;
+}
+
+.stat-dock-icon.icon-reading {
+    background-color: #faf4eb;
+    color: #c89658;
+}
+
+.stat-dock-icon.icon-completed {
+    background-color: #e8f3f8;
+    color: #2a6f97;
+}
+
+.stat-dock-icon.icon-progress {
+    background-color: #fbeae6;
+    color: #c84b31;
+}
+
+.stat-dock-meta {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-dock-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-chocolate-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+}
+
+.stat-dock-value {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-chocolate-dark);
+}
+
+.stat-dock-divider {
+    width: 1px;
+    height: 32px;
+    background-color: var(--border-cream);
+}
+
+/* Responsiveness for Stats Dock */
+@media (max-width: 992px) {
+    .stats-dock {
+        border-radius: var(--border-radius-lg);
+        padding: 1.25rem;
+        gap: 1.5rem;
+    }
+
+    .dashboard-banner .stats-dock {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .stat-dock-divider {
+        display: none;
+    }
+
+    .stat-dock-item {
+        justify-content: flex-start;
+        width: calc(50% - 1rem);
+        flex: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .stat-dock-item {
+        width: 100%;
+    }
+}
+
+/* ==========================================================================
+   3. 3D WOOD BOOKSHELF STRUCTURE
+   ========================================================================== */
+.bookshelf-wrapper {
+    padding-bottom: 6rem;
+}
+
+.bookshelf-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--border-cream);
+    padding-bottom: 1rem;
+}
+
+.section-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--text-chocolate-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bookshelf-search-box {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+}
+
+.bookshelf-search-box input {
+    width: 100%;
+    padding: 0.6rem 1rem 0.6rem 2.25rem;
+    border: 1px solid var(--border-cream);
+    border-radius: 50px;
+    background-color: var(--card-cream);
+    color: var(--text-chocolate-dark);
+    font-size: 0.9rem;
+    transition: var(--transition-premium);
+}
+
+.bookshelf-search-box input:focus {
+    background-color: #fff;
+    border-color: var(--brand-gold);
+    box-shadow: 0 0 10px rgba(200, 150, 88, 0.15);
+}
+
+.bookshelf-search-box i {
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-chocolate-light);
+    font-size: 0.9rem;
+}
+
+.category-tabs-container {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 3.5rem;
+}
+
+.filter-tab {
+    padding: 0.6rem 1.25rem;
+    background-color: var(--card-cream);
+    border: 1px solid var(--border-cream);
+    border-radius: 30px;
+    font-weight: 600;
+    color: var(--text-chocolate-mid);
+    font-size: 0.85rem;
+    transition: var(--transition-premium);
+}
+
+.filter-tab:hover {
+    background-color: var(--brand-gold-light);
+    border-color: var(--brand-gold);
+}
+
+.filter-tab.active {
+    background-color: var(--brand-chocolate);
+    border-color: var(--brand-chocolate);
+    color: #fff;
+}
+
+/* 3D Wooden Shelves Grid Layout */
+.bookshelf-3d-wood {
+    display: flex;
+    flex-direction: column;
+    gap: 5.5rem;
+    margin-top: 2rem;
+}
+
+.shelf-row {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.books-lineup {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 3.5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    min-height: 190px;
+    z-index: 10;
+    position: relative;
+}
+
+.shelf-book-premium {
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Standing book dimension */
+.shelf-book-premium .book-3d {
+    width: 110px;
+    height: 160px;
+    transform: rotateY(-16deg) rotateX(4deg);
+    transform-origin: bottom center;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.shelf-book-premium:hover .book-3d {
+    transform: rotateY(-32deg) rotateX(6deg) translateY(-12px) scale(1.06);
+}
+
+.book-cover-progress-tag {
+    position: absolute;
+    bottom: 0.75rem;
+    right: 0.75rem;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 3D Book Shadows on Shelf */
+.book-shelf-shadow {
+    position: absolute;
+    width: 90px;
+    height: 12px;
+    background: rgba(0, 0, 0, 0.4);
+    bottom: -4px;
+    left: 10px;
+    filter: blur(5px);
+    transform: rotateX(80deg);
+    border-radius: 50%;
+    z-index: -1;
+    transition: var(--transition-premium);
+}
+
+.shelf-book-premium:hover .book-shelf-shadow {
+    transform: rotateX(80deg) scale(1.2);
+    opacity: 0.6;
+    filter: blur(7px);
+}
+
+/* Book Cover Front (E-book cover) */
+.book-cover-front {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 2px 4px 4px 2px;
+    z-index: 2;
+    transform: translateZ(9px);
+    box-shadow: inset 1px 1px 3px rgba(255, 255, 255, 0.2), 2px 0 8px rgba(0, 0, 0, 0.25);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.book-cover-emboss {
+    width: 100%;
+    height: 100%;
+    padding: 1rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.book-cover-emboss::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 4px;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.15), rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.15));
+}
+
+.book-cover-title-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.book-cover-title {
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--brand-gold-light);
+    line-height: 1.25;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.book-cover-author {
+    font-size: 0.7rem;
+    color: #e5d5cc;
+    font-weight: 500;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.book-spine {
+    position: absolute;
+    width: 18px;
+    height: 100%;
+    left: 0;
+    transform: rotateY(-90deg) translateZ(9px);
+    z-index: 1;
+    border-radius: 2px 0 0 2px;
+    box-shadow: inset -2px 0 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Book Colors */
+.book-color-1 .book-cover-front {
+    background-image: linear-gradient(135deg, #4d2d1d 0%, #2b170e 100%);
+}
+
+.book-color-1 .book-spine {
+    background-color: #2b170e;
+}
+
+.book-color-2 .book-cover-front {
+    background-image: linear-gradient(135deg, #1b3225 0%, #0d1a13 100%);
+}
+
+.book-color-2 .book-spine {
+    background-color: #0d1a13;
+}
+
+.book-color-3 .book-cover-front {
+    background-image: linear-gradient(135deg, #2b3952 0%, #151e2e 100%);
+}
+
+.book-color-3 .book-spine {
+    background-color: #151e2e;
+}
+
+.book-color-4 .book-cover-front {
+    background-image: linear-gradient(135deg, #61232c 0%, #3a1116 100%);
+}
+
+.book-color-4 .book-spine {
+    background-color: #3a1116;
+}
+
+/* Wooden Plank Styling */
+.wood-plank {
+    width: 100%;
+    height: 18px;
+    position: relative;
+    border-radius: 3px;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+    margin-top: -3px;
+    z-index: 5;
+}
+
+.plank-top {
+    height: 6px;
+    background: #613c24;
+    /* Warm oak top */
+    border-bottom: 1px solid #3d2312;
+}
+
+.plank-front {
+    height: 12px;
+    background: linear-gradient(to bottom, #442816, #2d180b);
+    /* Underneath shadow */
+}
+
+/* Empty Shelf layout */
+.empty-shelf-state {
+    text-align: center;
+    padding: 5rem 2rem;
+    background-color: var(--card-cream);
+    border: 1px solid var(--border-cream);
+    border-radius: var(--border-radius-lg);
+    color: var(--text-chocolate-mid);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    box-shadow: var(--shadow-premium);
+    transition: var(--transition-premium);
+}
+
+.empty-shelf-state:hover {
+    box-shadow: var(--shadow-premium-hover);
+    transform: translateY(-2px);
+}
+
+.empty-shelf-state h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-chocolate-dark);
+    margin-top: 0.5rem;
+}
+
+.empty-shelf-state p {
+    font-size: 0.95rem;
+    max-width: 480px;
+    line-height: 1.6;
+    color: var(--text-chocolate-mid);
+    margin-bottom: 0.75rem;
+}
+
+/* Cozy Empty Nook Illustration */
+.empty-nook-illustration {
+    position: relative;
+    width: 260px;
+    height: 160px;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+/* Chair style */
+.cozy-chair {
+    position: relative;
+    width: 70px;
+    height: 85px;
+    background-color: var(--brand-gold-light);
+    border: 3px solid var(--text-chocolate-mid);
+    border-radius: 20px 20px 8px 8px;
+    z-index: 2;
+    margin-right: 25px;
+}
+
+.cozy-chair::before {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: -8px;
+    width: 80px;
+    height: 25px;
+    background-color: var(--brand-gold);
+    border: 3px solid var(--text-chocolate-mid);
+    border-radius: 8px;
+}
+
+/* Chair Legs */
+.chair-legs {
+    position: absolute;
+    bottom: -15px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.chair-legs span {
+    width: 5px;
+    height: 18px;
+    background-color: var(--text-chocolate-mid);
+    transform: rotate(5deg);
+    display: block;
+}
+
+.chair-legs span:nth-child(2) {
+    transform: rotate(-5deg);
+}
+
+/* Warm Lamp */
+.warm-lamp {
+    position: absolute;
+    right: -35px;
+    bottom: -15px;
+    width: 60px;
+    height: 140px;
+    z-index: 1;
+}
+
+.lamp-shade {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    width: 30px;
+    height: 22px;
+    background-color: #ffd166;
+    border: 3px solid var(--text-chocolate-mid);
+    border-radius: 12px 12px 2px 2px;
+    z-index: 3;
+}
+
+.lamp-glow {
+    position: absolute;
+    top: 32px;
+    left: 2px;
+    width: 56px;
+    height: 90px;
+    background: linear-gradient(to bottom, rgba(255, 209, 102, 0.4) 0%, rgba(255, 209, 102, 0) 100%);
+    clip-path: polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%);
+    z-index: 2;
+    animation: warmGlowPulse 3s infinite ease-in-out;
+}
+
+@keyframes warmGlowPulse {
+
+    0%,
+    100% {
+        opacity: 0.7;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+.lamp-pole {
+    position: absolute;
+    top: 32px;
+    left: 28px;
+    width: 4px;
+    height: 95px;
+    background-color: var(--text-chocolate-mid);
+    z-index: 1;
+}
+
+.lamp-base {
+    position: absolute;
+    bottom: 0;
+    left: 18px;
+    width: 24px;
+    height: 10px;
+    background-color: var(--text-chocolate-mid);
+    border-radius: 5px 5px 0 0;
+}
+
+/* Mini Shelf */
+.mini-shelf {
+    position: absolute;
+    left: -10px;
+    bottom: 25px;
+    width: 90px;
+    height: 95px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.shelf-plank {
+    width: 100%;
+    height: 10px;
+    background-color: #613c24;
+    border: 2.5px solid var(--text-chocolate-mid);
+    border-radius: 3px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.shelf-book-shadow-outline {
+    position: relative;
+    width: 55px;
+    height: 48px;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.shelf-book-shadow-outline::before {
+    content: '';
+    width: 12px;
+    height: 38px;
+    border: 2.5px dashed var(--border-cream);
+    border-radius: 2px;
+    display: block;
+}
+
+.shelf-book-shadow-outline::after {
+    content: '';
+    width: 14px;
+    height: 44px;
+    border: 2.5px dashed var(--border-cream);
+    border-radius: 2px;
+    transform: rotate(15deg);
+    transform-origin: bottom right;
+    display: block;
+}
+
+.leaning-leaf {
+    position: absolute;
+    top: 25px;
+    right: 5px;
+    width: 22px;
+    height: 22px;
+    background-color: var(--green);
+    border: 2.5px solid var(--text-chocolate-mid);
+    border-radius: 0 50% 50% 50%;
+    transform: rotate(-45deg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-goto-store {
+    padding: 0.8rem 2rem;
+    background-color: var(--brand-chocolate);
+    color: #fff;
+    font-weight: 600;
+    border-radius: 30px;
+    box-shadow: 0 4px 12px rgba(77, 45, 29, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-goto-store:hover {
+    background-color: #2b170e;
+    transform: translateY(-1px);
+}
+
+/* Hide card logic triggered on category tabs / search */
+.hide-card {
+    display: none !important;
+}
+
+/* ==========================================================================
+   4. DETAIL MODAL VIEW (Dashboard Specific)
+   ========================================================================== */
+.detail-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(61, 35, 20, 0.5);
+    backdrop-filter: blur(10px);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition-premium);
+}
+
+.detail-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.detail-modal-content {
+    background-color: var(--bg-cream);
+    border: 1px solid var(--border-cream);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 800px;
+    margin: 1.5rem;
+    box-shadow: 0 20px 50px rgba(77, 45, 29, 0.25);
+    position: relative;
+    overflow: hidden;
+    transform: translateY(30px);
+    transition: var(--transition-premium);
+}
+
+.detail-modal-overlay.active .detail-modal-content {
+    transform: translateY(0);
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--card-cream);
+    border: 1px solid var(--border-cream);
+    color: var(--text-chocolate-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.modal-close-btn:hover {
+    background-color: var(--brand-chocolate);
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+.modal-body-grid {
+    display: grid;
+    grid-template-columns: 420px 1fr; /* Increased to fit larger book cover */
+}
+
+.modal-book-view {
+    background-color: var(--card-cream);
+    border-right: 1px solid var(--border-cream);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem; /* Reduced padding from 2rem */
+}
+
+.modal-book-view .book-3d-container {
+    perspective: 800px;
+}
+
+.modal-book-view .book-3d {
+    width: 300px; /* Increased to match larger display */
+    height: 420px;
+    transform: rotateY(-16deg) rotateX(3deg);
+}
+
+.modal-book-details {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+.details-title {
+    font-size: 1.8rem;
+    color: var(--text-chocolate-dark);
+    margin-bottom: 0.25rem;
+    font-weight: 800;
+}
+
+.details-author {
+    font-size: 1rem;
+    color: var(--text-chocolate-light);
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.details-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border-cream);
+    border-bottom: 1px solid var(--border-cream);
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.meta-item-lbl {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--text-chocolate-light);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.meta-item-val {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-chocolate-dark);
+}
+
+.meta-item-val.color-success {
+    color: #1b8a4f;
+}
+
+.details-description-box {
+    margin-bottom: 2rem;
+}
+
+.details-description-box h4 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: var(--text-chocolate-light);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.5px;
+}
+
+.details-description-box p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-chocolate-mid);
+}
+
+.btn-read-book {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--brand-chocolate);
+    color: #fff;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 15px rgba(77, 45, 29, 0.2);
+}
+
+.btn-read-book:hover {
+    background-color: #2b170e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(77, 45, 29, 0.3);
+}
+
+/* ==========================================================================
+   5. IMMERSIVE 3D E-BOOK READER OVERLAY
+   ========================================================================== */
+.reader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #1c110b;
+    /* Dark cozy chocolate background */
+    z-index: 3000;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition-premium);
+}
+
+.reader-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Header Bar */
+.reader-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2.5rem;
+    background-color: rgba(28, 17, 11, 0.95);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    z-index: 10;
+}
+
+.reader-title-info {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.reader-back-btn {
+    font-size: 1.25rem;
+    color: var(--brand-gold-light);
+    cursor: pointer;
+    transition: var(--transition-premium);
+}
+
+.reader-back-btn:hover {
+    color: var(--brand-gold);
+    transform: translateX(-4px);
+}
+
+.reader-title-info h3 {
+    color: #fff;
+    margin-bottom: 0.1rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.reader-title-info .text-mute {
+    color: #a58e80;
+    font-size: 0.8rem;
+}
+
+.reader-close-action {
+    font-size: 1.4rem;
+    color: #a58e80;
+    cursor: pointer;
+    transition: var(--transition-premium);
+}
+
+.reader-close-action:hover {
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+/* 3D Book Viewport */
+.reader-book-viewport {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    perspective: 1200px;
+    overflow: hidden;
+}
+
+.book-double-page-wrapper {
+    position: relative;
+    width: 900px;
+    height: 550px;
+    display: flex;
+    transform-style: preserve-3d;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+    background-color: #f7f3e9;
+    /* Book inner cream page */
+    border-radius: 4px;
+}
+
+/* Split page lines in center */
+.book-double-page-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.25) 50%, rgba(0, 0, 0, 0.1));
+    z-index: 20;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Spine seam indentation shadow */
+.book-double-page-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: calc(50% - 10px);
+    width: 20px;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.08), transparent 50%, rgba(0, 0, 0, 0.08));
+    z-index: 19;
+}
+
+/* Individual Pages */
+.reader-page {
+    width: 50%;
+    height: 100%;
+    padding: 3rem 3.5rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: #fcf9f2;
+}
+
+.page-left {
+    border-radius: 4px 0 0 4px;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.page-right {
+    border-radius: 0 4px 4px 0;
+}
+
+.page-header {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-chocolate-light);
+    letter-spacing: 1px;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+}
+
+.page-inner-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-inner-content h3 {
+    font-size: 1.3rem;
+    color: var(--text-chocolate-dark);
+    margin-bottom: 1.25rem;
+    font-weight: 800;
+}
+
+.page-inner-content p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-chocolate-mid);
+    text-align: justify;
+}
+
+.page-footer-num {
+    font-size: 0.8rem;
+    color: var(--text-chocolate-light);
+    margin-top: auto;
+    font-weight: 600;
+}
+
+.page-left .page-footer-num {
+    text-align: left;
+}
+
+.page-right .page-footer-num {
+    text-align: right;
+    margin-right: 0.5rem;
+}
+
+.end-page-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60%;
+    color: var(--text-chocolate-light);
+    font-style: italic;
+}
+
+/* Flipping Center Sheet Sheet */
+.reader-page-flipping {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    top: 0;
+    left: 50%;
+    transform-style: preserve-3d;
+    transform-origin: left center;
+    transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
+    z-index: 15;
+    pointer-events: none;
+    box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.reader-page-flipping.flipped {
+    transform: rotateY(-180deg);
+}
+
+.page-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    padding: 3rem 3.5rem;
+    box-sizing: border-box;
+    backface-visibility: hidden;
+    background-color: #fcf9f2;
+    display: flex;
+    flex-direction: column;
+}
+
+.face-front {
+    z-index: 2;
+    transform: rotateY(0deg);
+    border-radius: 0 4px 4px 0;
+}
+
+.face-back {
+    transform: rotateY(180deg);
+    border-radius: 4px 0 0 4px;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Control Dock */
+.reader-control-dock {
+    background-color: rgba(28, 17, 11, 0.95);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 1.25rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    z-index: 10;
+}
+
+.nav-page-btn {
+    padding: 0.65rem 1.5rem;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 30px;
+    color: var(--brand-gold-light);
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-page-btn:hover:not(:disabled) {
+    background-color: var(--brand-gold);
+    color: var(--text-chocolate-dark);
+    border-color: var(--brand-gold);
+    transform: translateY(-1px);
+}
+
+.nav-page-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.reader-progress-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    flex-grow: 1;
+    max-width: 450px;
+}
+
+.progress-details {
+    font-size: 0.8rem;
+    color: #a58e80;
+    font-weight: 600;
+}
+
+.reader-progress-track {
+    width: 100%;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-fill-line {
+    width: 0%;
+    height: 100%;
+    background-color: var(--brand-gold);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+/* ==========================================================================
+   6. RESPONSIVE DESIGN FOR DASHBOARD
+   ========================================================================== */
+@media (max-width: 992px) {
+    .banner-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cozy-rain-widget {
+        width: 100%;
+    }
+
+    .book-double-page-wrapper {
+        width: 100%;
+        height: 500px;
+    }
+
+    .reader-page {
+        padding: 2rem 2.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-body-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-book-view {
+        border-right: none;
+        border-bottom: 1px solid var(--border-cream);
+        padding: 2rem;
+    }
+
+    .modal-book-view .book-3d {
+        width: 160px;
+        height: 225px;
+    }
+
+    .modal-book-details {
+        padding: 2rem;
+    }
+
+    .book-double-page-wrapper {
+        flex-direction: column;
+        height: auto;
+        box-shadow: none;
+    }
+
+    .reader-page {
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+        border-right: none;
+    }
+
+    .book-double-page-wrapper::before,
+    .book-double-page-wrapper::after,
+    .reader-page-flipping {
+        display: none !important;
+        /* disable folding animation on small mobile screens */
+    }
+
+    .books-lineup {
+        gap: 2rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+/* Navbar & Header Overrides to Match Admin Chocolate/Cream Theme (Dark Chocolate Header) */
+.main-header {
+    background-color: var(--brand-chocolate);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.nav-brand i,
+.nav-brand span {
+    background: linear-gradient(135deg, var(--brand-gold) 0%, var(--brand-gold-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: opacity 0.3s ease;
+}
+.nav-brand:hover i,
+.nav-brand:hover span {
+    background: linear-gradient(135deg, var(--brand-gold-light) 0%, var(--brand-gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 1;
+}
+
+.nav-link {
+    color: var(--brand-gold-light);
+    background: none;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+    background-clip: initial;
+    opacity: 1;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--white);
+    font-weight: 500;
+}
+
+.nav-link::after {
+    background-color: var(--brand-gold);
+}
+
+.cart-toggle i {
+    background: none;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+    background-clip: initial;
+}
+
+.cart-toggle {
+    color: var(--bg-cream);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.cart-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+}
+
+.cart-badge {
+    background-color: var(--brand-gold);
+    color: var(--brand-chocolate);
+    border-color: var(--brand-chocolate);
+}
+
+.user-toggle {
+    background-color: transparent;
+    border: none;
+}
+
+.user-toggle span {
+    color: var(--bg-cream);
+    background: none;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+    background-clip: initial;
+}
+
+.user-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.login-action-btn {
+    color: var(--bg-cream);
+    background: none;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+    background-clip: initial;
+    transition: color 0.2s ease;
+}
+
+.login-action-btn:hover {
+    color: var(--brand-gold);
+    opacity: 1;
+}
+
+.menu-toggle i {
+    background: none;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+    background-clip: initial;
+}
+
+.menu-toggle {
+    color: var(--bg-cream);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.menu-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.user-dropdown {
+    background-color: var(--card-cream);
+    border: 1px solid var(--border-cream);
+    box-shadow: 0 10px 25px rgba(76, 45, 23, 0.08);
+}
+
+.dropdown-header {
+    background-color: var(--bg-cream-dark);
+}
+
+.dropdown-link {
+    color: var(--text-chocolate-dark);
+}
+
+.dropdown-link:hover {
+    background-color: var(--bg-cream-dark);
+    color: var(--text-chocolate-dark);
+}
+
+.dropdown-link i {
+    color: var(--text-chocolate-mid);
+}
+
+.dropdown-divider {
+    background-color: var(--border-cream);
+}
+
+/* ==========================================================================
+   7. CUSTOMER PROFILE SETTINGS PAGE STYLES
+   ========================================================================== */
+.profile-settings-wrapper {
+    padding: 3rem 0 5rem;
+    background-color: var(--bg-cream);
+    min-height: calc(100vh - 70px);
+}
+
+.profile-header-nav {
+    margin-bottom: 2.5rem;
+}
+
+.back-dashboard-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-chocolate-mid);
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    transition: var(--transition-premium);
+}
+
+.back-dashboard-btn:hover {
+    color: var(--brand-chocolate);
+    transform: translateX(-4px);
+}
+
+.profile-header-nav h1 {
+    font-size: 2rem;
+    color: var(--text-chocolate-dark);
+    font-weight: 800;
+    margin-top: 0.5rem;
+}
+
+.profile-alert {
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.profile-alert-success {
+    background-color: #eaf8f0;
+    border: 1px solid #c7ebdb;
+    color: #1b8a4f;
+}
+
+.profile-alert-success i {
+    font-size: 1.2rem;
+    margin-top: 2px;
+}
+
+.profile-alert-danger {
+    background-color: #fdf2f0;
+    border: 1px solid #f9dad6;
+    color: #c84b31;
+}
+
+.profile-alert-danger i {
+    font-size: 1.2rem;
+    margin-top: 2px;
+}
+
+.profile-alert-danger ul {
+    list-style: disc;
+    margin-left: 1.25rem;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 2.5rem;
+    align-items: start;
+}
+
+.profile-card {
+    background-color: var(--card-cream);
+    border: 1px solid var(--border-cream);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px rgba(76, 45, 23, 0.03);
+}
+
+.profile-card h3 {
+    font-size: 1.2rem;
+    color: var(--text-chocolate-dark);
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-bottom: 1px solid var(--border-cream);
+    padding-bottom: 0.75rem;
+}
+
+.profile-card h3 i {
+    color: var(--brand-gold);
+}
+
+.avatar-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.avatar-preview-wrapper {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid var(--bg-cream-dark);
+    margin-bottom: 1.5rem;
+    box-shadow: 0 6px 18px rgba(76, 45, 23, 0.08);
+    background-color: var(--bg-cream-dark);
+}
+
+.avatar-preview-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    margin-bottom: 0.75rem;
+}
+
+.avatar-upload-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.25rem;
+    background-color: var(--brand-chocolate);
+    color: #fff;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-premium);
+    box-shadow: 0 4px 12px rgba(77, 45, 29, 0.15);
+}
+
+.avatar-upload-label:hover {
+    background-color: #2b170e;
+    transform: translateY(-1px);
+}
+
+.avatar-upload-btn-wrapper input[type=file] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    font-size: 100px;
+    cursor: pointer;
+}
+
+.avatar-upload-hint {
+    font-size: 0.8rem;
+    color: var(--text-chocolate-light);
+}
+
+.form-group-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+@media (max-width: 992px) {
+    .form-group-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-chocolate-dark);
+}
+
+.required-star {
+    color: var(--red);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="date"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-cream);
+    border-radius: var(--border-radius);
+    background-color: var(--bg-cream);
+    color: var(--text-chocolate-dark);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: var(--transition-premium);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--brand-chocolate);
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(76, 45, 23, 0.08);
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-section-desc {
+    font-size: 0.9rem;
+    color: var(--text-chocolate-mid);
+    margin-bottom: 1.5rem;
+    margin-top: -0.5rem;
+}
+
+.profile-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.profile-save-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.9rem 2rem;
+    background-color: var(--brand-chocolate);
+    color: #fff;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(77, 45, 29, 0.2);
+    transition: var(--transition-premium);
+}
+
+.profile-save-btn:hover {
+    background-color: #2b170e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(77, 45, 29, 0.3);
+}
+
+@media (max-width: 768px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+/* ==========================================================================
+   8. PDF CANVAS AND E-READER STYLING
+   ========================================================================== */
+.pdf-page-canvas {
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+    display: none; /* Controlled via JS */
+    background-color: transparent;
+    transition: opacity 0.3s ease;
+}
+
+.page-inner-content {
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.reader-text-container {
+    width: 100%;
+}
+
+/* PDF Mode Sizing & Padding Polish */
+.reader-overlay.pdf-mode .reader-book-viewport {
+    padding: 0;
+}
+
+.reader-overlay.pdf-mode .book-double-page-wrapper {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.reader-overlay.pdf-mode .reader-page {
+    padding: 1.5rem 2rem;
+}
+
+.reader-overlay.pdf-mode .page-inner-content {
+    overflow: hidden; /* No scrollbars at all, split into virtual pages */
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.reader-overlay.pdf-mode .pdf-page-canvas {
+    max-width: none;
+    max-height: none;
+    position: absolute;
+}
+
+.reader-overlay.pdf-mode .page-header {
+    margin-bottom: 0.5rem;
+    font-size: 0.75rem;
+}
+
+.reader-overlay.pdf-mode .page-footer-num {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+}
+
+/* Page Turning Fade Transition (Motion Sickness Prevention) */
+.book-double-page-wrapper {
+    transition: opacity 0.2s ease-in-out;
+}
+
+.book-double-page-wrapper.page-fade-out {
+    opacity: 0.15;
+}
+
+.reader-page-flipping {
+    display: none !important;
+}
+
+/* ==========================================================================
+   Dashboard Cover Wishlist Tag
+   ========================================================================== */
+.book-cover-wishlist-tag {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #d1345b;
+    color: #ffffff;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    font-size: 0.8rem;
+    z-index: 10;
+    transition: transform 0.2s ease;
+}
+
+.book-cover-wishlist-tag i {
+    color: #ffffff !important;
+}
+
+.shelf-book-premium:hover .book-cover-wishlist-tag {
+    transform: scale(1.15);
+}
+
+.btn-wishlist-modal-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 30px;
+    border: 1px solid var(--border-cream);
+    background-color: var(--card-cream);
+    color: var(--text-chocolate-dark);
+    cursor: pointer;
+    transition: var(--transition-premium);
+    box-shadow: 0 4px 12px rgba(76, 45, 23, 0.05);
+}
+
+.btn-wishlist-modal-toggle:hover {
+    background-color: var(--bg-cream-dark);
+    color: var(--text-chocolate-dark);
+    transform: translateY(-2px);
+}
+
+.btn-wishlist-modal-toggle.active {
+    background-color: #fbeae6;
+    border-color: #f5c2b8;
+    color: #d1345b;
+}
+
+.btn-wishlist-modal-toggle.active i {
+    color: #d1345b;
+}
+
+/* Bookshelf header actions align */
+.bookshelf-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.btn-wishlist-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 30px;
+    border: 1px solid var(--border-cream);
+    background-color: var(--card-cream);
+    color: var(--text-chocolate-dark);
+    cursor: pointer;
+    transition: var(--transition-premium);
+    box-shadow: 0 4px 10px rgba(76, 45, 23, 0.05);
+}
+
+.btn-wishlist-trigger:hover {
+    background-color: var(--bg-cream-dark);
+    color: var(--text-chocolate-dark);
+    transform: translateY(-1px);
+}
+
+.btn-wishlist-trigger i {
+    color: #d1345b;
+}
+
+.wishlist-badge {
+    background-color: #d1345b;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+}
+
+/* ==========================================================================
+   Wishlist Drawer Overlay Popup (Redesigned - Premium Sliding Drawer)
+   ========================================================================== */
+.wishlist-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(24, 13, 8, 0.45);
+    backdrop-filter: blur(8px);
+    z-index: 2500;
+    display: flex;
+    justify-content: flex-end; /* Align slide drawer to the right */
+    align-items: stretch;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wishlist-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.wishlist-modal-content {
+    background: rgba(253, 251, 247, 0.98);
+    border-left: 1px solid rgba(76, 45, 23, 0.12);
+    border-radius: 32px 0 0 32px;
+    width: 100%;
+    max-width: 480px;
+    height: 100%;
+    box-shadow: -15px 0 45px rgba(76, 45, 23, 0.15);
+    position: relative;
+    padding: 3rem 2.25rem;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%); /* Hide offscreen to the right */
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wishlist-modal-overlay.active .wishlist-modal-content {
+    transform: translateX(0); /* Slide in */
+}
+
+/* Close Button - Sleek styling */
+.wishlist-modal-close-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(76, 45, 23, 0.05);
+    border: none;
+    color: var(--text-chocolate-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-premium);
+    z-index: 10;
+}
+
+.wishlist-modal-close-btn:hover {
+    background-color: var(--brand-chocolate);
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+/* Title & Heartbeat Animation */
+.wishlist-modal-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--text-chocolate-dark);
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    border-bottom: 2px solid rgba(76, 45, 23, 0.06);
+    padding-bottom: 1.25rem;
+}
+
+.wishlist-modal-title i {
+    color: #d1345b;
+    animation: wishlistHeartbeat 1.4s infinite ease-in-out;
+    display: inline-block;
+}
+
+@keyframes wishlistHeartbeat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.18); }
+    40% { transform: scale(1.08); }
+    55% { transform: scale(1.22); }
+}
+
+.wishlist-items-container {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-right: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+/* Custom Scrollbar for container */
+.wishlist-items-container::-webkit-scrollbar {
+    width: 6px;
+}
+.wishlist-items-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+.wishlist-items-container::-webkit-scrollbar-thumb {
+    background: rgba(142, 101, 73, 0.15);
+    border-radius: 3px;
+}
+
+/* Wishlist Item - Premium Cards with Cascade Animations */
+.wishlist-modal-item {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    grid-template-rows: auto auto;
+    gap: 0.5rem 1.25rem;
+    align-items: center;
+    padding: 1.25rem;
+    background-color: #ffffff;
+    border: 1px solid rgba(142, 101, 73, 0.08);
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(76, 45, 23, 0.02);
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, 
+                transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Cascade animation when active */
+.wishlist-modal-overlay.active .wishlist-modal-item {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.wishlist-modal-overlay.active .wishlist-modal-item:nth-child(1) { transition-delay: 0.05s; }
+.wishlist-modal-overlay.active .wishlist-modal-item:nth-child(2) { transition-delay: 0.1s; }
+.wishlist-modal-overlay.active .wishlist-modal-item:nth-child(3) { transition-delay: 0.15s; }
+.wishlist-modal-overlay.active .wishlist-modal-item:nth-child(4) { transition-delay: 0.2s; }
+.wishlist-modal-overlay.active .wishlist-modal-item:nth-child(5) { transition-delay: 0.25s; }
+.wishlist-modal-overlay.active .wishlist-modal-item:nth-child(n+6) { transition-delay: 0.3s; }
+
+.wishlist-modal-item:hover {
+    transform: translateY(-2px);
+    border-color: rgba(200, 150, 88, 0.35);
+    box-shadow: 0 10px 25px rgba(76, 45, 23, 0.08);
+}
+
+.wishlist-item-cover-wrapper {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    cursor: pointer;
+    perspective: 400px;
+    display: flex;
+    justify-content: center;
+}
+
+.wishlist-item-book {
+    width: 70px;
+    height: 98px;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 2px 6px 14px rgba(76, 45, 23, 0.18);
+    transition: transform 0.3s ease;
+    transform: rotateY(-8deg);
+    transform-origin: left center;
+}
+
+/* Beautiful book spine shadow */
+.wishlist-item-book::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.22) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(0, 0, 0, 0.12) 100%);
+    z-index: 2;
+}
+
+.wishlist-modal-item:hover .wishlist-item-book {
+    transform: rotateY(-18deg) scale(1.05);
+}
+
+.wishlist-item-cover {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wishlist-item-title-fallback {
+    color: #ffffff;
+    font-size: 0.65rem;
+    text-align: center;
+    font-weight: 700;
+    padding: 0 6px;
+}
+
+.wishlist-item-details {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding-right: 2rem; /* Avoid trash overlap */
+}
+
+.wishlist-item-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-chocolate-dark);
+    margin: 0;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    line-height: 1.35;
+}
+
+.wishlist-item-title:hover {
+    color: var(--brand-gold);
+}
+
+.wishlist-item-author {
+    font-size: 0.82rem;
+    color: var(--text-chocolate-light);
+    margin: 0;
+}
+
+.wishlist-item-price {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--brand-gold);
+}
+
+.wishlist-item-actions {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+/* Premium Gold Pill Button for Buy */
+.btn-wishlist-buy {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--brand-gold) 0%, #a67942 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    box-shadow: 0 4px 12px rgba(200, 150, 88, 0.25);
+    transition: all 0.3s ease;
+}
+
+.btn-wishlist-buy:hover {
+    background: linear-gradient(135deg, #dbab6d 0%, var(--brand-gold) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(200, 150, 88, 0.35);
+}
+
+.wishlist-out-of-stock {
+    font-size: 0.8rem;
+    color: #c84b31;
+    font-weight: 700;
+    background-color: #fdf2f2;
+    padding: 0.35rem 0.8rem;
+    border-radius: 30px;
+    border: 1px solid #fde2e2;
+}
+
+/* Clean Circular Trash Button positioned absolute */
+.btn-wishlist-remove {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: rgba(76, 45, 23, 0.04);
+    border: none;
+    color: var(--text-chocolate-light);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    z-index: 2;
+}
+
+.btn-wishlist-remove:hover {
+    background-color: #fee2e2;
+    color: #dc2626;
+    transform: scale(1.08);
+}
+
+.wishlist-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 3.5rem 1.5rem;
+    color: var(--text-chocolate-light);
+    text-align: center;
+}
+
+.wishlist-empty-state i {
+    font-size: 3.5rem;
+    margin-bottom: 1.25rem;
+    color: #e5c3b2;
+    animation: wishlistHeartbeat 2s infinite ease-in-out;
+}
+
+.wishlist-empty-state p {
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+@media (max-width: 576px) {
+    .wishlist-modal-content {
+        max-width: 100%;
+        border-radius: 0;
+        padding: 2.5rem 1.25rem;
+    }
+    .wishlist-modal-item {
+        gap: 0.4rem 1rem;
+        padding: 1rem;
+        grid-template-columns: 60px 1fr;
+    }
+    .wishlist-item-book {
+        width: 60px;
+        height: 84px;
+    }
+    .wishlist-item-title {
+        font-size: 0.95rem;
+    }
+    .btn-wishlist-buy {
+        padding: 0.45rem 1rem;
+        font-size: 0.78rem;
+    }
+}
+
+/* E-Book Reader Bookmark & Resume Styling */
+.btn-resume-bookmark {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--brand-gold, #B27F38);
+    color: #fff;
+    border: none;
+    border-radius: var(--border-radius, 12px);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(178, 127, 56, 0.25);
+    transition: var(--transition-premium, all 0.3s ease);
+}
+.btn-resume-bookmark:hover {
+    background-color: #986526;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(178, 127, 56, 0.35);
+}
+.btn-resume-bookmark.display-none {
+    display: none !important;
+}
+
+.btn-reader-bookmark {
+    background: none;
+    border: none;
+    color: #a58e80;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: var(--transition-premium, all 0.3s ease);
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+}
+.btn-reader-bookmark:hover {
+    color: var(--brand-gold, #B27F38);
+    background-color: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 10px rgba(178, 127, 56, 0.3);
+}
+.btn-reader-bookmark.bookmarked {
+    color: var(--brand-gold, #B27F38);
+    text-shadow: 0 0 8px rgba(178, 127, 56, 0.5);
+}
+
+.reader-progress-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.bookmark-quick-jump {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    color: var(--brand-gold, #B27F38);
+    cursor: pointer;
+    font-weight: 700;
+    transition: var(--transition-premium, all 0.3s ease);
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    background-color: rgba(178, 127, 56, 0.12);
+    border: 1px dashed rgba(178, 127, 56, 0.3);
+}
+.bookmark-quick-jump:hover {
+    background-color: rgba(178, 127, 56, 0.2);
+    color: var(--brand-gold-light, #FAF2E3);
+    border-color: var(--brand-gold, #B27F38);
+    box-shadow: 0 0 8px rgba(178, 127, 56, 0.25);
+}
+
+/* Warm Sepia Theme Variables Overrides for Dashboard */
+html.warm-theme {
+    --bg-cream: #F0E2C8;
+    --bg-cream-dark: #DDC8A4;
+    --card-cream: #FCF7EB;
+    --border-cream: #DDC8A4;
+    --text-chocolate-dark: #3D1E0B;
+    --text-chocolate-mid: #684227;
+    --text-chocolate-light: #8E6E55;
+    --brand-chocolate: #3D1E0B;
+    --brand-gold: #B27F38;
+    --brand-gold-light: #FAF2E3;
+}
