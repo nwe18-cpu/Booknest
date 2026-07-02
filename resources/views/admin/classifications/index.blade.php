@@ -70,6 +70,9 @@
                     </tbody>
                 </table>
             </div>
+            <div class="pagination-wrapper">
+                {{ $classifications->links() }}
+            </div>
         </div>
 
         <!-- Right Column: Add New Tag Form -->

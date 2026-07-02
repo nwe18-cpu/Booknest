@@ -43,7 +43,7 @@ class CustomerController extends Controller
             });
         }
 
-        $customers = $query->paginate(15)->withQueryString();
+        $customers = $query->paginate(5)->withQueryString();
 
         return view('admin.customers.index', compact('customers'));
     }

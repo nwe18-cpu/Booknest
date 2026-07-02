@@ -10,6 +10,36 @@
 <div class="orders-page-wrapper container">
     <h1 class="orders-page-title"><i class="fa-solid fa-clock-rotate-left"></i> My Purchase History</h1>
 
+    <!-- Date Filter Bar -->
+    <div class="orders-filter-bar">
+        <form action="{{ route('customer.store.orders') }}" method="GET" class="filter-form">
+            <div class="filter-wrapper">
+                <span class="filter-title"><i class="fa-solid fa-filter"></i> Filter Orders:</span>
+                <div class="filter-inputs">
+                    <div class="filter-field">
+                        <i class="fa-regular fa-calendar-days field-icon"></i>
+                        <input type="date" id="start_date" name="start_date" value="{{ request('start_date') }}" class="filter-input">
+                    </div>
+                    <span class="filter-separator">to</span>
+                    <div class="filter-field">
+                        <i class="fa-regular fa-calendar-days field-icon"></i>
+                        <input type="date" id="end_date" name="end_date" value="{{ request('end_date') }}" class="filter-input">
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button type="submit" class="btn-filter-submit">
+                        Search
+                    </button>
+                    @if(request('start_date') || request('end_date'))
+                        <a href="{{ route('customer.store.orders') }}" class="btn-filter-clear">
+                            <i class="fa-solid fa-arrows-rotate"></i> Reset
+                        </a>
+                    @endif
+                </div>
+            </div>
+        </form>
+    </div>
+
     @if($orders->isNotEmpty())
         <div class="orders-list-premium">
             @foreach($orders as $order)
@@ -64,10 +94,16 @@
                                     </div>
                                 @endforeach
                             </div>
+                            
+                            <!-- View Delivery Info Toggle Button -->
+                            <button class="btn-toggle-delivery" onclick="toggleDeliveryInfo(this, {{ $order->id }})">
+                                <span>View Delivery Information</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
                         </div>
 
-                        <!-- Right: Shipping / Delivery Info -->
-                        <div class="order-shipping-column">
+                        <!-- Right: Shipping / Delivery Info (Collapsible) -->
+                        <div class="order-shipping-column" id="shipping-col-{{ $order->id }}">
                             <div class="shipping-info-card">
                                 <h4 class="shipping-title"><i class="fa-solid fa-truck-fast"></i> Delivery Information</h4>
                                 @if($order->shippingAddress)
@@ -115,16 +151,24 @@
     @else
         <div class="empty-orders-state">
             <i class="fa-solid fa-folder-open"></i>
-            <h3>No purchase history yet</h3>
-            <p>Browse and buy your favorite books on Booknest.</p>
-            <a href="{{ route('customer.store.home') }}" class="btn-primary">
-                <i class="fa-solid fa-store"></i> Go to Bookstore
-            </a>
+            @if(request('start_date') || request('end_date'))
+                <h3>No orders found</h3>
+                <p>No orders were found matching your selected date range.</p>
+                <a href="{{ route('customer.store.orders') }}" class="btn-primary">
+                    <i class="fa-solid fa-rotate-left"></i> Reset Filter
+                </a>
+            @else
+                <h3>No purchase history yet</h3>
+                <p>Browse and buy your favorite books on Booknest.</p>
+                <a href="{{ route('customer.store.home') }}" class="btn-primary">
+                    <i class="fa-solid fa-store"></i> Go to Bookstore
+                </a>
+            @endif
         </div>
     @endif
 </div>
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/customer/store.js') }}"></script>
+<script src="{{ asset('js/customer/store.js') }}?v=1.0.5"></script>
 @endsection

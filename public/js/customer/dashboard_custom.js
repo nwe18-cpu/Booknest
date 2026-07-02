@@ -148,11 +148,38 @@ function openBookDetail(id, title, author, desc, price, stock, totalPages, color
     }
 
     document.getElementById('detail-modal').classList.add('active');
-    loadBookReviews(id);
 }
 
 function closeBookDetail(e) {
     document.getElementById('detail-modal').classList.remove('active');
+}
+
+function openReviewsModal(id, title, author) {
+    currentDetailBookId = id;
+    document.getElementById('reviews-modal-title').innerText = title;
+    document.getElementById('reviews-modal-author').innerText = 'By ' + author;
+    
+    resetReviewForm();
+    loadBookReviews(id);
+    
+    const modal = document.getElementById('reviews-modal');
+    if (modal) modal.classList.add('active');
+}
+
+function closeReviewsModal() {
+    const modal = document.getElementById('reviews-modal');
+    if (modal) modal.classList.remove('active');
+}
+
+function openReviewsModalFromDashboard() {
+    const wishlistBtn = document.getElementById('btn-wishlist-modal');
+    if (!wishlistBtn) return;
+    
+    const id = wishlistBtn.getAttribute('data-id');
+    const title = document.getElementById('modal-title').innerText;
+    const author = document.getElementById('modal-author').innerText.replace(/^By\s+/i, '');
+    
+    openReviewsModal(id, title, author);
 }
 
 function openBookDetailFromElement(el) {
@@ -1341,8 +1368,8 @@ function addToCart(itemId, quantity = 1) {
                                     <div class="cart-item">
                                         <div class="cart-item-book-container">
                                             <div class="cart-item-book">
-                                                <div class="cart-item-cover ${item.cover_class}">
-                                                    <span class="cart-item-cover-text">${escapeHtml(item.name)}</span>
+                                                <div class="cart-item-cover ${item.image ? 'has-cover-image' : item.cover_class}" ${item.image ? `style="background-image: url('${item.image}'); background-size: cover; background-position: center;"` : ''}>
+                                                    ${item.image ? '' : `<span class="cart-item-cover-text">${escapeHtml(item.name)}</span>`}
                                                 </div>
                                             </div>
                                         </div>
@@ -1393,8 +1420,7 @@ function closeWishlistModal() {
     }
 }
 
-function openBookFromWishlist(id, title, author, desc, price, stock, totalPages, colorClass, image) {
+function openBookFromWishlist(el) {
     closeWishlistModal();
-    // Wishlist books are not downloaded, so hasDownloaded = false, isWishlisted = true
-    openBookDetail(id, title, author, desc, price, stock, totalPages, colorClass, 0, 1, '[]', image, '', false, true);
+    openBookDetailFromElement(el);
 }

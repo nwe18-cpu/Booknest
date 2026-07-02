@@ -3,8 +3,8 @@
 @section('title', 'My Library - Booknest')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/customer/dashboard.css') }}?v=1.1.6">
-<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.1.9">
+<link rel="stylesheet" href="{{ asset('css/customer/dashboard.css') }}?v=1.2.2">
+<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.2.3">
 @endsection
 
 @section('content')
@@ -29,46 +29,46 @@
         <!-- Library Statistics Section (Unified Status Dock) -->
         <div class="stats-dock">
             <!-- Stat Item: Total Books -->
-            <div class="stat-dock-item">
+            <div class="stat-dock-item" title="Total Books">
                 <div class="stat-dock-icon icon-books">
                     <i class="fa-solid fa-book"></i>
                 </div>
                 <div class="stat-dock-meta">
                     <span class="stat-dock-label">Total Books</span>
-                    <span class="stat-dock-value">{{ $stats['total_books'] }} books</span>
+                    <span class="stat-dock-value">{{ $stats['total_books'] }}<span class="stat-unit"> books</span></span>
                 </div>
             </div>
 
             <div class="stat-dock-divider"></div>
 
             <!-- Stat Item: Currently Reading -->
-            <div class="stat-dock-item">
+            <div class="stat-dock-item" title="Currently Reading">
                 <div class="stat-dock-icon icon-reading">
                     <i class="fa-solid fa-book-open-reader"></i>
                 </div>
                 <div class="stat-dock-meta">
                     <span class="stat-dock-label">Currently Reading</span>
-                    <span class="stat-dock-value">{{ $stats['reading'] }} books</span>
+                    <span class="stat-dock-value">{{ $stats['reading'] }}<span class="stat-unit"> books</span></span>
                 </div>
             </div>
 
             <div class="stat-dock-divider"></div>
 
             <!-- Stat Item: Completed Books -->
-            <div class="stat-dock-item">
+            <div class="stat-dock-item" title="Completed Books">
                 <div class="stat-dock-icon icon-completed">
                     <i class="fa-solid fa-circle-check"></i>
                 </div>
                 <div class="stat-dock-meta">
                     <span class="stat-dock-label">Completed Books</span>
-                    <span class="stat-dock-value">{{ $stats['completed'] }} books</span>
+                    <span class="stat-dock-value">{{ $stats['completed'] }}<span class="stat-unit"> books</span></span>
                 </div>
             </div>
 
             <div class="stat-dock-divider"></div>
 
             <!-- Stat Item: Avg. Progress -->
-            <div class="stat-dock-item">
+            <div class="stat-dock-item" title="Avg. Progress">
                 <div class="stat-dock-icon icon-progress">
                     <i class="fa-solid fa-chart-line"></i>
                 </div>
@@ -279,9 +279,25 @@
                 $wishlistBooks = auth()->guard('customer')->user()->wishlistBooks()->with(['author'])->get();
             @endphp
             @forelse($wishlistBooks as $book)
+                @php
+                    $bookColorClass = 'book-color-' . (($loop->index % 4) + 1);
+                @endphp
                 <div class="wishlist-modal-item" data-wishlist-item-id="{{ $book->id }}">
                     <div class="wishlist-item-cover-wrapper">
-                        <div class="wishlist-item-book book-color-{{ ($loop->index % 4) + 1 }}" onclick="openBookFromWishlist({{ $book->id }}, '{{ addslashes($book->name) }}', '{{ addslashes($book->author?->name ?? 'Unknown Author') }}', '{{ addslashes($book->description) }}', {{ $book->price }}, {{ $book->stock_quantity }}, {{ $book->pages }}, 'book-color-{{ ($loop->index % 4) + 1 }}', '{{ $book->image ? asset('storage/' . $book->image) : '' }}')">
+                        <div class="wishlist-item-book {{ $bookColorClass }}" 
+                             data-id="{{ $book->id }}"
+                             data-title-raw="{{ $book->name }}"
+                             data-author-raw="{{ $book->author?->name ?? 'Unknown Author' }}"
+                             data-desc="{{ $book->description }}"
+                             data-price="{{ $book->price }}"
+                             data-stock="{{ $book->stock_quantity }}"
+                             data-pages="{{ $book->pages }}"
+                             data-color-class="{{ $bookColorClass }}"
+                             data-image="{{ $book->image ? asset('storage/' . $book->image) : '' }}"
+                             data-pdf-file=""
+                             data-downloaded="false"
+                             data-wishlisted="true"
+                             onclick="openBookFromWishlist(this)">
                             @if($book->image)
                                 <div class="wishlist-item-cover" style="background-image: url('{{ asset('storage/' . $book->image) }}');"></div>
                             @else
@@ -292,7 +308,20 @@
                         </div>
                     </div>
                     <div class="wishlist-item-details">
-                        <h4 class="wishlist-item-title" onclick="openBookFromWishlist({{ $book->id }}, '{{ addslashes($book->name) }}', '{{ addslashes($book->author?->name ?? 'Unknown Author') }}', '{{ addslashes($book->description) }}', {{ $book->price }}, {{ $book->stock_quantity }}, {{ $book->pages }}, 'book-color-{{ ($loop->index % 4) + 1 }}', '{{ $book->image ? asset('storage/' . $book->image) : '' }}')">{{ $book->name }}</h4>
+                        <h4 class="wishlist-item-title" 
+                            data-id="{{ $book->id }}"
+                            data-title-raw="{{ $book->name }}"
+                            data-author-raw="{{ $book->author?->name ?? 'Unknown Author' }}"
+                            data-desc="{{ $book->description }}"
+                            data-price="{{ $book->price }}"
+                            data-stock="{{ $book->stock_quantity }}"
+                            data-pages="{{ $book->pages }}"
+                            data-color-class="{{ $bookColorClass }}"
+                            data-image="{{ $book->image ? asset('storage/' . $book->image) : '' }}"
+                            data-pdf-file=""
+                            data-downloaded="false"
+                            data-wishlisted="true"
+                            onclick="openBookFromWishlist(this)">{{ $book->name }}</h4>
                         <p class="wishlist-item-author">By {{ $book->author?->name ?? 'Unknown Author' }}</p>
                         <span class="wishlist-item-price">{{ number_format($book->price) }} Ks</span>
                     </div>
@@ -390,14 +419,34 @@
                     <button id="btn-wishlist-modal" class="btn-wishlist-modal-toggle" onclick="toggleWishlistFromModal(this)">
                         <i class="fa-regular fa-heart"></i> Wishlist
                     </button>
+                    <!-- Reviews Trigger Button -->
+                    <button id="btn-reviews-modal-trigger" class="btn-wishlist-modal-toggle" onclick="openReviewsModalFromDashboard()">
+                        <i class="fa-regular fa-comment-dots"></i> Reviews
+                    </button>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Book Reviews Modal (Overlay) -->
+<div class="detail-modal-overlay" id="reviews-modal" onclick="if(event.target === this) closeReviewsModal()">
+    <div class="detail-modal-content reviews-modal-content">
+        <!-- Close Button -->
+        <button class="modal-close-btn" onclick="closeReviewsModal()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="reviews-modal-header">
+            <div class="reviews-modal-book-info">
+                <span class="reviews-modal-badge"><i class="fa-solid fa-comments"></i> Book Reviews</span>
+                <h2 id="reviews-modal-title" class="details-title">Book Name</h2>
+                <div id="reviews-modal-author" class="details-author">By Author</div>
             </div>
         </div>
 
         <!-- Premium Comment-Style Reviews Section -->
         <div class="reviews-section-container">
-            <h3 class="reviews-section-title"><i class="fa-solid fa-comments"></i> Customer Reviews</h3>
-            
             <div class="reviews-dashboard-grid">
                 <!-- Left: Average rating breakdown -->
                 <div class="reviews-summary-card">
@@ -475,7 +524,7 @@
         </div>
         
         <!-- Zoom Controls for PDF Reader -->
-        <div class="reader-zoom-controls" id="reader-zoom-controls" style="display: none;">
+        <div class="reader-zoom-controls display-none" id="reader-zoom-controls">
             <button onclick="zoomOut()" class="btn-zoom" title="Zoom Out">
                 <i class="fa-solid fa-magnifying-glass-minus"></i>
             </button>
@@ -563,7 +612,7 @@
             <div class="reader-progress-top-row">
                 <span class="progress-details" id="page-indicator-text">Page 1 of 100 (0% completed)</span>
                 <!-- Jump to Bookmark Link -->
-                <span class="bookmark-quick-jump" id="bookmark-quick-jump" style="display: none;" onclick="jumpToBookmark()">
+                <span class="bookmark-quick-jump display-none" id="bookmark-quick-jump" onclick="jumpToBookmark()">
                     <i class="fa-solid fa-bookmark"></i> Go to Bookmark (Page <span id="bookmark-page-num">0</span>)
                 </span>
             </div>
@@ -586,5 +635,5 @@
         window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
     }
 </script>
-<script src="{{ asset('js/customer/dashboard_custom.js') }}?v=1.2.7"></script>
+<script src="{{ asset('js/customer/dashboard_custom.js') }}?v=1.2.8"></script>
 @endsection

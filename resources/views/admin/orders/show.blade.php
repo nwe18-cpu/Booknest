@@ -3,151 +3,13 @@
 @section('title', 'Booknest Admin - Order #' . $order->id)
 
 @section('styles')
-<style>
-    .order-details-grid {
-        display: grid;
-        grid-template-columns: 1fr 1.2fr;
-        gap: 25px;
-        margin-top: 20px;
-    }
-    
-    @media (max-width: 1024px) {
-        .order-details-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-    
-    .detail-card {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(8px);
-        border-radius: 16px;
-        padding: 24px;
-        box-shadow: 0 8px 30px rgba(76, 45, 23, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.6);
-        margin-bottom: 25px;
-    }
-    
-    .detail-card-header {
-        border-bottom: 1px solid #EDE8D0;
-        padding-bottom: 12px;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    
-    .detail-card-header h4 {
-        margin: 0;
-        font-size: 1.15rem;
-        color: var(--text-main);
-        font-weight: 700;
-    }
-    
-    .info-list {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-    
-    .info-item {
-        display: flex;
-        justify-content: space-between;
-        font-size: 0.95rem;
-        line-height: 1.5;
-    }
-    
-    .info-label {
-        color: var(--text-muted);
-        font-weight: 600;
-    }
-    
-    .info-value {
-        color: var(--text-main);
-        font-weight: 700;
-        text-align: right;
-    }
-    
-    .status-select-form {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .status-form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-    }
-    
-    .status-form-group label {
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: var(--text-muted);
-    }
-    
-    .status-select-control {
-        padding: 10px 14px;
-        border: 1px solid #DCD6BC;
-        border-radius: 8px;
-        background-color: #FAFAFA;
-        color: #1A2E3B;
-        font-size: 0.9rem;
-        outline: none;
-        width: 100%;
-        box-sizing: border-box;
-    }
-    
-    .status-select-control:focus {
-        border-color: #4C2D17;
-        background-color: #FFFFFF;
-    }
-    
-    .btn-update-status {
-        background-color: #4C2D17;
-        color: #EDE8D0;
-        border: none;
-        border-radius: 8px;
-        padding: 12px 20px;
-        font-weight: 700;
-        font-size: 0.95rem;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        transition: all 0.2s ease;
-        margin-top: 10px;
-    }
-    
-    .btn-update-status:hover {
-        background-color: #351f0f;
-    }
-    
-    .badge-status {
-        display: inline-block;
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-size: 0.78rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-    }
-    
-    .status-payment-pending { color: #d97706; background-color: #fef3c7; border: 1px solid #fde68a; }
-    .status-payment-paid { color: #166534; background-color: #dcfce7; border: 1px solid #bbf7d0; }
-    .status-payment-failed { color: #991b1b; background-color: #fee2e2; border: 1px solid #fecaca; }
-    
-    .status-order-pending { color: #4b5563; background-color: #f3f4f6; border: 1px solid #e5e7eb; }
-    .status-order-shipped { color: #1d4ed8; background-color: #dbeafe; border: 1px solid #bfdbfe; }
-    .status-order-completed { color: #166534; background-color: #dcfce7; border: 1px solid #bbf7d0; }
-    .status-order-cancelled { color: #991b1b; background-color: #fee2e2; border: 1px solid #fecaca; }
-</style>
+<link rel="stylesheet" href="{{ asset('css/admin/orders.css') }}?v=1.0.1">
 @endsection
 
 @section('content')
 <div class="dashboard-wrapper-new">
     
-    <div class="form-header-modern" style="margin-bottom: 20px;">
+    <div class="form-header-modern margin-bottom-20">
         <h2><i class="fa-solid fa-file-invoice-dollar"></i> Order Details #{{ $order->id }}</h2>
         <a href="{{ route('admin.orders.index') }}" class="btn-back-modern">
             <i class="fa-solid fa-arrow-left"></i> Back to Orders
@@ -166,7 +28,7 @@
             <!-- Customer Card -->
             <div class="detail-card">
                 <div class="detail-card-header">
-                    <i class="fa-solid fa-user-circle" style="color: var(--brand-gold); font-size: 1.25rem;"></i>
+                    <i class="fa-solid fa-user-circle color-brand-gold-font-size-1-25"></i>
                     <h4>Customer Profile</h4>
                 </div>
                 <div class="info-list">
@@ -184,7 +46,7 @@
                     </div>
                     <div class="info-item">
                         <span class="info-label">Registered Status:</span>
-                        <span class="info-value" style="text-transform: capitalize;">{{ $order->customer?->status ?? 'N/A' }}</span>
+                        <span class="info-value text-transform-capitalize">{{ $order->customer?->status ?? 'N/A' }}</span>
                     </div>
                 </div>
             </div>
@@ -192,7 +54,7 @@
             <!-- Shipping Address Card -->
             <div class="detail-card">
                 <div class="detail-card-header">
-                    <i class="fa-solid fa-truck" style="color: var(--brand-gold); font-size: 1.25rem;"></i>
+                    <i class="fa-solid fa-truck color-brand-gold-font-size-1-25"></i>
                     <h4>Shipping Address</h4>
                 </div>
                 @if($order->shippingAddress)
@@ -209,13 +71,13 @@
                             <span class="info-label">Email:</span>
                             <span class="info-value">{{ $order->shippingAddress->email }}</span>
                         </div>
-                        <div class="info-item" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+                        <div class="info-item flex-column-align-start-gap-4">
                             <span class="info-label">Address Line:</span>
-                            <span class="info-value" style="text-align: left; font-weight: 500; margin-top: 2px;">{{ $order->shippingAddress->address_line }}</span>
+                            <span class="info-value text-align-left-font-weight-500-margin-top-2">{{ $order->shippingAddress->address_line }}</span>
                         </div>
                     </div>
                 @else
-                    <div class="table-empty-state" style="padding: 10px;">
+                    <div class="table-empty-state padding-10">
                         ℹ️ No shipping details associated with this digital-only order.
                     </div>
                 @endif
@@ -226,17 +88,17 @@
         <div>
             <div class="detail-card">
                 <div class="detail-card-header">
-                    <i class="fa-solid fa-gears" style="color: var(--brand-gold); font-size: 1.25rem;"></i>
+                    <i class="fa-solid fa-gears color-brand-gold-font-size-1-25"></i>
                     <h4>Manage Status</h4>
                 </div>
                 
                 <form action="{{ route('admin.orders.updateStatus', $order->id) }}" method="POST" class="status-select-form">
                     @csrf
                     
-                    <div class="info-list" style="margin-bottom: 10px;">
+                    <div class="info-list margin-bottom-10">
                         <div class="info-item">
                             <span class="info-label">Order Total:</span>
-                            <span class="info-value" style="font-size: 1.2rem; color: var(--text-main);">{{ number_format($order->total_amount) }} Ks</span>
+                            <span class="info-value font-size-1-2-color-text-main">{{ number_format($order->total_amount) }} Ks</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Date Placed:</span>
@@ -245,7 +107,7 @@
                         @if($order->stripe_session_id)
                             <div class="info-item">
                                 <span class="info-label">Stripe Session:</span>
-                                <span class="info-value" style="font-size: 0.8rem; word-break: break-all;">{{ $order->stripe_session_id }}</span>
+                                <span class="info-value font-size-0-8-word-break">{{ $order->stripe_session_id }}</span>
                             </div>
                         @endif
                     </div>
@@ -278,9 +140,9 @@
     </div>
 
     <!-- Bottom Row: Order items list -->
-    <div class="data-table-card" style="margin-top: 10px;">
-        <div class="detail-card-header" style="border-bottom: 1px solid #EDE8D0; margin-bottom: 20px;">
-            <i class="fa-solid fa-basket-shopping" style="color: var(--brand-gold); font-size: 1.25rem;"></i>
+    <div class="data-table-card margin-top-10">
+        <div class="detail-card-header">
+            <i class="fa-solid fa-basket-shopping color-brand-gold-font-size-1-25"></i>
             <h4>Items Ordered</h4>
         </div>
 
@@ -309,10 +171,10 @@
                             <td><strong>{{ number_format($item->price * $item->quantity) }} Ks</strong></td>
                         </tr>
                     @endforeach
-                    <tr style="background-color: #faf8f5;">
+                    <tr class="bg-faf8f5">
                         <td colspan="4"></td>
-                        <td style="text-align: right;"><strong>Grand Total:</strong></td>
-                        <td><strong style="font-size: 1.1rem; color: var(--text-main);">{{ number_format($order->total_amount) }} Ks</strong></td>
+                        <td class="text-align-right"><strong>Grand Total:</strong></td>
+                        <td><strong class="font-size-1-1-color-text-main">{{ number_format($order->total_amount) }} Ks</strong></td>
                     </tr>
                 </tbody>
             </table>

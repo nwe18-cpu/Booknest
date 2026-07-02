@@ -3,254 +3,13 @@
 @section('title', 'Booknest Admin - Manage ' . $customer->name)
 
 @section('styles')
-<style>
-    .customer-profile-grid {
-        display: grid;
-        grid-template-columns: 1fr 1.2fr;
-        gap: 25px;
-        margin-top: 20px;
-    }
-    
-    @media (max-width: 1024px) {
-        .customer-profile-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-    
-    .detail-card {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(8px);
-        border-radius: 16px;
-        padding: 24px;
-        box-shadow: 0 8px 30px rgba(76, 45, 23, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.6);
-        margin-bottom: 25px;
-        position: relative;
-    }
-    
-    .detail-card-header {
-        border-bottom: 1px solid #EDE8D0;
-        padding-bottom: 12px;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    
-    .detail-card-header h4 {
-        margin: 0;
-        font-size: 1.15rem;
-        color: var(--text-main);
-        font-weight: 700;
-    }
-
-    .profile-hero {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .profile-avatar-large {
-        width: 110px;
-        height: 110px;
-        border-radius: 50%;
-        border: 4px solid var(--border-color);
-        object-fit: cover;
-        box-shadow: 0 4px 15px rgba(76, 45, 23, 0.12);
-        margin-bottom: 10px;
-    }
-
-    .profile-avatar-placeholder-large {
-        width: 110px;
-        height: 110px;
-        border-radius: 50%;
-        background-color: var(--sidebar-bg);
-        color: var(--sidebar-text);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 800;
-        font-size: 2.2rem;
-        box-shadow: 0 4px 15px rgba(76, 45, 23, 0.12);
-        margin-bottom: 10px;
-        border: 4px solid var(--border-color);
-    }
-    
-    .info-list {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-    
-    .info-item {
-        display: flex;
-        justify-content: space-between;
-        font-size: 0.95rem;
-        line-height: 1.5;
-    }
-    
-    .info-label {
-        color: var(--text-muted);
-        font-weight: 600;
-    }
-    
-    .info-value {
-        color: var(--text-main);
-        font-weight: 700;
-        text-align: right;
-    }
-    
-    .status-select-form {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .status-form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-    }
-    
-    .status-form-group label {
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: var(--text-muted);
-    }
-    
-    .status-select-control {
-        padding: 10px 14px;
-        border: 1px solid #DCD6BC;
-        border-radius: 8px;
-        background-color: #FAFAFA;
-        color: #1A2E3B;
-        font-size: 0.9rem;
-        outline: none;
-        width: 100%;
-        box-sizing: border-box;
-    }
-    
-    .status-select-control:focus {
-        border-color: #4C2D17;
-        background-color: #FFFFFF;
-    }
-    
-    .btn-update-status {
-        background-color: #4C2D17;
-        color: #EDE8D0;
-        border: none;
-        border-radius: 8px;
-        padding: 12px 20px;
-        font-weight: 700;
-        font-size: 0.95rem;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        transition: all 0.2s ease;
-        margin-top: 10px;
-    }
-    
-    .btn-update-status:hover {
-        background-color: #351f0f;
-    }
-
-    .btn-toggle-block {
-        width: 100%;
-        padding: 12px;
-        border-radius: 8px;
-        border: none;
-        font-weight: 700;
-        font-size: 0.95rem;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        transition: all 0.2s ease;
-        margin-top: 20px;
-    }
-
-    .btn-block-active {
-        background-color: var(--accent-red);
-        color: #fff;
-    }
-
-    .btn-block-active:hover {
-        background-color: #ad3e26;
-    }
-
-    .btn-block-inactive {
-        background-color: var(--accent-green);
-        color: #fff;
-    }
-
-    .btn-block-inactive:hover {
-        background-color: #21513c;
-    }
-    
-    .badge-status {
-        display: inline-block;
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-size: 0.78rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-    }
-    
-    .status-account-active { color: #166534; background-color: #dcfce7; border: 1px solid #bbf7d0; }
-    .status-account-inactive { color: #991b1b; background-color: #fee2e2; border: 1px solid #fecaca; }
-    
-    .status-sub-active { color: #1e3a8a; background-color: #dbeafe; border: 1px solid #bfdbfe; }
-    .status-sub-inactive { color: #374151; background-color: #f3f4f6; border: 1px solid #e5e7eb; }
-
-    .progress-bar-track-small {
-        width: 120px;
-        height: 8px;
-        background-color: #EAE6DF;
-        border-radius: 4px;
-        overflow: hidden;
-        display: inline-block;
-        vertical-align: middle;
-        margin-right: 8px;
-    }
-
-    .progress-bar-fill-small {
-        height: 100%;
-        background-color: var(--accent-green);
-        border-radius: 4px;
-    }
-
-    .btn-table-action {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-        background-color: #2a6f97;
-        color: #fff;
-        border-radius: 6px;
-        text-decoration: none;
-        font-size: 0.9rem;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .btn-table-action:hover {
-        background-color: #1e5575;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(42, 111, 151, 0.25);
-    }
-</style>
+<link rel="stylesheet" href="{{ asset('css/admin/customers.css') }}?v=1.0.1">
 @endsection
 
 @section('content')
 <div class="dashboard-wrapper-new">
     
-    <div class="form-header-modern" style="margin-bottom: 20px;">
+    <div class="form-header-modern margin-bottom-20">
         <h2><i class="fa-solid fa-user-gear"></i> Manage Customer Account</h2>
         <a href="{{ route('admin.customers.index') }}" class="btn-back-modern">
             <i class="fa-solid fa-arrow-left"></i> Back to Customers
@@ -275,15 +34,15 @@
                             {{ strtoupper(substr($customer->name, 0, 1)) }}
                         </div>
                     @endif
-                    <h3 style="margin: 5px 0 0 0; font-size: 1.3rem;">{{ $customer->name }}</h3>
-                    <div style="margin-top: 5px;">
+                    <h3 class="font-size-1-3-margin-top-5-0-0-0">{{ $customer->name }}</h3>
+                    <div class="margin-top-5">
                         <span class="badge-status status-account-{{ $customer->status }}">
                             {{ $customer->status === 'active' ? 'Active' : 'Blocked' }}
                         </span>
                     </div>
                 </div>
 
-                <div class="info-list" style="border-top: 1px solid #EDE8D0; padding-top: 15px;">
+                <div class="info-list border-top-cream-pad-15">
                     <div class="info-item">
                         <span class="info-label">Customer ID:</span>
                         <span class="info-value">#{{ $customer->id }}</span>
@@ -298,15 +57,15 @@
                     </div>
                     <div class="info-item">
                         <span class="info-label">Gender:</span>
-                        <span class="info-value" style="text-transform: capitalize;">{{ $customer->gender ?? 'N/A' }}</span>
+                        <span class="info-value text-transform-capitalize">{{ $customer->gender ?? 'N/A' }}</span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">Date of Birth:</span>
                         <span class="info-value">{{ $customer->dob ? $customer->dob->format('M d, Y') : 'N/A' }}</span>
                     </div>
-                    <div class="info-item" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+                    <div class="info-item flex-column-align-start-gap-4">
                         <span class="info-label">Address:</span>
-                        <span class="info-value" style="text-align: left; font-weight: 500;">{{ $customer->address ?? 'No address provided.' }}</span>
+                        <span class="info-value text-align-left-font-weight-500">{{ $customer->address ?? 'No address provided.' }}</span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">Joined Date:</span>
@@ -334,17 +93,17 @@
         <div>
             <div class="detail-card">
                 <div class="detail-card-header">
-                    <i class="fa-solid fa-crown" style="color: var(--brand-gold); font-size: 1.25rem;"></i>
+                    <i class="fa-solid fa-crown color-brand-gold-font-size-1-25"></i>
                     <h4>VIP Membership details</h4>
                 </div>
                 
                 <form action="{{ route('admin.customers.updateSubscription', $customer->id) }}" method="POST" class="status-select-form">
                     @csrf
                     
-                    <div class="info-list" style="margin-bottom: 10px;">
+                    <div class="info-list margin-bottom-10">
                         <div class="info-item">
                             <span class="info-label">Current Membership Type:</span>
-                            <span class="info-value" style="text-transform: uppercase;">{{ $customer->subscription_status === 'active' ? 'VIP' : 'FREE' }}</span>
+                            <span class="info-value text-transform-uppercase">{{ $customer->subscription_status === 'active' ? 'VIP' : 'FREE' }}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">VIP Status:</span>
@@ -358,9 +117,9 @@
                             <span class="info-label">Membership Days Left:</span>
                             <span class="info-value">
                                 @if($customer->hasActiveSubscription())
-                                    <span style="color: var(--accent-green);">{{ $customer->getSubscriptionDaysLeft() }} days</span>
+                                    <span class="color-accent-green">{{ $customer->getSubscriptionDaysLeft() }} days</span>
                                 @else
-                                    <span style="color: var(--text-muted);">No active subscription</span>
+                                    <span class="color-text-muted">No active subscription</span>
                                 @endif
                             </span>
                         </div>
@@ -390,9 +149,9 @@
     </div>
 
     <!-- Bottom Row: Order logs -->
-    <div class="data-table-card" style="margin-top: 10px;">
-        <div class="detail-card-header" style="border-bottom: 1px solid #EDE8D0; margin-bottom: 20px;">
-            <i class="fa-solid fa-basket-shopping" style="color: var(--brand-gold); font-size: 1.25rem;"></i>
+    <div class="data-table-card margin-top-10">
+        <div class="detail-card-header">
+            <i class="fa-solid fa-basket-shopping color-brand-gold-font-size-1-25"></i>
             <h4>Customer Order History</h4>
         </div>
 
@@ -443,9 +202,9 @@
     </div>
 
     <!-- Bottom Row: Downloads & Reading Progress -->
-    <div class="data-table-card" style="margin-top: 25px;">
-        <div class="detail-card-header" style="border-bottom: 1px solid #EDE8D0; margin-bottom: 20px;">
-            <i class="fa-solid fa-book-reader" style="color: var(--brand-gold); font-size: 1.25rem;"></i>
+    <div class="data-table-card margin-top-25">
+        <div class="detail-card-header">
+            <i class="fa-solid fa-book-reader color-brand-gold-font-size-1-25"></i>
             <h4>Downloads & Reading Progress</h4>
         </div>
 
@@ -480,9 +239,9 @@
                                 <div class="progress-bar-track-small">
                                     <div class="progress-bar-fill-small" style="width: {{ $pct }}%"></div>
                                 </div>
-                                <strong style="font-size: 0.85rem; color: var(--text-main);">{{ $pct }}%</strong>
+                                <strong class="progress-percentage">{{ $pct }}%</strong>
                                 @if($progress->completed)
-                                    <span style="color: var(--accent-green); font-size: 0.8rem; margin-left: 8px; font-weight: 700;"><i class="fa-solid fa-circle-check"></i> Completed</span>
+                                    <span class="completed-text"><i class="fa-solid fa-circle-check"></i> Completed</span>
                                 @endif
                             </td>
                         </tr>

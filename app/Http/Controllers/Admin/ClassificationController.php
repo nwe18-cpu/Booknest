@@ -10,15 +10,15 @@ class ClassificationController extends Controller
 {
     public function index()
     {
-        $classifications = Classification::orderBy('name')->get();
-        
         if (request()->ajax() || request()->wantsJson()) {
+            $classifications = Classification::orderBy('name')->get();
             return response()->json([
                 'success' => true,
                 'classifications' => $classifications
             ]);
         }
         
+        $classifications = Classification::orderBy('name')->paginate(5);
         return view('admin.classifications.index', compact('classifications'));
     }
 

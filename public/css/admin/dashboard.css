@@ -47,11 +47,12 @@ body {
     min-width: 290px;
     background: linear-gradient(135deg, #1f1107 0%, #351f0f 50%, #221309 100%);
     box-shadow: inset -4px 0 24px rgba(0, 0, 0, 0.65), 0 12px 36px rgba(0, 0, 0, 0.4);
-    margin: 20px 0 20px 20px;
+    margin: 0;
     border-radius: 24px;
     height: calc(100vh - 40px);
-    position: sticky;
+    position: fixed;
     top: 20px;
+    left: 20px;
     border: 3px solid #8e6549;
     /* Wooden shelf frame */
     overflow: hidden;
@@ -294,25 +295,7 @@ body {
     color: #8b5cf6;
 }
 
-/* 9. View Store - Gold Parchment */
-.sidebar-menu li:nth-child(9) a::before {
-    background: linear-gradient(135deg, #faf4eb 0%, #ead3b8 100%);
-    border-left: 5px solid #c89658;
-}
 
-.sidebar-menu li:nth-child(9) a i {
-    color: #c89658;
-}
-
-/* 10. Logout - Silver Parchment */
-.sidebar-menu li:nth-child(10) a::before {
-    background: linear-gradient(135deg, #f1f3f5 0%, #ced4da 100%);
-    border-left: 5px solid #6c757d;
-}
-
-.sidebar-menu li:nth-child(10) a i {
-    color: #6c757d;
-}
 
 /* Admin Only Restricted Lock & Disabled Links */
 .admin-only-lock {
@@ -393,10 +376,13 @@ body {
     flex-direction: column;
     background: transparent;
     overflow-x: hidden;
+    margin-left: 310px;
 }
 
 /* Top Navbar Styling */
 .navbar {
+    position: relative;
+    z-index: 1000;
     background-color: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -423,6 +409,184 @@ body {
     gap: 10px;
     color: var(--text-main);
     font-weight: 600;
+}
+
+.nav-view-store-btn {
+    color: var(--text-main);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border: 1px solid #DCD6BC;
+    border-radius: 8px;
+    background: #FFFFFF;
+    font-size: 0.88rem;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 6px rgba(76, 45, 23, 0.05);
+}
+
+.nav-view-store-btn:hover {
+    background-color: #F4F1EA;
+    border-color: #c89658;
+    color: #c89658;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(76, 45, 23, 0.1);
+}
+
+.nav-view-store-btn i {
+    color: #c89658;
+    transition: transform 0.25s ease;
+}
+
+.nav-view-store-btn:hover i {
+    transform: scale(1.1);
+}
+
+/* User Profile Dropdown Styling (Customer-like layout in Admin Navbar) */
+.navbar .user-profile {
+    position: relative;
+}
+
+.navbar .user-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 50px;
+    border: 1px solid #DCD6BC;
+    background: #FFFFFF;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 6px rgba(76, 45, 23, 0.05);
+}
+
+.navbar .user-toggle:hover {
+    background-color: #F4F1EA;
+    border-color: #c89658;
+    transform: translateY(-1px);
+}
+
+.navbar .user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid #c89658;
+}
+
+.navbar .user-toggle span {
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--text-main);
+}
+
+.navbar .user-toggle i.user-toggle-arrow {
+    color: #724E32;
+    font-size: 0.75rem;
+    transition: transform 0.25s ease;
+}
+
+.navbar .user-toggle:hover i.user-toggle-arrow {
+    color: #c89658;
+}
+
+.navbar .user-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background-color: #FFFFFF;
+    border: 1px solid #EAE6DF;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(76, 45, 23, 0.15);
+    width: 200px;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 110;
+    animation: adminSlideDown 0.25s ease forwards;
+}
+
+.navbar .user-dropdown.active {
+    display: flex !important;
+}
+
+.navbar .dropdown-header {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #F4F1EA;
+    background-color: #F4F1EA;
+    text-align: left;
+}
+
+.navbar .dropdown-header p {
+    font-size: 0.75rem;
+    color: #724E32;
+    margin: 0 0 2px 0;
+}
+
+.navbar .dropdown-header h4 {
+    font-size: 0.88rem;
+    font-weight: 700;
+    margin: 0;
+    color: #221309;
+}
+
+.navbar .dropdown-link {
+    padding: 0.75rem 1rem;
+    font-size: 0.88rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #221309;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.navbar .dropdown-link:hover {
+    background-color: #F4F1EA;
+    color: #c89658;
+}
+
+.navbar .dropdown-link i {
+    color: #724E32;
+    font-size: 0.95rem;
+    width: 16px;
+    text-align: center;
+}
+
+.navbar .dropdown-link:hover i {
+    color: #c89658;
+}
+
+.navbar .dropdown-link.logout-link {
+    color: #C84B31;
+}
+
+.navbar .dropdown-link.logout-link:hover {
+    background-color: #FCE8E6;
+    color: #C84B31;
+}
+
+.navbar .dropdown-link.logout-link i {
+    color: #C84B31;
+}
+
+.navbar .dropdown-divider {
+    height: 1px;
+    background-color: #F4F1EA;
+}
+
+@keyframes adminSlideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Content Body Container */
@@ -838,8 +1002,15 @@ body {
     }
 
     .sidebar {
+        position: static;
         width: 100%;
+        height: auto;
         min-height: auto;
+        margin: 10px 0;
+    }
+
+    .main-content {
+        margin-left: 0;
     }
 
     .content-body {
@@ -2744,4 +2915,145 @@ body {
     background: rgba(200, 75, 49, 0.16);
     border-color: #C84B31;
     transform: scale(1.08);
+}
+
+/* ==========================================================================
+   Laravel Pagination Global Styles
+   ========================================================================== */
+.pagination-wrapper {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.pagination-wrapper nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+@media (min-width: 640px) {
+    .pagination-wrapper nav {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+.pagination-wrapper nav div {
+    display: flex;
+    align-items: center;
+}
+
+.pagination-wrapper nav p {
+    font-size: 0.9rem;
+    color: #724E32; /* var(--text-muted) */
+    margin: 0;
+}
+
+.pagination-wrapper nav p span {
+    font-weight: 700;
+    color: #4C2D17; /* var(--text-main) */
+}
+
+.pagination-wrapper nav span.relative.z-0.inline-flex,
+.pagination-wrapper nav div > span {
+    display: inline-flex;
+    border-radius: 8px;
+    background-color: #F4F1EA;
+    border: 1px solid #DCD6BC;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(76, 45, 23, 0.05);
+}
+
+.pagination-wrapper nav span.relative.z-0.inline-flex a,
+.pagination-wrapper nav span.relative.z-0.inline-flex span,
+.pagination-wrapper nav div > span a,
+.pagination-wrapper nav div > span span {
+    padding: 5px 11px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #4C2D17;
+    text-decoration: none;
+    background-color: #F4F1EA;
+    border-right: 1px solid #DCD6BC;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.pagination-wrapper nav span.relative.z-0.inline-flex a:last-child,
+.pagination-wrapper nav span.relative.z-0.inline-flex span:last-child,
+.pagination-wrapper nav div > span a:last-child,
+.pagination-wrapper nav div > span span:last-child {
+    border-right: none;
+}
+
+.pagination-wrapper nav span.relative.z-0.inline-flex a:hover,
+.pagination-wrapper nav div > span a:hover {
+    background-color: #EDE8D0;
+    color: #351f0f;
+}
+
+.pagination-wrapper nav span.relative.z-0.inline-flex span[aria-current="page"] span,
+.pagination-wrapper nav div > span span[aria-current="page"] span {
+    background-color: #4C2D17;
+    color: #EDE8D0;
+}
+
+.pagination-wrapper nav span.relative.z-0.inline-flex span[aria-disabled="true"] span,
+.pagination-wrapper nav div > span span[aria-disabled="true"] span,
+.pagination-wrapper nav span.relative.z-0.inline-flex span[aria-disabled="true"],
+.pagination-wrapper nav div > span span[aria-disabled="true"] {
+    background-color: #FAFAFA;
+    color: #C0BCA7;
+    cursor: not-allowed;
+}
+
+.pagination-wrapper svg {
+    width: 0.85rem !important;
+    height: 0.85rem !important;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Replicate Tailwind's visibility classes for pagination */
+.pagination-wrapper nav .flex.justify-between.flex-1 {
+    display: flex;
+}
+
+.pagination-wrapper nav .hidden {
+    display: none;
+}
+
+@media (min-width: 640px) {
+    .pagination-wrapper nav .flex.justify-between.flex-1 {
+        display: none !important;
+    }
+    
+    .pagination-wrapper nav .sm\:flex-1 {
+        flex: 1 1 0%;
+    }
+    
+    .pagination-wrapper nav .sm\:flex {
+        display: flex !important;
+    }
+    
+    .pagination-wrapper nav .sm\:items-center {
+        align-items: center;
+    }
+    
+    .pagination-wrapper nav .sm\:justify-between {
+        justify-content: space-between;
+    }
+}
+
+.nav-right-side {
+    display: flex !important;
+    align-items: center !important;
+    gap: 20px !important;
 }

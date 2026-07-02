@@ -3,7 +3,7 @@
 @section('title', 'Booknest - Best Books Collection')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.1.6">
+<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.2.2">
 @endsection
 
 @section('content')
@@ -11,20 +11,25 @@
 <section class="hero-banner">
     <!-- Sliding background images container -->
     <div class="hero-slides">
-        <div class="hero-slides-track">
-            @if($banners->count() > 0)
-                @foreach($banners as $banner)
-                    <div class="hero-slide" style="background-image: url('{{ asset('storage/' . $banner->image) }}');">
-                    </div>
-                @endforeach
-            @else
-                <!-- Fallback Default Banners -->
-                <div class="hero-slide" style="background-image: url('/images/hero/hero_bg_1.png');"></div>
-                <div class="hero-slide" style="background-image: url('/images/hero/hero_bg_2.png');"></div>
-                <div class="hero-slide" style="background-image: url('/images/hero/hero_bg_3.png');"></div>
-                <div class="hero-slide" style="background-image: url('/images/hero/hero_bg_4.png');"></div>
-            @endif
-        </div>
+        @if($banners->count() > 0)
+            @foreach($banners as $banner)
+                <div class="hero-slide @if($loop->first) active @endif" style="background-image: url('{{ asset('storage/' . $banner->image) }}');">
+                </div>
+            @endforeach
+        @else
+            <!-- Fallback Default Banners -->
+            <div class="hero-slide active" style="background-image: url('/images/hero/hero_bg_1.png');"></div>
+            <div class="hero-slide" style="background-image: url('/images/hero/hero_bg_2.png');"></div>
+            <div class="hero-slide" style="background-image: url('/images/hero/hero_bg_3.png');"></div>
+            <div class="hero-slide" style="background-image: url('/images/hero/hero_bg_4.png');"></div>
+        @endif
+    </div>
+
+    <!-- Wavy Bottom Shape Divider -->
+    <div class="hero-shape-divider">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,42.4V120H0Z" class="shape-fill"></path>
+        </svg>
     </div>
 </section>
 
@@ -44,44 +49,34 @@
                 <h2><i class="fa-solid fa-fire text-accent"></i> Top Seller & Popular Downloads</h2>
                 <p>Trending and most read books of the week</p>
             </div>
-            <div class="books-slider-container">
-                <button class="slider-arrow prev" onclick="scrollSlider(this, -1)" aria-label="Previous Page">
-                    <i class="fa-solid fa-chevron-left"></i>
-                </button>
-
-                <div class="books-row">
-                    @foreach($books->take(6) as $book)
-                        @php
-                            $bookColorClass = 'book-color-' . ($loop->index % 4 + 1);
-                            $categoryIds = $book->classifications->pluck('id')->implode(',');
-                        @endphp
-                        <div class="book-container-3d" 
-                             data-categories="{{ $categoryIds }}" 
-                             data-title="{{ strtolower($book->name) }}" 
-                             data-author="{{ strtolower($book->author?->name ?? 'unknown') }}">
-                            <div class="book-card-premium" 
-                                 data-id="{{ $book->id }}"
-                                 data-title-raw="{{ $book->name }}"
-                                 data-author-raw="{{ $book->author?->name ?? 'Unknown Author' }}"
-                                 data-desc="{{ $book->description }}"
-                                 data-price="{{ $book->price }}"
-                                 data-stock="{{ $book->stock_quantity }}"
-                                 data-pages="{{ $book->pages }}"
-                                 data-color-class="{{ $bookColorClass }}"
-                                 data-pdf-file="{{ $book->pdf_file }}"
-                                 data-image="{{ $book->image ? asset('storage/' . $book->image) : '' }}"
-                                 data-wishlisted="{{ Auth::guard('customer')->check() && Auth::guard('customer')->user()->wishlistBooks->contains($book->id) ? 'true' : 'false' }}"
-                                 onclick="openBookDetailFromElement(this)">
-                                
-                                <!-- Wishlist Heart Button -->
-                                <button class="btn-card-wishlist @if(Auth::guard('customer')->check() && Auth::guard('customer')->user()->wishlistBooks->contains($book->id)) active @endif" 
-                                        onclick="event.stopPropagation(); toggleWishlist({{ $book->id }}, this);" 
-                                        title="Wishlist" 
-                                        data-id="{{ $book->id }}">
-                                    <i class="{{ Auth::guard('customer')->check() && Auth::guard('customer')->user()->wishlistBooks->contains($book->id) ? 'fa-solid' : 'fa-regular' }} fa-heart"></i>
-                                </button>
-                                
-                                <!-- 3D Book Layout -->
+            
+            <div class="promo-showcase-grid">
+                @foreach($books->take(3) as $book)
+                    @php
+                        $bookColorClass = 'book-color-' . ($loop->index % 4 + 1);
+                        $categoryIds = $book->classifications->pluck('id')->implode(',');
+                    @endphp
+                    <div class="book-container-3d" 
+                         data-categories="{{ $categoryIds }}" 
+                         data-title="{{ strtolower($book->name) }}" 
+                         data-author="{{ strtolower($book->author?->name ?? 'unknown') }}">
+                         
+                        <div class="promo-book-ad-card" 
+                             data-id="{{ $book->id }}"
+                             data-title-raw="{{ $book->name }}"
+                             data-author-raw="{{ $book->author?->name ?? 'Unknown Author' }}"
+                             data-desc="{{ $book->description }}"
+                             data-price="{{ $book->price }}"
+                             data-stock="{{ $book->stock_quantity }}"
+                             data-pages="{{ $book->pages }}"
+                             data-color-class="{{ $bookColorClass }}"
+                             data-pdf-file="{{ $book->pdf_file }}"
+                             data-image="{{ $book->image ? asset('storage/' . $book->image) : '' }}"
+                             data-wishlisted="{{ Auth::guard('customer')->check() && Auth::guard('customer')->user()->wishlistBooks->contains($book->id) ? 'true' : 'false' }}"
+                             onclick="openBookDetailFromElement(this)">
+                             
+                            <!-- Left: Cover -->
+                            <div class="promo-cover-box">
                                 <div class="book-card-3d-wrapper">
                                     <div class="book-3d {{ $bookColorClass }}">
                                         <!-- Cover Front -->
@@ -106,54 +101,26 @@
                                         <div class="book-spine"></div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Book Metadata -->
-                                <div class="book-card-info">
-                                    <h3 class="book-title-text" title="{{ $book->name }}">{{ $book->name }}</h3>
-                                    <p class="book-author-text">By {{ $book->author?->name ?? 'Unknown Author' }}</p>
-                                    
-                                    <div class="book-tags">
-                                        @foreach($book->classifications as $bc)
-                                            <span class="book-tag">{{ $bc->name }}</span>
-                                        @endforeach
-                                    </div>
-
-                                    <div class="book-price-row">
-                                        <div class="price-stock-box">
-                                            <span class="book-price">{{ number_format($book->price) }} Ks</span>
-                                            @if($book->stock_quantity > 0)
-                                                <span class="book-stock-status in-stock"><i class="fa-solid fa-check"></i> Stock: {{ $book->stock_quantity }}</span>
-                                            @else
-                                                <span class="book-stock-status out-of-stock"><i class="fa-solid fa-xmark"></i> Out of Stock</span>
-                                            @endif
-                                        </div>
-                                        
-                                        <div class="card-action-buttons">
-                                            <button class="btn-card-reviews" 
-                                                    onclick="event.stopPropagation(); openReviewsModal({{ $book->id }}, '{{ addslashes($book->name) }}', '{{ addslashes($book->author?->name ?? 'Unknown Author') }}');" 
-                                                    title="View Reviews" 
-                                                    aria-label="View Reviews">
-                                                <i class="fa-regular fa-comment-dots"></i>
-                                            </button>
-                                            @if($book->stock_quantity > 0)
-                                                <button class="btn-card-add-to-cart" 
-                                                        onclick="event.stopPropagation(); addToCart({{ $book->id }}, 1);" 
-                                                        title="Add to Cart" 
-                                                        aria-label="Add to Cart">
-                                                    <i class="fa-solid fa-cart-plus"></i>
-                                                </button>
-                                            @endif
-                                        </div>
-                                    </div>
+                            <!-- Right: Detailed Promotional info -->
+                            <div class="promo-info-box">
+                                <div class="promo-header">
+                                    <span class="promo-tag"><i class="fa-solid fa-crown"></i> Best Seller</span>
+                                    <h3 class="promo-title" title="{{ $book->name }}">{{ $book->name }}</h3>
+                                    <span class="promo-author">By {{ $book->author?->name ?? 'Unknown Author' }}</span>
+                                </div>
+                                
+                                <p class="promo-desc">{{ Str::limit($book->description, 70, '...') }}</p>
+                                
+                                <div class="promo-footer">
+                                    <span class="promo-price">{{ number_format($book->price) }} Ks</span>
+                                    <div class="promo-cta-btn">Details <i class="fa-solid fa-arrow-right"></i></div>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
-                </div>
-
-                <button class="slider-arrow next" onclick="scrollSlider(this, 1)" aria-label="Next Page">
-                    <i class="fa-solid fa-chevron-right"></i>
-                </button>
+                    </div>
+                @endforeach
             </div>
         </div>
 
@@ -415,6 +382,14 @@
                 </div>
             </div>
         </div>
+
+        <!-- You May Also Like Section -->
+        <div class="detail-recommendations-container" id="detail-recommendations-section">
+            <h3 class="recommendations-title"><i class="fa-solid fa-wand-magic-sparkles text-accent"></i> You may also like</h3>
+            <div class="recommendations-row" id="modal-recommendations-list">
+                <!-- Recommended books are loaded dynamically here -->
+            </div>
+        </div>
     </div>
 </div>
 
@@ -499,5 +474,5 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/customer/store.js') }}?v=1.0.3"></script>
+<script src="{{ asset('js/customer/store.js') }}?v=1.0.8"></script>
 @endsection

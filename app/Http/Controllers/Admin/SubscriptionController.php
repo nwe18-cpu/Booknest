@@ -73,7 +73,7 @@ class SubscriptionController extends Controller
             });
         }
 
-        $subscribers = $query->paginate(10)->withQueryString();
+        $subscribers = $query->paginate(5)->withQueryString();
 
         return view('admin.subscriptions.index', compact(
             'subscribers',

@@ -456,6 +456,11 @@ body {
 }
 
 @media (max-width: 768px) {
+    /* Hide the 3D book spine crease on collapsed mobile view */
+    .book::before {
+        display: none !important;
+    }
+
     /* Collapse open book on small mobiles to regular stacked pages */
     .book {
         grid-template-columns: 1fr;

@@ -1,3 +1,15 @@
+// Keep track of original parents of books to flatten them during category filtering
+const originalBookParents = new Map();
+
+// Initialize original parents immediately when the script executes
+(function() {
+    setTimeout(() => {
+        document.querySelectorAll('.books-row .book-container-3d').forEach(book => {
+            originalBookParents.set(book, book.parentElement);
+        });
+    }, 0);
+})();
+
 // Cart Drawer Controls
 function toggleCartDrawer() {
     const overlay = document.getElementById('cart-drawer-overlay');
@@ -62,8 +74,8 @@ function renderCartDrawer(data) {
                     <div class="cart-item">
                         <div class="cart-item-book-container">
                             <div class="cart-item-book">
-                                <div class="cart-item-cover ${item.cover_class}">
-                                    <span class="cart-item-cover-text">${escapeHtml(item.name)}</span>
+                                <div class="cart-item-cover ${item.image ? 'has-cover-image' : item.cover_class}" ${item.image ? `style="background-image: url('${item.image}'); background-size: cover; background-position: center;"` : ''}>
+                                    ${item.image ? '' : `<span class="cart-item-cover-text">${escapeHtml(item.name)}</span>`}
                                 </div>
                             </div>
                         </div>
@@ -119,8 +131,8 @@ function renderCartDrawer(data) {
                     <div class="cart-item">
                         <div class="cart-item-book-container">
                             <div class="cart-item-book">
-                                <div class="cart-item-cover ${item.cover_class}">
-                                    <span class="cart-item-cover-text">${escapeHtml(item.name)}</span>
+                                <div class="cart-item-cover ${item.image ? 'has-cover-image' : item.cover_class}" ${item.image ? `style="background-image: url('${item.image}'); background-size: cover; background-position: center;"` : ''}>
+                                    ${item.image ? '' : `<span class="cart-item-cover-text">${escapeHtml(item.name)}</span>`}
                                 </div>
                             </div>
                         </div>
@@ -286,7 +298,7 @@ function removeCartItem(itemId) {
 }
 
 // Modal Detail Window Controls
-function openBookDetail(id, title, author, desc, price, stock, totalPages, colorClass, pdfFile, image, isWishlisted) {
+function openBookDetail(id, title, author, desc, price, stock, totalPages, colorClass, pdfFile, image, isWishlisted, categories) {
     document.getElementById('modal-title').innerText = title;
     document.getElementById('modal-author').innerText = 'By ' + author;
     document.getElementById('modal-desc').innerText = desc || 'No description available for this book.';
@@ -368,6 +380,8 @@ function openBookDetail(id, title, author, desc, price, stock, totalPages, color
 
     const modal = document.getElementById('detail-modal');
     if (modal) modal.classList.add('active');
+    
+    loadBookRecommendations(id, categories || '');
 }
 
 function closeBookDetail() {
@@ -405,7 +419,11 @@ function openBookDetailFromElement(el) {
     const image = el.getAttribute('data-image');
     const isWishlisted = el.getAttribute('data-wishlisted') === 'true';
     
-    openBookDetail(id, title, author, desc, price, stock, totalPages, colorClass, pdfFile, image, isWishlisted);
+    // Get categories
+    const container3d = el.closest('.book-container-3d');
+    const categories = container3d ? container3d.getAttribute('data-categories') : '';
+    
+    openBookDetail(id, title, author, desc, price, stock, totalPages, colorClass, pdfFile, image, isWishlisted, categories);
 }
 
 // Search & Filters for Catalog
@@ -423,11 +441,7 @@ function updateRowVisibility() {
         });
         container.style.display = visibleCount === 0 ? 'none' : 'block';
         
-        // Hide/show the parent section wrapper so headers are hidden when empty
-        const sectionParent = container.closest('.store-section-container');
-        if (sectionParent) {
-            sectionParent.style.display = visibleCount === 0 ? 'none' : 'block';
-        }
+        // Only hide individual slider containers, do not hide the main section container which houses filter tabs.
         
         const row = container.querySelector('.books-row');
         if (row) {
@@ -500,7 +514,33 @@ function filterCategory(catId, btn) {
     document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
     if (btn) btn.classList.add('active');
 
-    const books = document.querySelectorAll('.book-container-3d');
+    const firstRow = document.querySelector('.books-rows-container .books-row');
+    const books = document.querySelectorAll('.books-rows-container .book-container-3d');
+
+    // 1. Move books to flatten or restore them based on the filter type
+    if (catId === 'all') {
+        // Restore each book to its original row parent
+        originalBookParents.forEach((originalParent, book) => {
+            if (originalParent && book.parentElement !== originalParent) {
+                originalParent.appendChild(book);
+            }
+        });
+    } else {
+        // Flatten books: move all books matching the category to the first row
+        if (firstRow) {
+            books.forEach(book => {
+                const bookCatsStr = book.getAttribute('data-categories') || '';
+                const bookCats = bookCatsStr ? bookCatsStr.split(',') : [];
+                if (bookCats.includes(catId.toString())) {
+                    if (book.parentElement !== firstRow) {
+                        firstRow.appendChild(book);
+                    }
+                }
+            });
+        }
+    }
+
+    // 2. Animate and update display of matching books
     books.forEach(book => {
         const bookCatsStr = book.getAttribute('data-categories') || '';
         const bookCats = bookCatsStr ? bookCatsStr.split(',') : [];
@@ -519,11 +559,24 @@ function filterCategory(catId, btn) {
 
 function filterSearch() {
     const query = document.getElementById('search-input').value.toLowerCase();
-    const books = document.querySelectorAll('.book-container-3d');
+    const books = document.querySelectorAll('.books-rows-container .book-container-3d');
     
+    // Reset active category tabs and restore books to original rows if user starts searching
+    if (query !== '') {
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        const allTab = document.querySelector('.filter-tab[onclick*="\'all\'"]');
+        if (allTab) allTab.classList.add('active');
+        
+        originalBookParents.forEach((originalParent, book) => {
+            if (originalParent && book.parentElement !== originalParent) {
+                originalParent.appendChild(book);
+            }
+        });
+    }
+
     books.forEach(book => {
-        const title = book.getAttribute('data-title');
-        const author = book.getAttribute('data-author');
+        const title = book.getAttribute('data-title') || '';
+        const author = book.getAttribute('data-author') || '';
         
         if (title.includes(query) || author.includes(query)) {
             book.style.display = 'block';
@@ -612,14 +665,14 @@ document.addEventListener('DOMContentLoaded', () => {
         syncSliderArrows(row);
     });
 
-    // Initialize hero slideshow if multiple slides exist (Carousel Slide Motion)
-    const track = document.querySelector('.hero-slides-track');
+    // Initialize hero slideshow if multiple slides exist
     const slides = document.querySelectorAll('.hero-slides .hero-slide');
-    if (track && slides.length > 1) {
+    if (slides.length > 1) {
         let currentSlideIdx = 0;
         setInterval(() => {
+            slides[currentSlideIdx].classList.remove('active');
             currentSlideIdx = (currentSlideIdx + 1) % slides.length;
-            track.style.transform = `translateX(-${currentSlideIdx * 100}%)`;
+            slides[currentSlideIdx].classList.add('active');
         }, 6000); // Rotate slide every 6 seconds
     }
 });
@@ -965,6 +1018,124 @@ function toggleWishlistFromModal(button) {
     const itemId = button.getAttribute('data-id');
     if (itemId) {
         toggleWishlist(itemId, null);
+    }
+}
+
+// Dynamically load book recommendations ("You may also like") from page data
+function loadBookRecommendations(currentBookId, categoriesStr) {
+    const recContainer = document.getElementById('modal-recommendations-list');
+    if (!recContainer) return;
+    
+    const currentCats = categoriesStr ? categoriesStr.split(',').map(c => c.trim()).filter(Boolean) : [];
+    const allBookEls = document.querySelectorAll('.book-card-premium');
+    const candidates = [];
+    const seenIds = new Set();
+    
+    allBookEls.forEach(el => {
+        const id = el.getAttribute('data-id');
+        if (id === currentBookId || seenIds.has(id)) return;
+        
+        const container3d = el.closest('.book-container-3d');
+        if (!container3d) return;
+        
+        const categories = container3d.getAttribute('data-categories') || '';
+        const bookCats = categories.split(',').map(c => c.trim()).filter(Boolean);
+        
+        let score = 0;
+        bookCats.forEach(c => {
+            if (currentCats.includes(c)) {
+                score++;
+            }
+        });
+        
+        candidates.push({
+            el: el,
+            id: id,
+            score: score,
+            title: el.getAttribute('data-title-raw'),
+            author: el.getAttribute('data-author-raw'),
+            desc: el.getAttribute('data-desc'),
+            price: el.getAttribute('data-price'),
+            stock: el.getAttribute('data-stock'),
+            pages: el.getAttribute('data-pages'),
+            colorClass: el.getAttribute('data-color-class'),
+            pdfFile: el.getAttribute('data-pdf-file'),
+            image: el.getAttribute('data-image'),
+            isWishlisted: el.getAttribute('data-wishlisted') === 'true',
+            categories: categories
+        });
+        seenIds.add(id);
+    });
+    
+    // Sort by score descending (most categories matching), then randomize
+    candidates.sort((a, b) => b.score - a.score || Math.random() - 0.5);
+    const recs = candidates.slice(0, 3);
+    
+    const recSection = document.getElementById('detail-recommendations-section');
+    if (recs.length === 0) {
+        if (recSection) recSection.style.display = 'none';
+        return;
+    } else {
+        if (recSection) recSection.style.display = 'block';
+    }
+    
+    let html = '';
+    recs.forEach(book => {
+        const defaultCover = `<div class="rec-cover-wrapper ${book.colorClass}" style="display:flex; align-items:center; justify-content:center; color:#fff; font-size:0.5rem; font-weight:bold; padding:4px; text-align:center; box-sizing:border-box;">${escapeHtml(book.title)}</div>`;
+        const imageCover = book.image ? `<div class="rec-cover-wrapper" style="background-image: url('${book.image}')"></div>` : defaultCover;
+        const formattedPrice = parseFloat(book.price || 0).toLocaleString() + ' Ks';
+        
+        const safeTitle = escapeJsString(book.title);
+        const safeAuthor = escapeJsString(book.author);
+        const safeDesc = escapeJsString(book.desc || '');
+        const safeColor = escapeJsString(book.colorClass);
+        const safePdf = escapeJsString(book.pdfFile || '');
+        const safeImg = escapeJsString(book.image || '');
+        const safeCats = escapeJsString(book.categories || '');
+        
+        html += `
+            <div class="recommendation-card" onclick="openBookDetail('${book.id}', '${safeTitle}', '${safeAuthor}', '${safeDesc}', '${book.price}', '${book.stock}', '${book.pages}', '${safeColor}', '${safePdf}', '${safeImg}', ${book.isWishlisted}, '${safeCats}')">
+                ${imageCover}
+                <div class="rec-card-info">
+                    <span class="rec-card-title" title="${escapeHtml(book.title)}">${escapeHtml(book.title)}</span>
+                    <span class="rec-card-author">By ${escapeHtml(book.author)}</span>
+                    <span class="rec-card-price">${formattedPrice}</span>
+                </div>
+            </div>
+        `;
+    });
+    
+    recContainer.innerHTML = html;
+}
+
+function escapeJsString(str) {
+    if (!str) return '';
+    return str
+        .replace(/\\/g, '\\\\')
+        .replace(/'/g, "\\'")
+        .replace(/"/g, '\\"')
+        .replace(/\n/g, '\\n')
+        .replace(/\r/g, '\\r');
+}
+
+function toggleDeliveryInfo(btn, orderId) {
+    const shippingCol = document.getElementById(`shipping-col-${orderId}`);
+    if (shippingCol) {
+        const isActive = shippingCol.classList.toggle('active');
+        const textSpan = btn.querySelector('span');
+        const icon = btn.querySelector('i');
+        
+        if (isActive) {
+            if (textSpan) textSpan.innerText = 'Hide Delivery Information';
+            if (icon) {
+                icon.className = 'fa-solid fa-chevron-up';
+            }
+        } else {
+            if (textSpan) textSpan.innerText = 'View Delivery Information';
+            if (icon) {
+                icon.className = 'fa-solid fa-chevron-down';
+            }
+        }
     }
 }
 

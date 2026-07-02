@@ -17,54 +17,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/variables.css') }}">
     <link rel="stylesheet" href="{{ asset('css/auth/auth.css') }}">
-
-    <style>
-        :root {
-            --primary: #c89658; /* Warm Gold */
-            --primary-dark: #8e6549; /* Dark Bronze/Wood */
-            --primary-light: #faf4eb; /* Creamy White */
-            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        
-
-        .left-page {
-            background: linear-gradient(135deg, #221309 0%, #351f0f 50%, #0f172a 100%) !important;
-            border-right: 1px solid #1a0f07 !important;
-        }
-
-        .brand-logo i {
-            color: var(--primary) !important;
-        }
-
-        .btn-submit {
-            background: var(--primary) !important;
-            box-shadow: 0 4px 6px -1px rgba(200, 150, 88, 0.3) !important;
-            transition: var(--transition-smooth);
-        }
-
-        .btn-submit:hover {
-            background: var(--primary-dark) !important;
-            box-shadow: 0 10px 15px -3px rgba(200, 150, 88, 0.4) !important;
-        }
-
-        .form-input:focus {
-            border-color: var(--primary) !important;
-            box-shadow: 0 0 0 3px rgba(200, 150, 88, 0.2) !important;
-        }
-
-        .form-input:focus + i {
-            color: var(--primary) !important;
-        }
-
-        .checkbox-label input:checked {
-            accent-color: var(--primary) !important;
-        }
-
-        .branding-desc {
-            color: #dcd6bc !important;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/admin/login.css') }}?v=1.0.1">
 </head>
 <body>
 
@@ -84,24 +37,24 @@
                         <span>Booknest Admin</span>
                     </div>
                     <div class="branding-main">
-                        <h1 class="branding-title" style="color: #ffe0a3; text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Staff Portal</h1>
+                        <h1 class="branding-title portal-title">Staff Portal</h1>
                         <p class="branding-desc">Manage books, author catalog, classification categories, customer banners, reviews and platform operations.</p>
                     </div>
                     <div class="branding-footer">
-                        <p style="color: #8e6549;">&copy; 2026 Booknest Administration Console.</p>
+                        <p class="portal-copyright">&copy; 2026 Booknest Administration Console.</p>
                     </div>
                 </div>
             </div>
             
             <!-- 2. RIGHT STATIC PAGE: Login Form -->
-            <div class="page right-page" style="display: flex; flex-direction: column; justify-content: center;">
+            <div class="page right-page right-page-flex">
                 <div class="form-header">
-                    <h2 class="form-title" style="color: #4C2D17;">Sign In</h2>
-                    <p class="form-subtitle" style="color: #724E32;">Enter your administrative credentials</p>
+                    <h2 class="form-title login-title">Sign In</h2>
+                    <p class="form-subtitle login-subtitle">Enter your administrative credentials</p>
                 </div>
                 
                 @if(session('success'))
-                    <div style="background-color: #dcfce7; border: 1px solid #bbf7d0; color: #166534; padding: 10px; border-radius: 8px; font-size: 0.82rem; margin-bottom: 12px; font-weight: 600;">
+                    <div class="alert-login-success">
                         <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
                     </div>
                 @endif
@@ -111,7 +64,7 @@
                     
                     <!-- Email -->
                     <div class="form-group">
-                        <label class="form-label" for="login-email" style="color: #4C2D17;">Email Address</label>
+                        <label class="form-label login-label" for="login-email">Email Address</label>
                         <div class="input-wrapper">
                             <input class="form-input @error('email') is-invalid @enderror" type="email" id="login-email" name="email" placeholder="staff@booknest.com" value="{{ old('email') }}" required autocomplete="email" autofocus>
                             <i class="fa-solid fa-envelope"></i>
@@ -125,7 +78,7 @@
                     
                     <!-- Password -->
                     <div class="form-group">
-                        <label class="form-label" for="login-password" style="color: #4C2D17;">Password</label>
+                        <label class="form-label login-label" for="login-password">Password</label>
                         <div class="input-wrapper">
                             <input class="form-input @error('password') is-invalid @enderror" type="password" id="login-password" name="password" placeholder="••••••••" required autocomplete="current-password">
                             <i class="fa-solid fa-lock"></i>
@@ -139,11 +92,11 @@
                     
                     <!-- Remember Me -->
                     <div class="form-options">
-                        <label class="checkbox-label" style="color: #724E32;">
+                        <label class="checkbox-label login-checkbox-label">
                             <input type="checkbox" id="remember-me" name="remember">
                             <span>Remember me</span>
                         </label>
-                        <a href="{{ url('/') }}" class="forgot-link" style="color: var(--primary-dark);">Go to Store <i class="fa-solid fa-store" style="font-size: 0.75rem;"></i></a>
+                        <a href="{{ url('/') }}" class="forgot-link login-store-link">Go to Store <i class="fa-solid fa-store login-store-icon"></i></a>
                     </div>
                     
                     <!-- Submit Button -->

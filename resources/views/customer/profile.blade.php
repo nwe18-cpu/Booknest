@@ -45,7 +45,7 @@
                         <h3>Profile Picture</h3>
                         <div class="avatar-upload-container">
                             <div class="avatar-preview-wrapper">
-                                <img id="avatar-preview" src="{{ $customer->image ? asset('storage/' . $customer->image) : asset('images/avatar-placeholder.png') }}" alt="Avatar Preview">
+                                <img id="avatar-preview" src="{{ $customer->image ? asset('storage/' . $customer->image) : 'https://ui-avatars.com/api/?name=' . urlencode($customer->name) . '&background=f1e4d8&color=5c3a21&bold=true' }}" alt="Avatar Preview">
                             </div>
                             <div class="avatar-upload-btn-wrapper">
                                 <label for="image-upload" class="avatar-upload-label">

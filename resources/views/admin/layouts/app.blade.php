@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Admin Stylesheet -->
-    <link rel="stylesheet" href="{{ asset('css/admin/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/dashboard.css') }}?v=1.0.6">
 
     @yield('styles')
 </head>
@@ -103,21 +103,6 @@
                         <span>Banners</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ url('/') }}">
-                        <i class="fa-solid fa-store"></i>
-                        <span>View Store</span>
-                    </a>
-                </li>
-                <li>
-                    <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="display-none">
-                        @csrf
-                    </form>
-                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <span>Logout</span>
-                    </a>
-                </li>
             </ul>
         </aside>
 
@@ -128,11 +113,34 @@
                 <div class="nav-toggle-btn">
                     <i class="fa-solid fa-bars"></i>
                 </div>
-                <div class="user-profile">
-                    <a href="{{ route('admin.profile') }}" style="color: var(--text-main); text-decoration: none; display: flex; align-items: center; gap: 8px;">
-                        <i class="fa-solid fa-user-tie"></i>
-                        <span>{{ auth()->guard('staff')->check() ? auth()->guard('staff')->user()->name : 'Admin' }}</span>
+                <div class="nav-right-side">
+                    <a href="{{ url('/') }}" class="nav-view-store-btn" target="_blank">
+                        <i class="fa-solid fa-store"></i>
+                        <span>View Store</span>
                     </a>
+                    <div class="user-profile">
+                        <button class="user-toggle">
+                            <img class="user-avatar" src="{{ auth()->guard('staff')->check() && auth()->guard('staff')->user()->image ? asset('storage/' . auth()->guard('staff')->user()->image) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->guard('staff')->check() ? auth()->guard('staff')->user()->name : 'Admin') . '&background=f1e4d8&color=5c3a21&bold=true' }}" alt="Avatar">
+                            <span>{{ auth()->guard('staff')->check() ? auth()->guard('staff')->user()->name : 'Admin' }}</span>
+                            <i class="fa-solid fa-chevron-down user-toggle-arrow"></i>
+                        </button>
+                        <div class="user-dropdown">
+                            <div class="dropdown-header">
+                                <p>Staff Profile</p>
+                                <h4>{{ auth()->guard('staff')->check() ? auth()->guard('staff')->user()->name : 'Admin' }}</h4>
+                            </div>
+                            <a href="{{ route('admin.profile') }}" class="dropdown-link">
+                                <i class="fa-solid fa-user-gear"></i> Profile Settings
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <form action="{{ route('admin.logout') }}" method="POST" id="admin-logout-form" class="display-none">
+                                @csrf
+                            </form>
+                            <a href="#" class="dropdown-link logout-link" onclick="event.preventDefault(); document.getElementById('admin-logout-form').submit();">
+                                <i class="fa-solid fa-right-from-bracket"></i> Logout
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </header>
 
@@ -317,6 +325,23 @@
             }
 
             initSearchClearButtons();
+
+            // Admin Navbar Dropdown Toggle Logic
+            const userToggle = document.querySelector('.navbar .user-toggle');
+            const userDropdown = document.querySelector('.navbar .user-dropdown');
+            if (userToggle && userDropdown) {
+                userToggle.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    userDropdown.classList.toggle('active');
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (!userToggle.contains(e.target) && !userDropdown.contains(e.target)) {
+                        userDropdown.classList.remove('active');
+                    }
+                });
+            }
         });
     </script>
 </body>

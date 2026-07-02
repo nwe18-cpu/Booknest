@@ -20,5 +20,5 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/customer/store.js') }}"></script>
+<script src="{{ asset('js/customer/store.js') }}?v=1.0.5"></script>
 @endsection

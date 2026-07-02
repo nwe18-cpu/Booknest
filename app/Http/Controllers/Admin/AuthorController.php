@@ -11,7 +11,7 @@ class AuthorController extends Controller
 {
     public function index()
     {
-        $authors = Author::withCount('items')->orderBy('name')->get();
+        $authors = Author::withCount('items')->orderBy('name')->paginate(5);
         $classifications = \App\Models\Classification::where('status', 'active')->get();
         return view('admin.authors.index', compact('authors', 'classifications'));
     }

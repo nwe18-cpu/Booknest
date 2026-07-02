@@ -23,7 +23,7 @@
 
     <!-- CSS Variables and Base Layout -->
     <link rel="stylesheet" href="{{ asset('css/variables.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v=1.0.1">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v=1.0.3">
 
     <!-- Page Specific Styles (if any) -->
     @yield('styles')
@@ -34,10 +34,6 @@
         <header class="main-header">
             <div class="container">
                 <nav class="navbar">
-                    <!-- Mobile Menu Toggle Button -->
-                    <button class="menu-toggle" aria-label="Toggle Navigation Menu">
-                        <i class="fa-solid fa-bars"></i>
-                    </button>
 
                     <!-- Brand Logo -->
                     <a href="{{ url('/') }}" class="nav-brand">
@@ -91,7 +87,7 @@
                         @if(auth()->guard('staff')->check())
                             <div class="user-profile">
                                 <button class="user-toggle">
-                                    <img class="user-avatar" src="{{ auth()->guard('staff')->user()->image ? asset('storage/' . auth()->guard('staff')->user()->image) : asset('images/avatar-placeholder.png') }}" alt="Avatar">
+                                    <img class="user-avatar" src="{{ auth()->guard('staff')->user()->image ? asset('storage/' . auth()->guard('staff')->user()->image) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->guard('staff')->user()->name) . '&background=f1e4d8&color=5c3a21&bold=true' }}" alt="Avatar">
                                     <span>{{ auth()->guard('staff')->user()->name }}</span>
                                     <i class="fa-solid fa-chevron-down user-toggle-arrow"></i>
                                 </button>
@@ -100,6 +96,7 @@
                                         <p>Staff Profile</p>
                                         <h4>{{ auth()->guard('staff')->user()->name }}</h4>
                                     </div>
+                                    <a href="{{ url('/') }}" class="dropdown-link mobile-only-dropdown-link"><i class="fa-solid fa-house"></i> Home</a>
                                     <a href="{{ url('/admin/dashboard') }}" class="dropdown-link"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
                                     <a href="#" class="dropdown-link"><i class="fa-solid fa-user-gear"></i> Profile</a>
                                     <div class="dropdown-divider"></div>
@@ -114,7 +111,7 @@
                         @elseif(auth()->guard('customer')->check())
                             <div class="user-profile">
                                 <button class="user-toggle">
-                                    <img class="user-avatar" src="{{ auth()->guard('customer')->user()->image ? asset('storage/' . auth()->guard('customer')->user()->image) : asset('images/avatar-placeholder.png') }}" alt="Avatar">
+                                    <img class="user-avatar" src="{{ auth()->guard('customer')->user()->image ? asset('storage/' . auth()->guard('customer')->user()->image) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->guard('customer')->user()->name) . '&background=f1e4d8&color=5c3a21&bold=true' }}" alt="Avatar">
                                     <span>{{ auth()->guard('customer')->user()->name }}</span>
                                     <i class="fa-solid fa-chevron-down user-toggle-arrow"></i>
                                 </button>
@@ -123,6 +120,7 @@
                                         <p>Customer Profile</p>
                                         <h4>{{ auth()->guard('customer')->user()->name }}</h4>
                                     </div>
+                                    <a href="{{ route('customer.store.home') }}" class="dropdown-link mobile-only-dropdown-link"><i class="fa-solid fa-house"></i> Home</a>
                                     <a href="{{ route('customer.dashboard') }}" class="dropdown-link"><i class="fa-solid fa-book-bookmark"></i> My Library</a>
                                     <a href="{{ route('customer.store.orders') }}" class="dropdown-link"><i class="fa-solid fa-box-open"></i> My Orders</a>
                                     <a href="{{ route('customer.subscription.index') }}" class="dropdown-link"><i class="fa-solid fa-crown text-gold-crown"></i> Membership Plan</a>
@@ -187,9 +185,9 @@
                         </div>
                         <p>Booknest is an online bookstore offering high-quality books and great literary experiences for you.</p>
                         <div class="footer-socials">
-                            <a href="#" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                            <a href="#" class="social-icon" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
-                            <a href="#" class="social-icon" aria-label="Viber"><i class="fa-brands fa-viber"></i></a>
+                            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="https://t.me" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+                            <a href="viber://chat?number=%2B959123456789" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Viber"><i class="fa-brands fa-viber"></i></a>
                         </div>
                     </div>
 

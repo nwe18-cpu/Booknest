@@ -11,7 +11,7 @@ class CatalogController extends Controller
 {
     public function index()
     {
-        $books = Item::with(['author', 'classifications'])->orderBy('name')->get();
+        $books = Item::with(['author', 'classifications'])->orderBy('name')->paginate(5);
         return view('admin.catalog.index', compact('books'));
     }
 

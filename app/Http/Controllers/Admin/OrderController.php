@@ -38,7 +38,7 @@ class OrderController extends Controller
             });
         }
 
-        $orders = $query->paginate(15)->withQueryString();
+        $orders = $query->paginate(5)->withQueryString();
 
         return view('admin.orders.index', compact('orders'));
     }

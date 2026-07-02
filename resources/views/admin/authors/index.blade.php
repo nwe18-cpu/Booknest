@@ -62,6 +62,9 @@
                     </div>
                 @endforelse
             </div>
+            <div class="pagination-wrapper">
+                {{ $authors->links() }}
+            </div>
         </div>
 
         <!-- Right Column: Interactive Workspace Detail Pane -->

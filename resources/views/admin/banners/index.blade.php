@@ -74,6 +74,9 @@
                 </div>
             @endforelse
         </div>
+        <div class="pagination-wrapper">
+            {{ $banners->links() }}
+        </div>
     </div>
 </div>
 

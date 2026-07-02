@@ -3,151 +3,7 @@
 @section('title', 'Booknest Admin - Customers')
 
 @section('styles')
-<style>
-    .filters-row-card {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(8px);
-        border-radius: 16px;
-        padding: 20px;
-        box-shadow: 0 8px 30px rgba(76, 45, 23, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.6);
-        margin-bottom: 25px;
-        display: grid;
-        grid-template-columns: 2fr 1fr 1fr auto;
-        gap: 15px;
-        align-items: center;
-    }
-    
-    @media (max-width: 768px) {
-        .filters-row-card {
-            grid-template-columns: 1fr;
-        }
-    }
-    
-    .filter-input {
-        padding: 10px 14px;
-        border: 1px solid #DCD6BC;
-        border-radius: 8px;
-        background-color: #FAFAFA;
-        color: #1A2E3B;
-        font-size: 0.9rem;
-        outline: none;
-        width: 100%;
-        box-sizing: border-box;
-    }
-    
-    .filter-input:focus {
-        border-color: #4C2D17;
-        background-color: #FFFFFF;
-    }
-    
-    .btn-filter-submit {
-        background-color: #4C2D17;
-        color: #EDE8D0;
-        border: none;
-        border-radius: 8px;
-        width: 38px;
-        height: 38px;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.95rem;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .btn-filter-submit:hover {
-        background-color: #351f0f;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 10px rgba(76, 45, 23, 0.15);
-    }
-    
-    .btn-filter-reset {
-        background-color: #F4F1EA;
-        color: #4C2D17;
-        border: 1px solid #DCD6BC;
-        border-radius: 8px;
-        width: 38px;
-        height: 38px;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.95rem;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        box-sizing: border-box;
-    }
-    
-    .btn-filter-reset:hover {
-        background-color: #EDE8D0;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 10px rgba(76, 45, 23, 0.08);
-    }
-
-    .badge-status {
-        display: inline-block;
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-size: 0.78rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-        text-align: center;
-    }
-    
-    .status-account-active { color: #166534; background-color: #dcfce7; border: 1px solid #bbf7d0; }
-    .status-account-inactive { color: #991b1b; background-color: #fee2e2; border: 1px solid #fecaca; }
-    
-    .status-sub-active { color: #1e3a8a; background-color: #dbeafe; border: 1px solid #bfdbfe; }
-    .status-sub-inactive { color: #374151; background-color: #f3f4f6; border: 1px solid #e5e7eb; }
-    
-    .btn-table-action {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-        background-color: #2a6f97;
-        color: #fff;
-        border-radius: 6px;
-        text-decoration: none;
-        font-size: 0.9rem;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .btn-table-action:hover {
-        background-color: #1e5575;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(42, 111, 151, 0.25);
-    }
-    
-    .pagination-wrapper {
-        margin-top: 20px;
-        display: flex;
-        justify-content: center;
-    }
-
-    .customer-avatar-small {
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        border: 2px solid #DCD6BC;
-        object-fit: cover;
-    }
-
-    .customer-avatar-placeholder {
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        background-color: #4C2D17;
-        color: #EDE8D0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        font-size: 0.95rem;
-    }
-</style>
+<link rel="stylesheet" href="{{ asset('css/admin/customers.css') }}?v=1.0.1">
 @endsection
 
 @section('content')
@@ -161,7 +17,7 @@
 
     <!-- Filters -->
     <form method="GET" action="{{ route('admin.customers.index') }}" class="filters-row-card">
-        <button type="submit" style="display: none;"></button>
+        <button type="submit" class="display-none"></button>
         <div>
             <input type="text" name="search" placeholder="Search by name, email, phone..." value="{{ request('search') }}" class="filter-input">
         </div>
@@ -219,8 +75,8 @@
                             </td>
                             <td><strong>{{ $customer->name }}</strong></td>
                             <td>
-                                <div><i class="fa-regular fa-envelope" style="font-size: 0.8rem; width: 14px;"></i> {{ $customer->email }}</div>
-                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;"><i class="fa-solid fa-phone" style="font-size: 0.8rem; width: 14px;"></i> {{ $customer->phone }}</div>
+                                <div><i class="fa-regular fa-envelope text-email-icon"></i> {{ $customer->email }}</div>
+                                <div class="text-phone-wrapper"><i class="fa-solid fa-phone text-phone-icon"></i> {{ $customer->phone }}</div>
                             </td>
                             <td>
                                 <span class="badge-status status-account-{{ $customer->status }}">
@@ -233,13 +89,13 @@
                                 </span>
                             </td>
                             <td>
-                                <span style="font-size: 0.85rem;">
+                                <span class="font-size-0-85">
                                     @if($customer->subscription_expires_at)
                                         {{ $customer->subscription_expires_at->format('M d, Y') }}
                                         @if($customer->subscription_expires_at->isPast())
-                                            <span style="color: var(--accent-red); font-weight: 600; display: block; font-size: 0.75rem;">(Expired)</span>
+                                            <span class="expired-badge">(Expired)</span>
                                         @else
-                                            <span style="color: var(--accent-green); font-weight: 600; display: block; font-size: 0.75rem;">({{ ceil(now()->diffInDays($customer->subscription_expires_at, false)) }} days left)</span>
+                                            <span class="active-badge">({{ ceil(now()->diffInDays($customer->subscription_expires_at, false)) }} days left)</span>
                                         @endif
                                     @else
                                         N/A

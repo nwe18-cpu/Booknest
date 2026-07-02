@@ -277,6 +277,31 @@ class CustomerController extends Controller
         $totalQuantity = 0;
         $totalAmount = 0;
         
+        if (!empty($cart)) {
+            $itemIds = array_keys($cart);
+            $books = Item::whereIn('id', $itemIds)->get()->keyBy('id');
+            
+            $cleanCart = [];
+            foreach ($cart as $id => $item) {
+                if (isset($books[$id])) {
+                    $booksList = Item::where('status', 'active')->pluck('id')->toArray();
+                    $idx = array_search($books[$id]->id, $booksList);
+                    $colorClass = 'book-color-' . ((($idx !== false ? $idx : 0) % 4) + 1);
+                    
+                    $cleanCart[$id] = [
+                        'name' => $books[$id]->name,
+                        'author' => $books[$id]->author?->name ?? 'Unknown Author',
+                        'price' => $books[$id]->price,
+                        'quantity' => $item['quantity'],
+                        'cover_class' => $colorClass,
+                        'image' => $books[$id]->image ? asset('storage/' . $books[$id]->image) : null
+                    ];
+                }
+            }
+            $cart = $cleanCart;
+            session()->put('cart', $cart);
+        }
+        
         foreach ($cart as $item) {
             $totalQuantity += $item['quantity'];
             $totalAmount += $item['price'] * $item['quantity'];
@@ -324,13 +349,15 @@ class CustomerController extends Controller
                 ], 422);
             }
             $cart[$book->id]['quantity'] = $newQty;
+            $cart[$book->id]['image'] = $book->image ? asset('storage/' . $book->image) : null;
         } else {
             $cart[$book->id] = [
                 'name' => $book->name,
                 'author' => $book->author?->name ?? 'Unknown Author',
                 'price' => $book->price,
                 'quantity' => $request->quantity,
-                'cover_class' => $colorClass
+                'cover_class' => $colorClass,
+                'image' => $book->image ? asset('storage/' . $book->image) : null
             ];
         }
 
@@ -654,14 +681,23 @@ class CustomerController extends Controller
     /**
      * Show Customer's Order History Page.
      */
-    public function orders()
+    public function orders(Request $request)
     {
         $customer = Auth::guard('customer')->user();
         
-        $orders = Order::where('customer_id', $customer->id)
+        $query = Order::where('customer_id', $customer->id)
             ->with(['orderItems.item.author', 'shippingAddress'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+            ->orderBy('created_at', 'desc');
+
+        if ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        }
+        
+        if ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
+
+        $orders = $query->get();
 
         return view('customer.store.orders', compact('orders'));
     }
