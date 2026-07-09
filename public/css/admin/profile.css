@@ -20,14 +20,14 @@
     backdrop-filter: blur(8px);
     border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 8px 30px rgba(76, 45, 23, 0.08);
+    box-shadow: 0 8px 30px rgba(22, 42, 36, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.6);
     margin-bottom: 25px;
     position: relative;
 }
 
 .detail-card-header {
-    border-bottom: 1px solid #EDE8D0;
+    border-bottom: 1px solid var(--bg-color);
     padding-bottom: 12px;
     margin-bottom: 20px;
     display: flex;
@@ -56,7 +56,7 @@
     border-radius: 50%;
     border: 4px solid var(--border-color);
     object-fit: cover;
-    box-shadow: 0 4px 15px rgba(76, 45, 23, 0.12);
+    box-shadow: 0 4px 15px rgba(22, 42, 36, 0.12);
     margin-bottom: 10px;
 }
 
@@ -71,7 +71,7 @@
     justify-content: center;
     font-weight: 800;
     font-size: 2.2rem;
-    box-shadow: 0 4px 15px rgba(76, 45, 23, 0.12);
+    box-shadow: 0 4px 15px rgba(22, 42, 36, 0.12);
     margin-bottom: 10px;
     border: 4px solid var(--border-color);
 }
@@ -121,7 +121,7 @@
 
 .status-select-control {
     padding: 10px 14px;
-    border: 1px solid #DCD6BC;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     background-color: #FAFAFA;
     color: #1A2E3B;
@@ -132,13 +132,13 @@
 }
 
 .status-select-control:focus {
-    border-color: #4C2D17;
+    border-color: var(--text-main);
     background-color: #FFFFFF;
 }
 
 .btn-update-status {
-    background-color: #4C2D17;
-    color: #EDE8D0;
+    background-color: var(--text-main);
+    color: var(--bg-color);
     border: none;
     border-radius: 8px;
     padding: 12px 20px;
@@ -155,7 +155,7 @@
 }
 
 .btn-update-status:hover {
-    background-color: #351f0f;
+    background-color: var(--primary-hover);
 }
 
 .badge-status {
@@ -183,7 +183,7 @@
     display: inline-flex !important;
     align-items: center !important;
     gap: 6px !important;
-    border: 1px solid #DCD6BC !important;
+    border: 1px solid var(--border-color) !important;
     padding: 8px 16px !important;
     border-radius: 8px !important;
     background: #FFF !important;
@@ -209,12 +209,12 @@
 }
 
 .border-top-cream-pad-15 {
-    border-top: 1px solid #EDE8D0 !important;
+    border-top: 1px solid var(--bg-color) !important;
     padding-top: 15px !important;
 }
 
 .profile-card-icon {
-    color: #c89658 !important;
+    color: var(--brand-gold) !important;
     font-size: 1.25rem !important;
 }
 

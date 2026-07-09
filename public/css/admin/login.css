@@ -3,15 +3,15 @@
    ========================================================================== */
 
 :root {
-    --primary: #c89658; /* Warm Gold */
-    --primary-dark: #8e6549; /* Dark Bronze/Wood */
-    --primary-light: #faf4eb; /* Creamy White */
+    --primary: #cca353; /* Brand Gold */
+    --primary-dark: #122a24; /* Deep Forest Green Dark */
+    --primary-light: #f6f3eb; /* Warm Cream */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .left-page {
-    background: linear-gradient(135deg, #221309 0%, #351f0f 50%, #0f172a 100%) !important;
-    border-right: 1px solid #1a0f07 !important;
+    background: linear-gradient(135deg, #0b1412 0%, #122521 50%, #0d1a13 100%) !important;
+    border-right: 1px solid #122a24 !important;
 }
 
 .brand-logo i {
@@ -20,18 +20,19 @@
 
 .btn-submit {
     background: var(--primary) !important;
-    box-shadow: 0 4px 6px -1px rgba(200, 150, 88, 0.3) !important;
+    box-shadow: 0 4px 6px -1px rgba(204, 163, 83, 0.3) !important;
     transition: var(--transition-smooth);
 }
 
 .btn-submit:hover {
     background: var(--primary-dark) !important;
-    box-shadow: 0 10px 15px -3px rgba(200, 150, 88, 0.4) !important;
+    box-shadow: 0 10px 15px -3px rgba(204, 163, 83, 0.4) !important;
+    color: #FFFFFF !important;
 }
 
 .form-input:focus {
     border-color: var(--primary) !important;
-    box-shadow: 0 0 0 3px rgba(200, 150, 88, 0.2) !important;
+    box-shadow: 0 0 0 3px rgba(204, 163, 83, 0.2) !important;
 }
 
 .form-input:focus + i {
@@ -43,7 +44,7 @@
 }
 
 .branding-desc {
-    color: #dcd6bc !important;
+    color: #d2d9cf !important; /* var(--border-color) */
 }
 
 /* Helper classes for inline styles */
@@ -53,7 +54,7 @@
 }
 
 .portal-copyright {
-    color: #8e6549 !important;
+    color: var(--primary) !important;
 }
 
 .right-page-flex {
@@ -63,11 +64,11 @@
 }
 
 .login-title {
-    color: #4C2D17 !important;
+    color: var(--primary-dark) !important;
 }
 
 .login-subtitle {
-    color: #724E32 !important;
+    color: #5c7a71 !important; /* var(--text-muted) */
 }
 
 .alert-login-success {
@@ -82,17 +83,18 @@
 }
 
 .login-label {
-    color: #4C2D17 !important;
+    color: var(--primary-dark) !important;
 }
 
 .login-checkbox-label {
-    color: #724E32 !important;
+    color: #5c7a71 !important; /* var(--text-muted) */
 }
 
 .login-store-link {
-    color: var(--primary-dark) !important;
+    color: var(--primary) !important;
 }
 
 .login-store-icon {
     font-size: 0.75rem !important;
 }
+

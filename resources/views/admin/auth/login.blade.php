@@ -109,5 +109,7 @@
         </div>
     </div>
 
+    <!-- Custom JS -->
+    <script src="{{ asset('js/auth/auth.js') }}"></script>
 </body>
 </html>

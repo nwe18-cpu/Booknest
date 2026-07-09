@@ -23,6 +23,9 @@ class CatalogSeeder extends Seeder
         $authorJames = Author::firstOrCreate(['name' => 'James Clear'], ['image' => null]);
         $authorRobert = Author::firstOrCreate(['name' => 'Robert C. Martin'], ['image' => null]);
         $authorArthur = Author::firstOrCreate(['name' => 'Arthur Conan Doyle'], ['image' => null]);
+        $authorPaulo = Author::firstOrCreate(['name' => 'Paulo Coelho'], ['image' => null]);
+        $authorNapoleon = Author::firstOrCreate(['name' => 'Napoleon Hill'], ['image' => null]);
+        $authorCal = Author::firstOrCreate(['name' => 'Cal Newport'], ['image' => null]);
 
         // 1. Create Categories
         $catFiction = Category::firstOrCreate(['name' => 'Fiction & Novels'], [
@@ -237,6 +240,162 @@ class CatalogSeeder extends Seeder
                     'page' => 6,
                     'title' => 'Epilogue: Watson\'s Journal',
                     'content' => "Jefferson Hope was captured by Holmes' ingenious trap right inside our rooms. Though the newspapers gave all the credit to Lestrade and Gregson, I knew the truth. I resolved to write down the details of the case, and so Watson's journal first revealed the genius of Sherlock Holmes to the world."
+                ]
+            ])
+        ]);
+
+        // Book 5: The Alchemist
+        Item::firstOrCreate(['name' => 'The Alchemist'], [
+            'type_id' => $typeNovel->id,
+            'author_id' => $authorPaulo->id,
+            'price' => 10.99,
+            'stock_quantity' => 20,
+            'description' => 'A magical story about Santiago, an Andalusian shepherd boy who yearns to travel in search of a worldly treasure.',
+            'pages' => 5,
+            'image' => null,
+            'status' => 'active',
+            'pages_content' => json_encode([
+                [
+                    'page' => 1,
+                    'title' => 'Santiago\'s Dream',
+                    'content' => "Santiago was a young shepherd boy who loved his sheep and the fields of Andalusia. But lately, he had been having a recurring dream about a treasure hidden near the Egyptian Pyramids. He consulted a gypsy woman, who told him: 'You must go to the Pyramids and find your Personal Legend.'"
+                ],
+                [
+                    'page' => 2,
+                    'title' => 'The King of Salem',
+                    'content' => "While sitting in a plaza, an old man named Melchizedek, the King of Salem, approached Santiago. 'When you want something, all the universe conspires in helping you to achieve it,' the old man said. He gave Santiago two stones, Urim and Thummim, to help him read the omens, and told him to sell his sheep and follow his dream."
+                ],
+                [
+                    'page' => 3,
+                    'title' => 'Crossing the Desert',
+                    'content' => "Santiago sold his flock and traveled to Tangier, where he was robbed of all his money. Undeterred, he worked for a crystal merchant for a year, earning enough to join a caravan crossing the Sahara Desert. In the desert, he met an Englishman seeking an alchemist, and Santiago began to learn the language of the world."
+                ],
+                [
+                    'page' => 4,
+                    'title' => 'The Oasis and the Alchemist',
+                    'content' => "At the Al-Fayoum oasis, Santiago saved the people by reading an omen in the flight of two hawks. There he met Fatima, the love of his life, and the legendary Alchemist himself. The Alchemist agreed to guide him across the dangerous desert. 'Remember that wherever your heart is, there you will find your treasure,' the Alchemist taught him."
+                ],
+                [
+                    'page' => 5,
+                    'title' => 'The Pyramids and the Real Treasure',
+                    'content' => "Santiago finally reached the Pyramids and began to dig. He was attacked by refugees, who mocked his search. One of them said he also had a dream about a treasure buried under a sycamore tree in Spain. Santiago smiled; he knew his treasure was back home under the tree where he started. He returned and found it, realizing the journey itself had made him wise."
+                ]
+            ])
+        ]);
+
+        // Book 6: Think and Grow Rich
+        Item::firstOrCreate(['name' => 'Think and Grow Rich'], [
+            'type_id' => $typeProductivity->id,
+            'author_id' => $authorNapoleon->id,
+            'price' => 14.99,
+            'stock_quantity' => 30,
+            'description' => 'The landmark bestseller on success and personal achievement, showing the path to wealth and fulfillment.',
+            'pages' => 5,
+            'image' => null,
+            'status' => 'active',
+            'pages_content' => json_encode([
+                [
+                    'page' => 1,
+                    'title' => 'Desire: The Starting Point',
+                    'content' => "The starting point of all achievement is desire. Weak desire brings weak results, just as a small fire makes a small amount of heat. You must have a burning desire to achieve your goals, backed by a definite plan and persistent execution. Truly desiring something means visualizing and believing in its achievement."
+                ],
+                [
+                    'page' => 2,
+                    'title' => 'Faith & Autosuggestion',
+                    'content' => "Faith is the head chemist of the mind. When faith is blended with thought, the subconscious mind instantly picks up the vibration and translates it into its spiritual equivalent. Through autosuggestion—the repetition of positive affirmations—you can program your mind to believe in your inevitable success."
+                ],
+                [
+                    'page' => 3,
+                    'title' => 'Specialized Knowledge & Imagination',
+                    'content' => "General knowledge, no matter how great in quantity, is of little use in accumulating wealth. You must acquire specialized knowledge relative to your definite purpose. Use your imagination to organize this knowledge into plans. The synthetic imagination rearranges old ideas, while the creative imagination creates new ones."
+                ],
+                [
+                    'page' => 4,
+                    'title' => 'Decision & Persistence',
+                    'content' => "Analysis of hundreds of successful people reveals that every one of them had the habit of reaching decisions promptly and changing them slowly, if at all. Lack of persistence is one of the major causes of failure. Persistence is a state of mind, and it can be cultivated by having a clear purpose and a strong desire."
+                ],
+                [
+                    'page' => 5,
+                    'title' => 'The Master Mind',
+                    'content' => "No individual can have great power without a Master Mind—the coordination of knowledge and effort in a spirit of harmony between two or more people. When two or more minds cooperate, they create a third, invisible, intangible force which may be likened to a third mind. Surround yourself with people who believe in you."
+                ]
+            ])
+        ]);
+
+        // Book 7: Clean Architecture
+        Item::firstOrCreate(['name' => 'Clean Architecture'], [
+            'type_id' => $typeSoftware->id,
+            'author_id' => $authorRobert->id,
+            'price' => 34.99,
+            'stock_quantity' => 15,
+            'description' => 'A craftsman\'s guide to software structure and design. Learn the principles of architecture from Uncle Bob.',
+            'pages' => 5,
+            'image' => null,
+            'status' => 'active',
+            'pages_content' => json_encode([
+                [
+                    'page' => 1,
+                    'title' => 'What is Architecture?',
+                    'content' => "The goal of software architecture is to minimize the human resources required to build and maintain the system. The architecture of a software system is the shape given to it by the developers. The shape determines how easy it is to develop, deploy, operate, and maintain the system over time."
+                ],
+                [
+                    'page' => 2,
+                    'title' => 'The Dependency Rule',
+                    'content' => "The concentric circles of Clean Architecture represent different areas of software. The key rule that makes it work is the Dependency Rule: source code dependencies must point only inwards, toward higher-level policies. Nothing in an inner circle can know anything about something in an outer circle."
+                ],
+                [
+                    'page' => 3,
+                    'title' => 'Entities & Use Cases',
+                    'content' => "Entities encapsulate enterprise-wide business rules. They can be objects with methods or a set of data structures. Use Cases contain application-specific business rules. They coordinate the flow of data to and from entities, directing them to use their enterprise-wide business rules to achieve the goals of the system."
+                ],
+                [
+                    'page' => 4,
+                    'title' => 'Interface Adapters & Frameworks',
+                    'content' => "Interface adapters convert data from the format convenient for use cases and entities to the format convenient for external agents like databases or web frameworks. The outermost circle consists of frameworks and tools like databases or web templates. They are details that should be kept separate."
+                ],
+                [
+                    'page' => 5,
+                    'title' => 'Summary: Independence & Flexibility',
+                    'content' => "By following Clean Architecture, your system becomes: 1) Independent of frameworks, 2) Testable without external elements, 3) Independent of UI, 4) Independent of Database, and 5) Independent of any external agency. This flexibility is essential for creating durable, long-lasting software systems."
+                ]
+            ])
+        ]);
+
+        // Book 8: Deep Work
+        Item::firstOrCreate(['name' => 'Deep Work'], [
+            'type_id' => $typeProductivity->id,
+            'author_id' => $authorCal->id,
+            'price' => 16.99,
+            'stock_quantity' => 22,
+            'description' => 'Rules for focused success in a distracted world. Learn to focus without distraction on cognitively demanding tasks.',
+            'pages' => 5,
+            'image' => null,
+            'status' => 'active',
+            'pages_content' => json_encode([
+                [
+                    'page' => 1,
+                    'title' => 'What is Deep Work?',
+                    'content' => "Deep work refers to professional activities performed in a state of distraction-free concentration that push your cognitive capabilities to their limit. These efforts create new value, improve your skill, and are hard to replicate. Shallow work, by contrast, is non-cognitively demanding and easy to duplicate."
+                ],
+                [
+                    'page' => 2,
+                    'title' => 'The Deep Work Hypothesis',
+                    'content' => "The ability to perform deep work is becoming increasingly rare at the exact same time it is becoming increasingly valuable in our economy. As a consequence, the few who cultivate this skill, and then make it the core of their working life, will thrive. High-quality work produced is a function of time spent multiplied by intensity of focus."
+                ],
+                [
+                    'page' => 3,
+                    'title' => 'Rule 1: Work Deeply',
+                    'content' => "To work deeply, you must build rituals and routines designed to minimize the amount of willpower required to transition into and maintain a state of unbroken focus. Set a schedule, define a clear location, determine how you will support your focus, and establish metrics to track your deep work hours."
+                ],
+                [
+                    'page' => 4,
+                    'title' => 'Rule 2: Embrace Boredom',
+                    'content' => "To succeed with deep work, you must rewire your brain to handle boredom. If every moment of potential boredom in your life is met with a quick glance at your smartphone, your brain will become conditioned to seek novelty, making it impossible to focus deeply when you actually want to."
+                ],
+                [
+                    'page' => 5,
+                    'title' => 'Rule 3: Quit Social Media',
+                    'content' => "Social media services are designed to be addictive, fragmenting your attention and diminishing your capacity to concentrate. Evaluate tools based on whether they contribute significantly to your deep goals. Don't use tools just because they offer 'some' benefit. Protect your attention fiercely."
                 ]
             ])
         ]);

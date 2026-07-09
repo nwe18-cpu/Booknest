@@ -3,7 +3,7 @@
 @section('title', 'Booknest Admin - Reviews Moderation')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/admin/reviews.css') }}?v=1.0.1">
+<link rel="stylesheet" href="{{ asset('css/admin/reviews.css') }}?v=1.0.2">
 @endsection
 
 @section('content')
@@ -20,35 +20,48 @@
         <!-- Stats Row -->
         <div class="stats-widget-card">
             <h3 class="reviews-summary-title"><i class="fa-solid fa-chart-pie"></i> Reviews Summary</h3>
-            <div class="stats-mini-row">
-                <div class="mini-stat-box">
-                    <h4>{{ $totalReviews }}</h4>
-                    <p>Total Reviews</p>
+            
+            <div class="stats-flat-row">
+                <div class="flat-stat-box">
+                    <div class="flat-stat-icon icon-reviews-total"><i class="fa-solid fa-comments"></i></div>
+                    <div class="flat-stat-info">
+                        <h4>{{ $totalReviews }}</h4>
+                        <p>Total Reviews</p>
+                    </div>
                 </div>
-                <div class="mini-stat-box">
-                    <h4>
-                        {{ $averageRating }}
-                        <span class="rating-avg-stars">
-                            @php
-                                $fullStars = floor($averageRating);
-                                $hasHalf = ($averageRating - $fullStars) >= 0.5;
-                            @endphp
-                            @for($i = 1; $i <= 5; $i++)
-                                @if($i <= $fullStars)
-                                    <i class="fa-solid fa-star"></i>
-                                @elseif($i == $fullStars + 1 && $hasHalf)
-                                    <i class="fa-solid fa-star-half-stroke"></i>
-                                @else
-                                    <i class="fa-regular fa-star star-empty"></i>
-                                @endif
-                            @endfor
-                        </span>
-                    </h4>
-                    <p>Average Rating</p>
+                
+                <div class="flat-stat-box">
+                    <div class="flat-stat-icon icon-reviews-rating"><i class="fa-solid fa-star"></i></div>
+                    <div class="flat-stat-info">
+                        <h4>
+                            {{ $averageRating }}
+                            <span class="rating-avg-stars-inline">
+                                @php
+                                    $fullStars = floor($averageRating);
+                                    $hasHalf = ($averageRating - $fullStars) >= 0.5;
+                                @endphp
+                                @for($i = 1; $i <= 5; $i++)
+                                    @if($i <= $fullStars)
+                                        <i class="fa-solid fa-star"></i>
+                                    @elseif($i == $fullStars + 1 && $hasHalf)
+                                        <i class="fa-solid fa-star-half-stroke"></i>
+                                    @else
+                                        <i class="fa-regular fa-star star-empty"></i>
+                                    @endif
+                                @endfor
+                            </span>
+                        </h4>
+                        <p>Average Rating</p>
+                    </div>
                 </div>
-            </div>
-            <div class="reviews-sentiment-banner">
-                🔥 Positive Sentiment Score: <strong class="sentiment-score-strong">{{ $positiveReviewsPercent }}%</strong> (4+ Stars)
+
+                <div class="flat-stat-box">
+                    <div class="flat-stat-icon icon-reviews-sentiment"><i class="fa-solid fa-fire"></i></div>
+                    <div class="flat-stat-info">
+                        <h4>{{ $positiveReviewsPercent }}%</h4>
+                        <p>Positive Sentiment</p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -71,25 +84,6 @@
         </div>
     </div>
 
-    <!-- Filter Form -->
-    <form method="GET" action="{{ route('admin.reviews.index') }}" class="filters-row-card">
-        <button type="submit" class="display-none"></button>
-        <div>
-            <input type="text" name="search" placeholder="Search comments, customer name/email, or book title..." value="{{ request('search') }}" class="filter-input">
-        </div>
-        <div>
-            <select name="rating" class="filter-input" onchange="this.form.requestSubmit()">
-                <option value="">-- All Ratings --</option>
-                @for($r = 5; $r >= 1; $r--)
-                    <option value="{{ $r }}" {{ request('rating') == $r ? 'selected' : '' }}>{{ $r }} Stars</option>
-                @endfor
-            </select>
-        </div>
-        <div>
-            <a href="{{ route('admin.reviews.index') }}" class="btn-filter-reset" title="Reset Filters"><i class="fa-solid fa-rotate-left"></i></a>
-        </div>
-    </form>
-
     <!-- Table of Reviews -->
     <div class="data-table-card">
         <div class="card-header-flex">
@@ -99,13 +93,31 @@
             </div>
         </div>
 
+        <!-- Filters integrated inside the card -->
+        <form method="GET" action="{{ route('admin.reviews.index') }}" class="filters-row-card-inline filters-grid-3">
+            <button type="submit" class="display-none"></button>
+            <div>
+                <input type="text" name="search" placeholder="Search comments, customer name/email, or book title..." value="{{ request('search') }}" class="filter-input">
+            </div>
+            <div>
+                <select name="rating" class="filter-input" onchange="this.form.requestSubmit()">
+                    <option value="">-- All Ratings --</option>
+                    @for($r = 5; $r >= 1; $r--)
+                        <option value="{{ $r }}" {{ request('rating') == $r ? 'selected' : '' }}>{{ $r }} Stars</option>
+                    @endfor
+                </select>
+            </div>
+            <div>
+                <a href="{{ route('admin.reviews.index') }}" class="btn-filter-reset" title="Reset Filters"><i class="fa-solid fa-rotate-left"></i></a>
+            </div>
+        </form>
+
         <div class="table-responsive">
             <table class="modern-table">
                 <thead>
                     <tr>
                         <th>Customer</th>
-                        <th>Book Cover</th>
-                        <th>Target Book</th>
+                        <th>Book</th>
                         <th>Rating</th>
                         <th>Comment</th>
                         <th>Date Submitted</th>
@@ -120,15 +132,23 @@
                                 <div class="font-size-0-78-text-muted">{{ $rev->customer?->email ?? 'N/A' }}</div>
                             </td>
                             <td>
-                                @if($rev->item)
-                                    <img src="{{ $rev->item->image ? asset('storage/'.$rev->item->image) : asset('images/default-book.png') }}" alt="Cover" class="table-book-cover">
-                                @else
-                                    <span class="deleted-book-icon"><i class="fa-solid fa-book"></i></span>
-                                @endif
-                            </td>
-                            <td>
-                                <div><strong>{{ $rev->item?->name ?? 'Deleted Book' }}</strong></div>
-                                <div class="font-size-0-78-text-muted">by {{ $rev->item?->author?->name ?? 'Unknown' }}</div>
+                                <div class="table-book-info-cell">
+                                    @if($rev->item)
+                                        @if($rev->item->image)
+                                            <img src="{{ asset('storage/'.$rev->item->image) }}" alt="Cover" class="table-book-cover">
+                                        @else
+                                            <div class="table-book-cover-placeholder" title="{{ $rev->item->name }}">
+                                                <i class="fa-solid fa-book"></i>
+                                            </div>
+                                        @endif
+                                    @else
+                                        <span class="deleted-book-icon"><i class="fa-solid fa-book"></i></span>
+                                    @endif
+                                    <div class="table-book-meta-inline">
+                                        <strong>{{ $rev->item?->name ?? 'Deleted Book' }}</strong>
+                                        <div class="font-size-0-78-text-muted">by {{ $rev->item?->author?->name ?? 'Unknown' }}</div>
+                                    </div>
+                                </div>
                             </td>
                             <td>
                                 <span class="review-stars-size">

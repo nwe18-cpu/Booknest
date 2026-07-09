@@ -82,6 +82,11 @@
             <!-- Active Author Workspace (Hidden initially) -->
             <div id="active-workspace" class="active-workspace-layout">
                 
+                <!-- Close button for mobile workspace modal -->
+                <button type="button" class="close-workspace-btn" id="close-workspace-btn" title="Close Workspace">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                
                 <!-- 1. Active Author Profile Header -->
                 <div class="active-author-header-card">
                     <div id="author-header-avatar"></div>
@@ -90,12 +95,12 @@
                         <p id="active-author-subtitle">0 books in catalog</p>
                     </div>
                     <div class="active-author-actions-group">
-                        <a href="#" id="edit-author-btn" class="btn-csv-export"><i class="fa-solid fa-pen-to-square"></i> Edit Profile</a>
+                        <a href="#" id="edit-author-btn" class="btn-edit-author"><i class="fa-solid fa-pen-to-square"></i> Edit Author</a>
                         <form id="delete-author-form" action="" method="POST" onsubmit="return confirm('Are you sure you want to delete this author? All associated books must be deleted first.');" class="display-inline-block">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn-delete-author" id="delete-author-btn">
-                                <i class="fa-solid fa-trash-can"></i> Delete Profile
+                                <i class="fa-solid fa-trash-can"></i> Delete Author
                             </button>
                         </form>
                     </div>
@@ -124,8 +129,14 @@
                                 <input type="number" name="price" id="book-price" step="1" min="0" class="frameless-input" placeholder="0" required>
                             </div>
 
-                            <!-- Spacer to align Stock Quantity directly below Price -->
-                            <div class="frameless-group grid-spacer"></div>
+                            <!-- Status Selector -->
+                            <div class="frameless-group">
+                                <label for="book-status">Status</label>
+                                <select name="status" id="book-status" class="frameless-input" style="background-color: var(--bg-cream); border-bottom: 1px solid var(--border-cream); cursor: pointer; padding: 0.5rem 0.25rem; font-family: inherit; font-size: 0.95rem; color: #4a5568;">
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive (Deactivated)</option>
+                                </select>
+                            </div>
 
                             <div class="frameless-group stock-quantity-group">
                                 <label for="book-stock">Stock Quantity</label>
@@ -305,6 +316,6 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/admin/authors.js') }}?v=1.0.4"></script>
+<script src="{{ asset('js/admin/authors.js') }}?v=1.0.5"></script>
 @endsection
 

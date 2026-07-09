@@ -8,7 +8,7 @@
     backdrop-filter: blur(8px);
     border-radius: 16px;
     padding: 20px;
-    box-shadow: 0 8px 30px rgba(76, 45, 23, 0.08);
+    box-shadow: 0 8px 30px rgba(22, 42, 36, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.6);
     margin-bottom: 25px;
     display: grid;
@@ -25,7 +25,7 @@
 
 .filter-input {
     padding: 10px 14px;
-    border: 1px solid #DCD6BC;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     background-color: #FAFAFA;
     color: #1A2E3B;
@@ -36,13 +36,13 @@
 }
 
 .filter-input:focus {
-    border-color: #4C2D17;
+    border-color: var(--text-main);
     background-color: #FFFFFF;
 }
 
 .btn-filter-submit {
-    background-color: #4C2D17;
-    color: #EDE8D0;
+    background-color: var(--text-main);
+    color: var(--bg-color);
     border: none;
     border-radius: 8px;
     width: 38px;
@@ -56,15 +56,15 @@
 }
 
 .btn-filter-submit:hover {
-    background-color: #351f0f;
+    background-color: var(--primary-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(76, 45, 23, 0.15);
+    box-shadow: 0 4px 10px rgba(22, 42, 36, 0.15);
 }
 
 .btn-filter-reset {
     background-color: #F4F1EA;
-    color: #4C2D17;
-    border: 1px solid #DCD6BC;
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     width: 38px;
     height: 38px;
@@ -78,9 +78,9 @@
 }
 
 .btn-filter-reset:hover {
-    background-color: #EDE8D0;
+    background-color: var(--bg-color);
     transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(76, 45, 23, 0.08);
+    box-shadow: 0 4px 10px rgba(22, 42, 36, 0.08);
 }
 
 .badge-status {
@@ -148,13 +148,13 @@
     backdrop-filter: blur(8px);
     border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 8px 30px rgba(76, 45, 23, 0.08);
+    box-shadow: 0 8px 30px rgba(22, 42, 36, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.6);
     margin-bottom: 25px;
 }
 
 .detail-card-header {
-    border-bottom: 1px solid #EDE8D0;
+    border-bottom: 1px solid var(--bg-color);
     padding-bottom: 12px;
     margin-bottom: 20px;
     display: flex;
@@ -213,7 +213,7 @@
 
 .status-select-control {
     padding: 10px 14px;
-    border: 1px solid #DCD6BC;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     background-color: #FAFAFA;
     color: #1A2E3B;
@@ -224,13 +224,13 @@
 }
 
 .status-select-control:focus {
-    border-color: #4C2D17;
+    border-color: var(--text-main);
     background-color: #FFFFFF;
 }
 
 .btn-update-status {
-    background-color: #4C2D17;
-    color: #EDE8D0;
+    background-color: var(--text-main);
+    color: var(--bg-color);
     border: none;
     border-radius: 8px;
     padding: 12px 20px;
@@ -246,7 +246,7 @@
 }
 
 .btn-update-status:hover {
-    background-color: #351f0f;
+    background-color: var(--primary-hover);
 }
 
 /* Inline Styles Replacement Helper Classes */

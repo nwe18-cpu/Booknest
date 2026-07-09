@@ -33,3 +33,31 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
         }
     });
 });
+
+// Form submit button loading spinner animation
+document.addEventListener('DOMContentLoaded', function() {
+    const addForm = document.querySelector('#add-modal form');
+    const editForm = document.querySelector('#edit-modal form');
+
+    if (addForm) {
+        addForm.addEventListener('submit', function() {
+            const btn = addForm.querySelector('button[type="submit"]');
+            if (btn) {
+                btn.disabled = true;
+                btn.style.pointerEvents = 'none';
+                btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving Banner...';
+            }
+        });
+    }
+
+    if (editForm) {
+        editForm.addEventListener('submit', function() {
+            const btn = editForm.querySelector('button[type="submit"]');
+            if (btn) {
+                btn.disabled = true;
+                btn.style.pointerEvents = 'none';
+                btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Updating Banner...';
+            }
+        });
+    }
+});

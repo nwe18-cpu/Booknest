@@ -23,14 +23,12 @@
         </div>
 
         <div class="table-responsive">
-            <table class="modern-table">
+            <table class="modern-table catalog-table">
                 <thead>
                     <tr>
                         <th>Cover</th>
-                        <th>Title</th>
-                        <th>Author</th>
-                        <th>Classifications</th>
-                        <th>Pages</th>
+                        <th>Book Details</th>
+                        <th class="tablet-hide">Pages</th>
                         <th>Price</th>
                         <th>Stock Left</th>
                     </tr>
@@ -39,18 +37,26 @@
                     @forelse($books ?? [] as $book)
                         <tr>
                             <td>
-                                <img src="{{ $book->image ? asset('storage/' . $book->image) : asset('images/default-book.png') }}" alt="{{ $book->name }}" class="table-book-cover">
+                                @if($book->image)
+                                    <img src="{{ asset('storage/' . $book->image) }}" alt="{{ $book->name }}" class="table-book-cover">
+                                @else
+                                    <div class="table-book-cover-placeholder" title="{{ $book->name }}">
+                                        <i class="fa-solid fa-book"></i>
+                                    </div>
+                                @endif
                             </td>
-                            <td><strong>{{ $book->name }}</strong></td>
-                            <td><span class="text-author">{{ $book->author?->name ?? 'Unknown Author' }}</span></td>
                             <td>
-                                <div class="catalog-tags-container">
-                                    @foreach($book->classifications ?? [] as $class)
-                                        <span class="badge-tag-classification classification-{{ $class->color }}">{{ $class->name }}</span>
-                                    @endforeach
+                                <div class="catalog-details-cell" style="display: flex; flex-direction: column; gap: 4px;">
+                                    <strong style="color: var(--text-main); font-size: 0.95rem;">{{ $book->name }}</strong>
+                                    <span class="text-author" style="font-size: 0.8rem; color: var(--text-muted);">by {{ $book->author?->name ?? 'Unknown Author' }}</span>
+                                    <div class="catalog-tags-container" style="margin-top: 2px;">
+                                        @foreach($book->classifications ?? [] as $class)
+                                            <span class="badge-tag-classification classification-{{ $class->color }}">{{ $class->name }}</span>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </td>
-                            <td>{{ $book->pages }} pages</td>
+                            <td class="tablet-hide">{{ $book->pages }} pages</td>
                             <td><strong>{{ number_format($book->price) }} Ks</strong></td>
                             <td>
                                 @if($book->stock_quantity < 5)

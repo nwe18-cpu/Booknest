@@ -104,6 +104,22 @@
                             <span class="info-label">Date Placed:</span>
                             <span class="info-value">{{ $order->created_at->format('M d, Y h:i A') }}</span>
                         </div>
+                        <div class="info-item">
+                            <span class="info-label">Payment Method:</span>
+                            <span class="info-value font-weight-bold" style="text-transform: uppercase;">
+                                @if($order->payment_method === 'cod')
+                                    Cash on Delivery (COD)
+                                @elseif($order->payment_method === 'kpay')
+                                    KBZPay (KPay)
+                                @elseif($order->payment_method === 'wave')
+                                    WaveMoney
+                                @elseif($order->payment_method === 'stripe')
+                                    Stripe (Credit Card)
+                                @else
+                                    {{ strtoupper($order->payment_method ?? 'N/A') }}
+                                @endif
+                            </span>
+                        </div>
                         @if($order->stripe_session_id)
                             <div class="info-item">
                                 <span class="info-label">Stripe Session:</span>

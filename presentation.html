@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booknest - Project Presentation</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --brand-green-dark: #122521;
+            --brand-green-medium: #1b3d34;
+            --brand-gold: #CCA353;
+            --brand-gold-light: #ffe0a3;
+            --text-light: #FAF9F5;
+            --text-muted: rgba(250, 249, 245, 0.65);
+            --border-gold: rgba(204, 163, 83, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f1c1a;
+            color: var(--text-light);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Presentation Wrapper */
+        .presentation-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Slide Card */
+        .slide {
+            display: none;
+            width: 100%;
+            max-width: 1100px;
+            height: 80vh;
+            max-height: 680px;
+            background: linear-gradient(135deg, var(--brand-green-medium) 0%, var(--brand-green-dark) 100%);
+            border: 2px solid var(--brand-gold);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            padding: 40px;
+            position: relative;
+            animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Header layout */
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px dashed var(--border-gold);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .slide-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--brand-gold-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .slide-header h2 i {
+            color: var(--brand-gold);
+        }
+
+        .project-tag {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            background: rgba(204, 163, 83, 0.15);
+            border: 1px solid var(--brand-gold);
+            color: var(--brand-gold-light);
+            padding: 6px 16px;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Slide Content Wrapper */
+        .slide-body {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            align-items: center;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        /* Scrollbar custom style */
+        .slide-body::-webkit-scrollbar {
+            width: 6px;
+        }
+        .slide-body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .slide-body::-webkit-scrollbar-thumb {
+            background: rgba(204, 163, 83, 0.25);
+            border-radius: 3px;
+        }
+
+        .two-columns {
+            grid-template-columns: 1.2fr 1fr;
+        }
+
+        /* Typography & Bullets */
+        .bullets-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .bullets-list li {
+            position: relative;
+            padding-left: 32px;
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: var(--text-light);
+        }
+
+        .bullets-list li::before {
+            content: "\f02d"; /* Book icon */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--brand-gold);
+            font-size: 1rem;
+        }
+
+        .bullets-list li strong {
+            color: var(--brand-gold-light);
+            font-weight: 600;
+        }
+
+        /* Column Visual Layouts */
+        .visual-container {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-gold);
+            border-radius: 12px;
+            padding: 24px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .tech-pill-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .tech-pill {
+            background: rgba(26, 61, 52, 0.5);
+            border: 1px solid rgba(204, 163, 83, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .tech-pill i {
+            color: var(--brand-gold);
+        }
+
+        /* Cover Slide Specifics */
+        .cover-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 20px;
+        }
+
+        .cover-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(204, 163, 83, 0.1);
+            border: 3px dashed var(--brand-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--brand-gold-light);
+            margin-bottom: 10px;
+            animation: bounceLogo 2s infinite alternate;
+        }
+
+        @keyframes bounceLogo {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+
+        .cover-title h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffe0a3 0%, var(--brand-gold) 50%, #ffd166 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .cover-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cover-footer {
+            margin-top: 30px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            color: var(--brand-gold);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Presenter notes area - Toggleable */
+        .notes-toggle {
+            position: absolute;
+            bottom: 20px;
+            left: 40px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s ease;
+        }
+
+        .notes-toggle:hover {
+            color: var(--brand-gold);
+        }
+
+        .speaker-notes-box {
+            display: none;
+            position: absolute;
+            bottom: 50px;
+            left: 40px;
+            right: 40px;
+            background: rgba(15, 28, 26, 0.95);
+            border: 1px solid var(--brand-gold);
+            border-radius: 12px;
+            padding: 20px;
+            z-index: 100;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #FAF9F5;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+        }
+
+        .speaker-notes-box.active {
+            display: block;
+        }
+
+        .speaker-notes-box h5 {
+            font-family: 'Outfit', sans-serif;
+            color: var(--brand-gold);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        /* Bottom Control Panel */
+        .controls-bar {
+            background-color: #0c1514;
+            border-top: 1px solid rgba(204, 163, 83, 0.15);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .controls-left {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .controls-left strong {
+            color: var(--brand-gold);
+        }
+
+        .navigation-btns {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-nav {
+            background: rgba(26, 61, 52, 0.8);
+            border: 1.5px solid var(--border-gold);
+            color: var(--text-light);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .btn-nav:hover:not(:disabled) {
+            background: var(--brand-gold);
+            color: var(--brand-green-dark);
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(204, 163, 83, 0.3);
+        }
+
+        .btn-nav:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .slide-indicator {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--brand-gold-light);
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .slide {
+                height: 90vh;
+                max-height: none;
+                padding: 24px;
+            }
+
+            .slide-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+
+            .bullets-list li {
+                font-size: 1rem;
+            }
+
+            .controls-bar {
+                padding: 10px 20px;
+            }
+        }
+
+        /* Print styling for direct PDF Export (Ctrl+P) */
+        @media print {
+            body {
+                background: #FFFFFF !important;
+                color: #000000 !important;
+                height: auto;
+                overflow: visible;
+            }
+
+            .presentation-container {
+                display: block;
+                padding: 0;
+            }
+
+            .slide {
+                display: flex !important;
+                page-break-after: always;
+                width: 100% !important;
+                max-width: none !important;
+                height: 100vh !important;
+                max-height: none !important;
+                background: #ffffff !important;
+                border: 2px solid #000000 !important;
+                box-shadow: none !important;
+                color: #000000 !important;
+                border-radius: 0 !important;
+                margin: 0 0 20px 0 !important;
+            }
+
+            .slide-header h2 {
+                color: #000000 !important;
+            }
+
+            .project-tag {
+                border: 1px solid #000000 !important;
+                color: #000000 !important;
+                background: transparent !important;
+            }
+
+            .bullets-list li {
+                color: #000000 !important;
+            }
+
+            .bullets-list li strong {
+                color: #000000 !important;
+            }
+
+            .bullets-list li::before {
+                color: #000000 !important;
+            }
+
+            .visual-container {
+                border: 1px solid #000000 !important;
+                background: transparent !important;
+            }
+
+            .tech-pill {
+                border: 1px solid #000000 !important;
+                background: transparent !important;
+                color: #000000 !important;
+            }
+
+            .tech-pill i {
+                color: #000000 !important;
+            }
+
+            .cover-title h1 {
+                background: none !important;
+                -webkit-text-fill-color: #000000 !important;
+                color: #000000 !important;
+            }
+
+            .cover-subtitle, .cover-footer {
+                color: #000000 !important;
+            }
+
+            .controls-bar, .notes-toggle, .speaker-notes-box {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="presentation-container">
+        
+        <!-- SLIDE 1: COVER -->
+        <section class="slide active" id="slide-1">
+            <div class="slide-body">
+                <div class="cover-body">
+                    <div class="cover-logo">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <div class="cover-title">
+                        <h1>Booknest</h1>
+                    </div>
+                    <p class="cover-subtitle">A Premium Digital Bookstore Portal & Administrative Dashboard Console</p>
+                    <div class="cover-footer">
+                        <p>Laravel framework Web Application</p>
+                        <p style="margin-top: 8px; font-size: 0.8rem; opacity: 0.8;">Use Arrow Keys &Space; to Navigate</p>
+                    </div>
+                </div>
+            </div>
+            <button class="notes-toggle" onclick="toggleNotes(1)"><i class="fa-solid fa-note-sticky"></i> Presenter Notes</button>
+            <div class="speaker-notes-box" id="notes-1">
+                <h5>Speaker Notes (Burmese)</h5>
+                <p>မင်္ဂလာပါ ခင်ဗျာ။ ကျွန်တော် ဒီနေ့ တင်ဆက်ပြသမယ့် ပရောဂျက်ကတော့ "Booknest" လို့ အမည်ရတဲ့ အဆင့်မြင့်စာအုပ်စင် စနစ်တစ်ခု ဖြစ်ပါတယ်။ ဒီစနစ်မှာ စာဖတ်သူတွေအတွက် စာအုပ်ဝယ်ယူ/ဖတ်ရှုနိုင်မယ့် စာအုပ်ဆိုင်အပိုင်းနဲ့ ဝန်ထမ်းတွေ လုပ်ငန်းလည်ပတ်မှုကို စီမံခန့်ခွဲမယ့် Admin Dashboard အပိုင်းဆိုပြီး အဓိက ကဏ္ဍကြီး ၂ ခု ပါဝင်ပါတယ်။</p>
+            </div>
+        </section>
+
+        <!-- SLIDE 2: BACKGROUND & GOALS -->
+        <section class="slide" id="slide-2">
+            <header class="slide-header">
+                <h2><i class="fa-solid fa-bullseye"></i> Background & Goals</h2>
+                <span class="project-tag">Concept</span>
+            </header>
+            <div class="slide-body two-columns">
+                <ul class="bullets-list">
+                    <li><strong>Modern Retail Challenge:</strong> Legacy online bookstores suffer from generic, unpolished layouts, confusing navigation, and cluttered interfaces.</li>
+                    <li><strong>The Booknest Vision:</strong> Establish a premium bookstore experience online using a customized, unified HSL color design layout (Cozy Green & Gold).</li>
+                    <li><strong>Administrative Efficiency:</strong> Give operators a dedicated control panel to track inventory, fulfill customer orders, and enforce security policies.</li>
+                </ul>
+                <div class="visual-container">
+                    <h4 style="color: var(--brand-gold-light); font-family: 'Outfit'; font-weight: 700;">Design Focus</h4>
+                    <p style="font-size: 0.95rem; line-height: 1.5; color: var(--text-muted);">
+                        "To capture the relaxing scent of real paper bookstands, utilizing rich forest green gradients, warm gold highlights, and clean typography."
+                    </p>
+                    <div style="display: flex; gap: 8px; margin-top: 10px;">
+                        <span style="width: 24px; height: 24px; border-radius: 50%; background: #122521; border: 1px solid var(--brand-gold);"></span>
+                        <span style="width: 24px; height: 24px; border-radius: 50%; background: #1b3d34; border: 1px solid var(--brand-gold);"></span>
+                        <span style="width: 24px; height: 24px; border-radius: 50%; background: #CCA353; border: 1px solid #FAF9F5;"></span>
+                        <span style="width: 24px; height: 24px; border-radius: 50%; background: #FAF9F5; border: 1px solid var(--brand-gold);"></span>
+                    </div>
+                </div>
+            </div>
+            <button class="notes-toggle" onclick="toggleNotes(2)"><i class="fa-solid fa-note-sticky"></i> Presenter Notes</button>
+            <div class="speaker-notes-box" id="notes-2">
+                <h5>Speaker Notes (Burmese)</h5>
+                <p>လက်ရှိ အွန်လိုင်းစာအုပ်ဆိုင် အများစုဟာ ဒီဇိုင်းပိုင်း ရှုပ်ထွေးတာ၊ မိုဘိုင်းလ်ဖုန်းတွေမှာ သပ်သပ်ရပ်ရပ်မရှိတာနဲ့ စီမံခန့်ခွဲရ ခက်ခဲတဲ့ ပြဿနာတွေ ရှိပါတယ်။ Booknest ကို ဖန်တီးရတဲ့ ရည်ရွယ်ချက်ကတော့ သုံးစွဲသူတွေကို စာအုပ်စင်တစ်ခုလို နွေးထွေးတဲ့ ခံစားချက်မျိုး ပေးစွမ်းနိုင်ပြီး လုပ်ငန်းရှင်တွေအတွက်လည်း အကောင့်လုံခြုံရေးနဲ့ လုပ်ငန်းလည်ပတ်မှုကို တစ်နေရာတည်းကနေ စီမံခန့်ခွဲနိုင်ဖို့ ဖြစ်ပါတယ်။</p>
+            </div>
+        </section>
+
+        <!-- SLIDE 3: TECHNICAL STACK -->
+        <section class="slide" id="slide-3">
+            <header class="slide-header">
+                <h2><i class="fa-solid fa-laptop-code"></i> Technical Stack</h2>
+                <span class="project-tag">Architecture</span>
+            </header>
+            <div class="slide-body two-columns">
+                <ul class="bullets-list">
+                    <li><strong>Backend Powerhouse:</strong> Powered by Laravel 10 using structural MVC architecture pattern.</li>
+                    <li><strong>Data Integrity:</strong> Structured Relational DB schema storing transactions, accounts, catalogs, and logs.</li>
+                    <li><strong>Clean Frontend Philosophy:</strong> Created with pure HTML5, Vanilla JS, and normalized CSS. Zero reliance on bloated frontend packages (Bootstrap/Tailwind).</li>
+                    <li><strong>Security Foundations:</strong> Implements secure staff session guards, password hashing, validation rules, and CSRF token protections.</li>
+                </ul>
+                <div class="visual-container">
+                    <h4 style="color: var(--brand-gold-light); font-family: 'Outfit'; font-weight: 700; text-align: center; margin-bottom: 10px;">Core Technologies</h4>
+                    <div class="tech-pill-grid">
+                        <div class="tech-pill"><i class="fa-brands fa-laravel"></i> Laravel 10</div>
+                        <div class="tech-pill"><i class="fa-brands fa-php"></i> PHP 8.x</div>
+                        <div class="tech-pill"><i class="fa-solid fa-database"></i> SQLite/MySQL</div>
+                        <div class="tech-pill"><i class="fa-brands fa-css3-alt"></i> Vanilla CSS</div>
+                        <div class="tech-pill"><i class="fa-brands fa-js"></i> Vanilla JS</div>
+                        <div class="tech-pill"><i class="fa-solid fa-shield-halved"></i> MVC Pattern</div>
+                    </div>
+                </div>
+            </div>
+            <button class="notes-toggle" onclick="toggleNotes(3)"><i class="fa-solid fa-note-sticky"></i> Presenter Notes</button>
+            <div class="speaker-notes-box" id="notes-3">
+                <h5>Speaker Notes (Burmese)</h5>
+                <p>နည်းပညာပိုင်းအနေနဲ့ ကျွန်တော်တို့ Laravel framework ကို အသုံးပြုထားပြီး MVC architecture အတိုင်း ရေးဆွဲထားပါတယ်။ Database အတွက် သက်သာမြန်ဆန်တဲ့ Relational DB ကို သုံးထားပြီး Frontend ပိုင်းမှာ external framework (Bootstrap/Tailwind) တွေ လုံးဝမသုံးဘဲ စိတ်ကြိုက်ပုံသွင်းနိုင်တဲ့ Pure HTML, Vanilla CSS နဲ့ JS တွေကိုသာ သေသပ်စွာ ရေးသားထားပါတယ်။</p>
+            </div>
+        </section>
+
+        <!-- SLIDE 4: CUSTOMER PORTAL -->
+        <section class="slide" id="slide-4">
+            <header class="slide-header">
+                <h2><i class="fa-solid fa-shop"></i> Customer Experience</h2>
+                <span class="project-tag">Storefront Portal</span>
+            </header>
+            <div class="slide-body two-columns">
+                <ul class="bullets-list">
+                    <li><strong>Intuitive Catalog Search:</strong> Customers can filter and search catalog inventory in real-time.</li>
+                    <li><strong>Direct PDF Streaming:</strong> Members can read book PDFs directly inside a secure browser stream, or download locally.</li>
+                    <li><strong>Stateful Reading Progress:</strong> Page numbers are bookmarked dynamically so users can pick up exactly where they left off.</li>
+                    <li><strong>Social Integration:</strong> Users can leave written reviews, book ratings, and toggle wishlists.</li>
+                </ul>
+                <div class="visual-container">
+                    <div class="tech-pill"><i class="fa-solid fa-magnifying-glass"></i> Live Search Filtering</div>
+                    <div class="tech-pill"><i class="fa-solid fa-file-pdf"></i> Inline PDF Reader Stream</div>
+                    <div class="tech-pill"><i class="fa-solid fa-bookmark"></i> Stateful Reading Bookmarks</div>
+                    <div class="tech-pill"><i class="fa-solid fa-heart"></i> Heart Wishes & Reviews</div>
+                </div>
+            </div>
+            <button class="notes-toggle" onclick="toggleNotes(4)"><i class="fa-solid fa-note-sticky"></i> Presenter Notes</button>
+            <div class="speaker-notes-box" id="notes-4">
+                <h5>Speaker Notes (Burmese)</h5>
+                <p>သုံးစွဲသူ စာဖတ်သူတွေအတွက် စာမျက်နှာမှာ စာအုပ်များကို ရှာဖွေနိုင်ပြီး PDF များကို Download ဆွဲနိုင်သလို Browser ထဲမှာတင် stream လုပ်ပြီး တိုက်ရိုက်ဖတ်ရှုနိုင်ပါတယ်။ ထူးခြားချက်ကတော့ မိမိနောက်ဆုံး ဖတ်လက်စ စာမျက်နှာကို auto bookmark လုပ်ပေးပြီး နောက်တကြိမ် ပြန်ဝင်ရင် ဆက်လက်ဖတ်ရှုနိုင်အောင် စီမံပေးထားတာ ဖြစ်ပါတယ်။</p>
+            </div>
+        </section>
+
+        <!-- SLIDE 5: VIP SUBSCRIPTIONS -->
+        <section class="slide" id="slide-5">
+            <header class="slide-header">
+                <h2><i class="fa-solid fa-crown"></i> VIP Membership & Payments</h2>
+                <span class="project-tag">Business Model</span>
+            </header>
+            <div class="slide-body two-columns">
+                <ul class="bullets-list">
+                    <li><strong>VIP Membership Tiers:</strong> Premium subscription models granting unrestricted access to premium/exclusive book assets.</li>
+                    <li><strong>Smart Cart Workflows:</strong> Seamless client cart item addition, qty updates, and checkout pipelines.</li>
+                    <li><strong>Simulated Stripe Pipeline:</strong> Securely process transactions and redirect status alerts (Success/Cancel) smoothly.</li>
+                </ul>
+                <div class="visual-container" style="background: rgba(204, 163, 83, 0.05);">
+                    <div style="text-align: center; margin-bottom: 5px;">
+                        <i class="fa-solid fa-gem" style="font-size: 2.5rem; color: var(--brand-gold);"></i>
+                    </div>
+                    <h5 style="color: var(--brand-gold-light); font-weight: 700; text-align: center; font-size: 1.1rem;">Membership Perks</h5>
+                    <p style="font-size: 0.88rem; text-align: center; color: var(--text-muted);">
+                        Access to VIP Library, early release books, and premium digital bookmarks.
+                    </p>
+                </div>
+            </div>
+            <button class="notes-toggle" onclick="toggleNotes(5)"><i class="fa-solid fa-note-sticky"></i> Presenter Notes</button>
+            <div class="speaker-notes-box" id="notes-5">
+                <h5>Speaker Notes (Burmese)</h5>
+                <p>Booknest ရဲ့ စီးပွားရေးပုံစံ (Business model) အနေနဲ့ လစဉ်ကြေးပေးသွင်းပြီး VIP စာအုပ်တွေကို ကန့်သတ်ချက်မရှိ ဖတ်ရှုနိုင်တဲ့ Subscriptions စနစ် ပါဝင်ပါတယ်။ ဒါ့အပြင် ဈေးဝယ်ခြင်းနဲ့ ငွေပေးချေမှုအပိုင်းတွေကိုလည်း စနစ်တကျ Stripe Payment စနစ်နဲ့ ချိတ်ဆက်လုပ်ဆောင်နိုင်အောင် ပြင်ဆင်ပေးထားပါတယ်။</p>
+            </div>
+        </section>
+
+        <!-- SLIDE 6: ADMIN DASHBOARD -->
+        <section class="slide" id="slide-6">
+            <header class="slide-header">
+                <h2><i class="fa-solid fa-chart-line"></i> Admin Dashboard Console</h2>
+                <span class="project-tag">Business Control</span>
+            </header>
+            <div class="slide-body two-columns">
+                <ul class="bullets-list">
+                    <li><strong>Real-time Metrics:</strong> Live metrics tracking catalog size, orders count, reviews feedback, and low stock warnings.</li>
+                    <li><strong>Order Logistics Pipeline:</strong> Unified administration flow for transitioning orders from Pending, Processed, to Complete.</li>
+                    <li><strong>User Control Directory:</strong> Monitor registered readers, toggle their VIP membership tiers, and check logs.</li>
+                </ul>
+                <div class="visual-container">
+                    <h5 style="color: var(--brand-gold-light); font-family: 'Outfit'; font-weight: 700;">Dashboard KPI Card Preview</h5>
+                    <div style="background: rgba(18, 37, 33, 0.7); border: 1.5px dashed var(--brand-gold); border-radius: 8px; padding: 15px; display: flex; align-items: center; justify-content: space-between;">
+                        <div>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Total Books</p>
+                            <h3 style="font-size: 1.8rem; color: var(--brand-gold-light); font-weight: 800; margin-top: 2px;">26</h3>
+                        </div>
+                        <i class="fa-solid fa-book" style="font-size: 2.2rem; color: var(--brand-gold);"></i>
+                    </div>
+                </div>
+            </div>
+            <button class="notes-toggle" onclick="toggleNotes(6)"><i class="fa-solid fa-note-sticky"></i> Presenter Notes</button>
+            <div class="speaker-notes-box" id="notes-6">
+                <h5>Speaker Notes (Burmese)</h5>
+                <p>လုပ်ငန်းပိုင်ရှင်တွေနဲ့ ဝန်ထမ်းတွေ သုံးမယ့် Admin Dashboard မှာတော့ လက်ရှိ စာအုပ်စာရင်း၊ စာအုပ်အသစ်တင်ခြင်း၊ ရောင်းအား၊ order စာရင်းတွေနဲ့ စာအုပ်လက်ကျန်နည်းနေတဲ့ low-stock alerts သတိပေးချက်တွေကို အချိန်နဲ့တပြေးညီ ကြည့်ရှုပြီး ညွှန်ကြားချက်များ ပေးနိုင်ပါတယ်။</p>
+            </div>
+        </section>
+
+        <!-- SLIDE 7: STAFF MANAGEMENT -->
+        <section class="slide" id="slide-7">
+            <header class="slide-header">
+                <h2><i class="fa-solid fa-users-gear"></i> Staff Management & Security</h2>
+                <span class="project-tag">Role Guards</span>
+            </header>
+            <div class="slide-body two-columns">
+                <ul class="bullets-list">
+                    <li><strong>Role Authorization:</strong> Safeguards system by verifying roles. Only Admin role can edit business operations; Staff role is restricted.</li>
+                    <li><strong>Staff Directory CRUD:</strong> Admin dashboard allows full management of staff access logs, creation, and profile edits.</li>
+                    <li><strong>Self-Deletion Safeguard:</strong> Validation rules prevent active administrators from deleting their own login accounts.</li>
+                </ul>
+                <div class="visual-container">
+                    <div style="display: flex; align-items: center; gap: 15px; background: rgba(88, 28, 135, 0.15); border: 1px solid #bfdbfe; padding: 12px; border-radius: 8px;">
+                        <span style="font-family: 'Outfit'; font-weight: 700; color: #e9d5ff; background: #581c87; padding: 4px 10px; border-radius: 20px; font-size: 0.72rem; text-transform: uppercase;">Admin</span>
+                        <span style="font-size: 0.88rem;">Holds Full CRUD & Business Actions</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px; background: rgba(30, 58, 138, 0.15); border: 1px solid #bfdbfe; padding: 12px; border-radius: 8px;">
+                        <span style="font-family: 'Outfit'; font-weight: 700; color: #bfdbfe; background: #1e3a8a; padding: 4px 10px; border-radius: 20px; font-size: 0.72rem; text-transform: uppercase;">Staff</span>
+                        <span style="font-size: 0.88rem;">Restricted to Catalog & Author Management</span>
+                    </div>
+                </div>
+            </div>
+            <button class="notes-toggle" onclick="toggleNotes(7)"><i class="fa-solid fa-note-sticky"></i> Presenter Notes</button>
+            <div class="speaker-notes-box" id="notes-7">
+                <h5>Speaker Notes (Burmese)</h5>
+                <p>စနစ်ရဲ့ လုံခြုံရေးအတွက် Staff Management (ဝန်ထမ်းစီမံခန့်ခွဲမှု) စနစ်ကို သီးသန့်ထည့်သွင်းပေးထားပြီး Admin တွေကသာ ဝန်ထမ်းအသစ်ဖွင့်ပေးနိုင်ပါတယ်။ ဝန်ထမ်း (Staff) သာမန်အဆင့်တွေဟာ လုပ်ငန်းရဲ့ ငွေစာရင်း၊ အဖွဲ့ဝင်စာရင်းတွေရှိရာ အပိုင်းတွေကို ဝင်ရောက်ခွင့်မရှိအောင် Role permission logic များဖြင့် စနစ်တကျ ပိတ်ပင်တားဆီးထားပါတယ်။</p>
+            </div>
+        </section>
+
+        <!-- SLIDE 8: UI/UX REFINEMENTS -->
+        <section class="slide" id="slide-8">
+            <header class="slide-header">
+                <h2><i class="fa-solid fa-wand-magic-sparkles"></i> UI/UX Refinements</h2>
+                <span class="project-tag">Polishing</span>
+            </header>
+            <div class="slide-body two-columns">
+                <ul class="bullets-list">
+                    <li><strong>Centered Custom Alert Modals:</strong> Smooth blur-backdrop modal cards replace native browser alerts when staff access is denied.</li>
+                    <li><strong>Symmetrical Docked Sidebar:</strong> Redesigned navigation sidebar layout with zero outer gaps and right accent border divider.</li>
+                    <li><strong>Table-to-Card Stack Breakpoint:</strong> Custom media queries stack tables into cards under 991px to prevent horizontal scrolls.</li>
+                </ul>
+                <div class="visual-container">
+                    <h5 style="color: var(--brand-gold-light); font-family: 'Outfit'; font-weight: 700; text-align: center; margin-bottom: 5px;">Responsive Design</h5>
+                    <div style="display: flex; justify-content: center; gap: 20px; align-items: center; margin-top: 10px;">
+                        <div style="text-align: center;"><i class="fa-solid fa-desktop" style="font-size: 2.2rem; color: var(--brand-gold);"></i><p style="font-size: 0.72rem; margin-top: 5px;">Laptop View</p></div>
+                        <i class="fa-solid fa-arrow-right-arrow-left" style="color: var(--text-muted);"></i>
+                        <div style="text-align: center;"><i class="fa-solid fa-mobile-screen-button" style="font-size: 2.2rem; color: var(--brand-gold);"></i><p style="font-size: 0.72rem; margin-top: 5px;">320px Phone</p></div>
+                    </div>
+                </div>
+            </div>
+            <button class="notes-toggle" onclick="toggleNotes(8)"><i class="fa-solid fa-note-sticky"></i> Presenter Notes</button>
+            <div class="speaker-notes-box" id="notes-8">
+                <h5>Speaker Notes (Burmese)</h5>
+                <p>UI/UX အပိုင်းမှာ သုံးရတာ ပိုမိုခန့်ညားစေဖို့ Browser alert box တွေအစား ပရောဂျက်နောက်ခံကို blur ဖြစ်စေမယ့် Centered Alert Modals တွေကို ပြောင်းလဲပေးခဲ့ပါတယ်။ ပြီးတော့ စားပွဲတင်ကွန်ပျူတာကနေ ၃၂၀ ပစ်ဇယ်ဖုန်းအထိ screen ညှပ်ထွက်သွားတာမရှိဘဲ ဇယားများအားလုံး Card layout သို့ ပြောင်းလဲသွားအောင် responsive ပိုင်းကို အထူးအလေးပေး ပြင်ဆင်ထားပါတယ်။</p>
+            </div>
+        </section>
+
+        <!-- SLIDE 9: ROADMAP -->
+        <section class="slide" id="slide-9">
+            <header class="slide-header">
+                <h2><i class="fa-solid fa-map-location-dot"></i> Future Roadmap</h2>
+                <span class="project-tag">Evolution</span>
+            </header>
+            <div class="slide-body two-columns">
+                <ul class="bullets-list">
+                    <li><strong>Stripe Live Integration:</strong> Swap checkout simulation with Stripe Production API configurations.</li>
+                    <li><strong>Real-time Push Alerts:</strong> Instant notifications warning administrators of critical low stock levels.</li>
+                    <li><strong>Advanced Analytics Graphs:</strong> Build interactive sales charts directly inside the admin console.</li>
+                </ul>
+                <div class="visual-container">
+                    <h5 style="color: var(--brand-gold-light); font-family: 'Outfit'; font-weight: 700; margin-bottom: 5px;">Project Completion</h5>
+                    <p style="font-size: 0.88rem; color: var(--text-light);"><i class="fa-solid fa-circle-check" style="color: #22c55e; margin-right: 8px;"></i> 100% Fully Responsive Layout</p>
+                    <p style="font-size: 0.88rem; color: var(--text-light);"><i class="fa-solid fa-circle-check" style="color: #22c55e; margin-right: 8px;"></i> Guarded Role Safety Gateways</p>
+                    <p style="font-size: 0.88rem; color: var(--text-light);"><i class="fa-solid fa-circle-check" style="color: #22c55e; margin-right: 8px;"></i> Fast loading speeds & clean assets</p>
+                </div>
+            </div>
+            <button class="notes-toggle" onclick="toggleNotes(9)"><i class="fa-solid fa-note-sticky"></i> Presenter Notes</button>
+            <div class="speaker-notes-box" id="notes-9">
+                <h5>Speaker Notes (Burmese)</h5>
+                <p>ကျွန်တော်တို့ Booknest ဟာ လက်ရှိမှာ အပြည့်အဝ responsive ဖြစ်ပြီး ခိုင်မာတဲ့ role-based safety checkpoints တွေ ရှိနေပါပြီ။ နောင်တဆင့် လုပ်ငန်းချဲ့ထွင်ဖို့အတွက် Stripe Live payments API ချိတ်ဆက်ခြင်း၊ စာအုပ်ပြတ်လပ်ပါက ချက်ချင်း notification ပို့ပေးမည့် real-time server-side alerts များ ထည့်သွင်းခြင်းတို့ကို ဆက်လက်လုပ်ဆောင်သွားမှာ ဖြစ်ပါတယ်။</p>
+            </div>
+        </section>
+
+        <!-- SLIDE 10: CONCLUSION -->
+        <section class="slide" id="slide-10">
+            <div class="slide-body">
+                <div class="cover-body">
+                    <div class="cover-logo" style="animation: none; border-style: solid;">
+                        <i class="fa-solid fa-circle-check" style="color: var(--brand-gold);"></i>
+                    </div>
+                    <div class="cover-title">
+                        <h1 style="font-size: 3.5rem;">Thank You!</h1>
+                    </div>
+                    <p class="cover-subtitle" style="font-family: 'Outfit'; font-weight: 700; color: var(--brand-gold-light);">Questions & Feedback</p>
+                    <div style="margin-top: 15px; font-size: 1rem; color: var(--text-muted);">
+                        <p>Core Philosophy: Cozy, Elegant, Functional, Secure.</p>
+                    </div>
+                </div>
+            </div>
+            <button class="notes-toggle" onclick="toggleNotes(10)"><i class="fa-solid fa-note-sticky"></i> Presenter Notes</button>
+            <div class="speaker-notes-box" id="notes-10">
+                <h5>Speaker Notes (Burmese)</h5>
+                <p>Booknest စနစ် တင်ဆက်မှုကို ယခုမျှနဲ့ ရပ်နားခွင့်ပြုပါ ခင်ဗျာ။ စနစ်နဲ့ပတ်သက်ပြီး သိလိုသည်များရှိပါက မေးမြန်းဆွေးနွေးနိုင်ပါပြီ။ အားလုံးကို အထူးကျေးဇူးတင်ရှိပါသည် ခင်ဗျာ။</p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation Control Bar -->
+    <footer class="controls-bar">
+        <div class="controls-left">
+            Project presentation: <strong>Booknest Dashboard Console</strong>
+        </div>
+        <div class="navigation-btns">
+            <button class="btn-nav" id="btn-prev" onclick="changeSlide(-1)" title="Previous Slide (Left Arrow)"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="slide-indicator" id="slide-indicator">Slide 1 of 10</div>
+            <button class="btn-nav" id="btn-next" onclick="changeSlide(1)" title="Next Slide (Right Arrow/Space)"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </footer>
+
+    <script>
+        const totalSlides = 10;
+        let currentSlide = 1;
+
+        function updateSlide() {
+            // Hide all slides
+            for (let i = 1; i <= totalSlides; i++) {
+                const slide = document.getElementById(`slide-${i}`);
+                if (slide) slide.classList.remove('active');
+                
+                const notes = document.getElementById(`notes-${i}`);
+                if (notes) notes.classList.remove('active');
+            }
+
+            // Show active slide
+            const activeSlide = document.getElementById(`slide-${currentSlide}`);
+            if (activeSlide) activeSlide.classList.add('active');
+
+            // Update Indicator
+            document.getElementById('slide-indicator').textContent = `Slide ${currentSlide} of ${totalSlides}`;
+
+            // Update Buttons State
+            document.getElementById('btn-prev').disabled = currentSlide === 1;
+            document.getElementById('btn-next').disabled = currentSlide === totalSlides;
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 1) currentSlide = 1;
+            if (currentSlide > totalSlides) currentSlide = totalSlides;
+            updateSlide();
+        }
+
+        // Toggle Speaker Notes Box
+        function toggleNotes(slideId) {
+            const notes = document.getElementById(`notes-${slideId}`);
+            if (notes) {
+                notes.classList.toggle('active');
+            }
+        }
+
+        // Keyboard Controls
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === 'Space' || e.code === 'Space') {
+                e.preventDefault();
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                changeSlide(-1);
+            }
+        });
+
+        // Initialize Slider
+        updateSlide();
+    </script>
+</body>
+</html>

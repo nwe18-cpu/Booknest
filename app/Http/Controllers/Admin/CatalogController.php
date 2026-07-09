@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Author;
 use App\Models\Item;
+use App\Helpers\ActivityLogger;
 
 class CatalogController extends Controller
 {
@@ -21,13 +22,14 @@ class CatalogController extends Controller
     {
         // စည်းကမ်းချက်များနှင့်အညီ Validation စစ်ဆေးခြင်း
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|min:3|max:100',
             'author_id' => 'required|exists:authors,id',
             'pages' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
+            'status' => 'nullable|string|in:active,inactive',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Cover ပုံအတွက်
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Cover ပုံအတွက် (gif removed)
             'pdf_file' => 'nullable|file|max:102400', // PDF ဖိုင်အတွက် (100MB limit, manually checked extension below)
             'classifications' => 'nullable|array',
             'classifications.*' => 'exists:classifications,id',
@@ -64,6 +66,7 @@ class CatalogController extends Controller
 
         // Database ထဲသို့ သိမ်းဆည်းခြင်း
         $book = Item::create($data);
+        ActivityLogger::log('create', "Created book '{$book->name}' (ID: {$book->id}) with stock {$book->stock_quantity}.");
 
         // Classifications Sync ပြုလုပ်ခြင်း
         if ($request->has('classifications')) {
@@ -96,13 +99,14 @@ class CatalogController extends Controller
         $book = Item::findOrFail($id);
 
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|min:3|max:100',
             'author_id' => 'required|exists:authors,id',
             'pages' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
+            'status' => 'nullable|string|in:active,inactive',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'pdf_file' => 'nullable|file|max:102400',
             'classifications' => 'nullable|array',
             'classifications.*' => 'exists:classifications,id',
@@ -132,6 +136,7 @@ class CatalogController extends Controller
         }
 
         $book->update($data);
+        ActivityLogger::log('update', "Updated book '{$book->name}' (ID: {$book->id}) details.");
 
         if ($request->has('classifications')) {
             $book->classifications()->sync($request->input('classifications'));
@@ -149,7 +154,10 @@ class CatalogController extends Controller
     public function destroy($id)
     {
         $book = Item::findOrFail($id);
+        $bookName = $book->name;
+        $bookId = $book->id;
         $book->delete();
+        ActivityLogger::log('delete', "Deleted book '{$bookName}' (ID: {$bookId}).");
 
         return response()->json([
             'success' => true,

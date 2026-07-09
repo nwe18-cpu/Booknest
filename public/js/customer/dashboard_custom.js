@@ -1,5 +1,5 @@
 // 1. Chart heights animation on load
-document.addEventListener('DOMContentLoaded', function() {
+function initChartAnimations() {
     setTimeout(() => {
         document.querySelectorAll('.chart-bar-fill').forEach(fill => {
             const finalHeight = fill.getAttribute('data-height');
@@ -11,7 +11,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof updateMusicTitle === 'function') {
         updateMusicTitle();
     }
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initChartAnimations);
+} else {
+    initChartAnimations();
+}
 
 // 2. Category filters
 function filterCategory(catId, btn) {
@@ -85,7 +91,7 @@ function openBookDetail(id, title, author, desc, price, stock, totalPages, color
             if (titleBox) titleBox.style.display = 'none';
             if (badge) badge.style.display = 'none';
         } else {
-            coverFront.style.backgroundImage = "none";
+            coverFront.style.backgroundImage = "";
             if (titleBox) titleBox.style.display = 'flex';
             if (badge) badge.style.display = 'flex';
         }
@@ -97,10 +103,15 @@ function openBookDetail(id, title, author, desc, price, stock, totalPages, color
     const readBtn = document.getElementById('btn-read-trigger');
     const resumeBtn = document.getElementById('btn-resume-bookmark');
     const buyBtn = document.getElementById('btn-add-to-cart-modal');
+    const removeBtn = document.getElementById('btn-remove-library');
     
     if (hasDownloaded) {
         if (readBtn) readBtn.classList.remove('display-none');
         if (buyBtn) buyBtn.classList.add('display-none');
+        if (removeBtn) {
+            removeBtn.classList.remove('display-none');
+            removeBtn.setAttribute('data-id', id);
+        }
         
         readBtn.onclick = function() {
             closeBookDetail();
@@ -121,6 +132,7 @@ function openBookDetail(id, title, author, desc, price, stock, totalPages, color
     } else {
         if (readBtn) readBtn.classList.add('display-none');
         if (resumeBtn) resumeBtn.classList.add('display-none');
+        if (removeBtn) removeBtn.classList.add('display-none');
         if (buyBtn) {
             buyBtn.classList.remove('display-none');
             buyBtn.setAttribute('data-id', id);
@@ -148,10 +160,12 @@ function openBookDetail(id, title, author, desc, price, stock, totalPages, color
     }
 
     document.getElementById('detail-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
 }
 
 function closeBookDetail(e) {
     document.getElementById('detail-modal').classList.remove('active');
+    document.body.style.overflow = '';
 }
 
 function openReviewsModal(id, title, author) {
@@ -388,7 +402,6 @@ function buildVirtualPages() {
         const leftContainer = document.getElementById('page-l-content');
         const rect = leftContainer.getBoundingClientRect();
         const containerWidth = rect.width || 386;
-        const containerHeight = rect.height || 462;
         
         let virtualPages = [];
         let virtualPageNum = 1;
@@ -396,54 +409,36 @@ function buildVirtualPages() {
         pages.forEach((page, index) => {
             const pageNum = index + 1;
             const viewport = page.getViewport({ scale: 1.0 });
-            const baseScale = (containerWidth / viewport.width) * 0.96 * pdfZoomLevel;
-            const baseScaledHeight = viewport.height * baseScale;
             
-            const tolerance = 1.05;
-            if (baseScaledHeight <= containerHeight * tolerance) {
+            // Detect landscape layout containing side-by-side sheets (width > height * 1.22)
+            const isLandscape = viewport.width > viewport.height * 1.22;
+            
+            if (isLandscape) {
+                // Left half of landscape page
                 virtualPages.push({
                     pdfPageNum: pageNum,
-                    offsetY: 0,
-                    scale: baseScale,
+                    isLeftHalf: true,
+                    isRightHalf: false,
+                    scale: null,
+                    virtualPageNum: virtualPageNum++
+                });
+                // Right half of landscape page
+                virtualPages.push({
+                    pdfPageNum: pageNum,
+                    isLeftHalf: false,
+                    isRightHalf: true,
+                    scale: null,
                     virtualPageNum: virtualPageNum++
                 });
             } else {
-                const overlap = 35; // 35px overlap is perfect for 1-2 lines of text
-                const H_eff = containerHeight - overlap;
-                
-                // Calculate N_down and N_up
-                let N_down = Math.floor((baseScaledHeight - overlap) / H_eff);
-                if (N_down < 1) N_down = 1;
-                const H_down = N_down * containerHeight - (N_down - 1) * overlap;
-                const s_down = H_down / baseScaledHeight;
-                
-                const N_up = Math.ceil((baseScaledHeight - overlap) / H_eff);
-                const H_up = N_up * containerHeight - (N_up - 1) * overlap;
-                const s_up = H_up / baseScaledHeight;
-                
-                // Choose the best N and scale factor
-                let N = N_up;
-                let scaleFactor = s_up;
-                
-                // We prefer scaling down if it's within a reasonable limit (>= 0.82)
-                // and is closer to 1.0 than scaling up.
-                if (s_down >= 0.82 && Math.abs(1.0 - s_down) < Math.abs(1.0 - s_up)) {
-                    N = N_down;
-                    scaleFactor = s_down;
-                }
-                
-                const finalScale = baseScale * scaleFactor;
-                
-                // Generate N segments with exact overlap spacing
-                for (let i = 0; i < N; i++) {
-                    const offsetY = i * H_eff;
-                    virtualPages.push({
-                        pdfPageNum: pageNum,
-                        offsetY: Math.round(offsetY),
-                        scale: finalScale,
-                        virtualPageNum: virtualPageNum++
-                    });
-                }
+                // Normal portrait page
+                virtualPages.push({
+                    pdfPageNum: pageNum,
+                    isLeftHalf: false,
+                    isRightHalf: false,
+                    scale: null,
+                    virtualPageNum: virtualPageNum++
+                });
             }
         });
         
@@ -463,10 +458,96 @@ function openReader(id, name, author, totalPages, pagesContent, savedPage, pdfUr
     currentReaderBookId = id;
     currentBookmarkedPage = bookmarkedPage ? parseInt(bookmarkedPage) : null;
     activePagePointer = Math.max(1, parseInt(savedPage));
-    if (activePagePointer % 2 === 0) activePagePointer--; // Always odd page (left page)
+    
+    // Auto-Play Music setting trigger
+    if (typeof booknestSettings !== 'undefined' && booknestSettings.autoMusic && !isMusicPlaying) {
+        initCozyMusic();
+        if (typeof cozyAudio !== 'undefined' && cozyAudio) {
+            cozyAudio.play().then(() => {
+                isMusicPlaying = true;
+                if (typeof updateMusicUI === 'function') updateMusicUI();
+            }).catch(err => console.log("Auto audio play blocked/failed: ", err));
+        }
+    }
 
     document.getElementById('reader-book-name').innerText = name;
     document.getElementById('reader-book-author').innerText = author;
+
+    // Fetch and populate reviews and comments stats dynamically
+    const avgRatingSpan = document.getElementById('reader-avg-rating');
+    const commentsCountSpan = document.getElementById('reader-comments-count');
+    
+    if (avgRatingSpan) avgRatingSpan.innerText = '0.0';
+    if (commentsCountSpan) commentsCountSpan.innerText = '0';
+    
+    fetch(`/store/books/${id}/reviews`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                if (avgRatingSpan) avgRatingSpan.innerText = parseFloat(data.average_rating).toFixed(1);
+                if (commentsCountSpan) commentsCountSpan.innerText = data.total_reviews;
+            }
+        })
+        .catch(err => console.error("Failed to load reader book reviews: ", err));
+
+    // Set Wattpad Left Sidebar: Author profile
+    const authorAvatarImg = document.getElementById('reader-author-avatar');
+    if (authorAvatarImg) {
+        authorAvatarImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(author)}&background=f1e4d8&color=5c3a21&bold=true`;
+    }
+    const authorNameEl = document.getElementById('reader-author-name');
+    if (authorNameEl) {
+        authorNameEl.innerText = author;
+    }
+
+    // Set Wattpad Center Title
+    const bookTitleEl = document.getElementById('reader-chapter-title');
+    if (bookTitleEl) {
+        bookTitleEl.innerText = name;
+    }
+
+    // Set Wattpad Right Sidebar: Recommended Books from Bookshelf
+    const recBooksList = document.getElementById('reader-rec-books-list');
+    if (recBooksList) {
+        recBooksList.innerHTML = ''; // reset list
+        
+        // Find other books on the bookshelf
+        const allBooksOnShelf = Array.from(document.querySelectorAll('.shelf-book-premium'));
+        const otherBooks = allBooksOnShelf.filter(el => el.getAttribute('data-id') != id);
+        
+        // Take up to 4 books
+        const selectedRecs = otherBooks.slice(0, 4);
+        
+        if (selectedRecs.length > 0) {
+            selectedRecs.forEach(el => {
+                const recId = el.getAttribute('data-id');
+                const recTitle = el.getAttribute('data-title-raw');
+                const recAuthor = el.getAttribute('data-author-raw');
+                const recImage = el.getAttribute('data-image');
+                const recColorClass = el.getAttribute('data-color-class') || 'book-color-1';
+                
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'rec-book-item';
+                itemDiv.setAttribute('onclick', `closeReader(); openBookDetailFromElement(document.querySelector('.shelf-book-premium[data-id="${recId}"]'));`);
+                
+                let coverStyle = '';
+                if (recImage) {
+                    coverStyle = `style="background-image: url('${recImage}');"`;
+                }
+                
+                itemDiv.innerHTML = `
+                    <div class="rec-book-cover ${recImage ? '' : recColorClass}" ${coverStyle}></div>
+                    <div class="rec-book-meta">
+                        <h5 class="rec-book-title" title="${recTitle}">${recTitle}</h5>
+                        <p class="rec-book-author">By ${recAuthor}</p>
+                    </div>
+                `;
+                recBooksList.appendChild(itemDiv);
+            });
+        } else {
+            recBooksList.innerHTML = '<p class="text-mute" style="font-size:0.8rem;">No recommendations available.</p>';
+        }
+    }
 
     // Reset state
     pdfDoc = null;
@@ -475,7 +556,6 @@ function openReader(id, name, author, totalPages, pagesContent, savedPage, pdfUr
     document.querySelectorAll('.reader-text-container').forEach(c => c.style.display = 'block');
     document.querySelectorAll('.pdf-page-canvas').forEach(c => c.style.display = 'none');
     document.getElementById('page-l-content').querySelector('p').innerText = "Loading book contents...";
-    document.getElementById('page-r-content').querySelector('p').innerText = "Loading...";
 
     const readerOverlay = document.getElementById('reader-overlay');
     const zoomControls = document.getElementById('reader-zoom-controls');
@@ -635,7 +715,7 @@ function updateZoomUI() {
     }
 }
 
-function renderPageOnCanvas(pageNum, canvasId, offsetY = 0, customScale = null) {
+function renderPageOnCanvas(pageNum, canvasId, isLeftHalf = false, isRightHalf = false, customScale = null) {
     return new Promise((resolve, reject) => {
         // Cancel existing render task for this canvas if active
         if (activeRenderTasks[canvasId]) {
@@ -679,25 +759,43 @@ function renderPageOnCanvas(pageNum, canvasId, offsetY = 0, customScale = null) 
             let scale = customScale;
             if (!scale) {
                 const containerWidth = rect.width || 450;
-                scale = (containerWidth / viewport.width) * 0.96 * pdfZoomLevel;
+                if (isLeftHalf || isRightHalf) {
+                    // Fit half the page width to the reading container width!
+                    scale = (containerWidth / (viewport.width / 2)) * 0.96 * pdfZoomLevel;
+                } else {
+                    scale = (containerWidth / viewport.width) * 0.96 * pdfZoomLevel;
+                }
             }
             
             viewport = page.getViewport({ scale: scale });
 
             // High DPI resolution scaling
             const dpr = window.devicePixelRatio || 1;
-            canvas.width = viewport.width * dpr;
-            canvas.height = viewport.height * dpr;
-            canvas.style.width = viewport.width + 'px';
-            canvas.style.height = viewport.height + 'px';
             
-            // Apply absolute offset mapping
-            canvas.style.position = 'absolute';
-            canvas.style.top = (-offsetY) + 'px';
-            canvas.style.left = '50%';
-            canvas.style.transform = 'translateX(-50%)';
-
-            ctx.scale(dpr, dpr);
+            if (isLeftHalf || isRightHalf) {
+                canvas.width = (viewport.width / 2) * dpr;
+                canvas.height = viewport.height * dpr;
+                canvas.style.width = (viewport.width / 2) + 'px';
+                canvas.style.height = viewport.height + 'px';
+                
+                ctx.scale(dpr, dpr);
+                
+                if (isRightHalf) {
+                    ctx.translate(-viewport.width / 2, 0);
+                }
+            } else {
+                canvas.width = viewport.width * dpr;
+                canvas.height = viewport.height * dpr;
+                canvas.style.width = viewport.width + 'px';
+                canvas.style.height = viewport.height + 'px';
+                ctx.scale(dpr, dpr);
+            }
+            
+            // Apply relative flow layout mapping to allow vertical expansion
+            canvas.style.position = 'relative';
+            canvas.style.top = '0px';
+            canvas.style.left = 'auto';
+            canvas.style.transform = 'none';
 
             const renderContext = {
                 canvasContext: ctx,
@@ -742,34 +840,28 @@ function renderReaderPages() {
         // Draw left page
         const leftVP = globalVirtualPages[activePagePointer - 1];
         if (leftVP) {
-            const partSuffix = getPartSuffix(leftVP.pdfPageNum, leftVP.offsetY);
-            document.getElementById('page-l-header').innerText = `Page ${leftVP.pdfPageNum}${partSuffix}`;
-            document.getElementById('page-l-num').innerText = `${leftVP.pdfPageNum} / ${physicalTotalPages}`;
-            renderPageOnCanvas(leftVP.pdfPageNum, 'canvas-page-l', leftVP.offsetY, leftVP.scale);
-        }
-
-        // Draw right page
-        if (activePagePointer < totalReaderPages) {
-            const rightVP = globalVirtualPages[activePagePointer];
-            const partSuffix = getPartSuffix(rightVP.pdfPageNum, rightVP.offsetY);
-            document.getElementById('page-r-header').innerText = `Page ${rightVP.pdfPageNum}${partSuffix}`;
-            document.getElementById('page-r-num').innerText = `${rightVP.pdfPageNum} / ${physicalTotalPages}`;
-            renderPageOnCanvas(rightVP.pdfPageNum, 'canvas-page-r', rightVP.offsetY, rightVP.scale);
-        } else {
-            document.getElementById('page-r-header').innerText = 'THE END';
-            document.getElementById('page-r-num').innerText = '';
-            renderPageOnCanvas(-1, 'canvas-page-r', 0);
+            // Update Wattpad episode chapter & title
+            const episodeNumEl = document.getElementById('reader-episode-num');
+            if (episodeNumEl) {
+                let label = `Page ${leftVP.pdfPageNum}`;
+                if (leftVP.isLeftHalf) label += " (Left Half)";
+                if (leftVP.isRightHalf) label += " (Right Half)";
+                episodeNumEl.innerText = label;
+            }
+            
+            renderPageOnCanvas(leftVP.pdfPageNum, 'canvas-page-l', leftVP.isLeftHalf, leftVP.isRightHalf, leftVP.scale);
         }
 
         // Controls enabling
+        const step = 1;
         document.getElementById('btn-prev-page').disabled = (activePagePointer <= 1);
-        document.getElementById('btn-next-page').disabled = (activePagePointer + 2 > totalReaderPages);
+        document.getElementById('btn-next-page').disabled = (activePagePointer + step > totalReaderPages);
 
         // Progress calculate
         const currentPageRead = leftVP ? leftVP.pdfPageNum : 1;
         const progressPercent = Math.round((currentPageRead / physicalTotalPages) * 100);
 
-        document.getElementById('page-indicator-text').innerText = `Page ${currentPageRead} of ${physicalTotalPages} (${progressPercent}% completed)`;
+        document.getElementById('page-indicator-text').innerText = `Page ${currentPageRead} of ${physicalTotalPages} (${progressPercent}%)`;
         document.getElementById('reader-progress-fill-bar').style.width = progressPercent + '%';
 
         // Save progress to database
@@ -781,35 +873,25 @@ function renderReaderPages() {
         document.querySelectorAll('.pdf-page-canvas').forEach(c => c.style.display = 'none');
 
         const leftPage = readerPages.find(p => p.page == activePagePointer);
-        const rightPage = readerPages.find(p => p.page == activePagePointer + 1);
 
         if (leftPage) {
-            document.getElementById('page-l-header').innerText = leftPage.title.toUpperCase();
-            document.getElementById('page-l-content').querySelector('.reader-text-container').innerHTML = `<h3>${leftPage.title}</h3><p>${leftPage.content}</p>`;
-            document.getElementById('page-l-num').innerText = 'Page ' + leftPage.page;
-        } else {
-            document.getElementById('page-l-header').innerText = '';
-            document.getElementById('page-l-content').querySelector('.reader-text-container').innerText = '';
-            document.getElementById('page-l-num').innerText = '';
+            const episodeNumEl = document.getElementById('reader-episode-num');
+            if (episodeNumEl) episodeNumEl.innerText = `Chapter ${leftPage.page}`;
+            
+            const chapterTitleEl = document.getElementById('reader-chapter-title');
+            if (chapterTitleEl) chapterTitleEl.innerText = leftPage.title;
+
+            document.getElementById('page-l-content').querySelector('.reader-text-container').innerHTML = `<p>${leftPage.content}</p>`;
         }
 
-        if (rightPage) {
-            document.getElementById('page-r-header').innerText = rightPage.title.toUpperCase();
-            document.getElementById('page-r-content').querySelector('.reader-text-container').innerHTML = `<h3>${rightPage.title}</h3><p>${rightPage.content}</p>`;
-            document.getElementById('page-r-num').innerText = 'Page ' + rightPage.page;
-        } else {
-            document.getElementById('page-r-header').innerText = 'THE END';
-            document.getElementById('page-r-content').querySelector('.reader-text-container').innerHTML = `<h3 class='end-page-content'>You have reached the end of this book!</h3>`;
-            document.getElementById('page-r-num').innerText = '';
-        }
-
+        const step = 1;
         document.getElementById('btn-prev-page').disabled = (activePagePointer <= 1);
-        document.getElementById('btn-next-page').disabled = (activePagePointer + 2 > totalReaderPages);
+        document.getElementById('btn-next-page').disabled = (activePagePointer + step > totalReaderPages);
 
-        const currentPageRead = rightPage ? rightPage.page : (leftPage ? leftPage.page : 1);
+        const currentPageRead = leftPage ? leftPage.page : 1;
         const progressPercent = Math.round((currentPageRead / totalReaderPages) * 100);
 
-        document.getElementById('page-indicator-text').innerText = `Page ${currentPageRead} of ${totalReaderPages} (${progressPercent}% completed)`;
+        document.getElementById('page-indicator-text').innerText = `Page ${currentPageRead} of ${totalReaderPages} (${progressPercent}%)`;
         document.getElementById('reader-progress-fill-bar').style.width = progressPercent + '%';
 
         saveProgressToDatabase(currentReaderBookId, currentPageRead);
@@ -818,23 +900,15 @@ function renderReaderPages() {
     // Refresh active page bookmark state and show/hide "Go to Bookmark" quick jump link
     let currentPageRead = 1;
     let isBookmarkedVisible = false;
-    
+
     if (isPdfMode) {
         const leftVP = globalVirtualPages[activePagePointer - 1];
-        const rightVP = (activePagePointer < totalReaderPages) ? globalVirtualPages[activePagePointer] : null;
         currentPageRead = leftVP ? leftVP.pdfPageNum : 1;
-        isBookmarkedVisible = currentBookmarkedPage && (
-            (leftVP && leftVP.pdfPageNum === currentBookmarkedPage) ||
-            (rightVP && rightVP.pdfPageNum === currentBookmarkedPage)
-        );
+        isBookmarkedVisible = currentBookmarkedPage && (leftVP && leftVP.pdfPageNum === currentBookmarkedPage);
     } else {
         const leftPage = readerPages.find(p => p.page == activePagePointer);
-        const rightPage = readerPages.find(p => p.page == activePagePointer + 1);
-        currentPageRead = rightPage ? rightPage.page : (leftPage ? leftPage.page : 1);
-        isBookmarkedVisible = currentBookmarkedPage && (
-            (leftPage && leftPage.page === currentBookmarkedPage) ||
-            (rightPage && rightPage.page === currentBookmarkedPage)
-        );
+        currentPageRead = leftPage ? leftPage.page : 1;
+        isBookmarkedVisible = currentBookmarkedPage && (leftPage && leftPage.page === currentBookmarkedPage);
     }
 
     const bookmarkBtn = document.getElementById('btn-reader-bookmark');
@@ -926,10 +1000,8 @@ function jumpToBookmark() {
     if (isPdfMode) {
         let foundIndex = globalVirtualPages.findIndex(vp => vp.pdfPageNum >= currentBookmarkedPage);
         activePagePointer = foundIndex !== -1 ? foundIndex + 1 : 1;
-        if (activePagePointer % 2 === 0) activePagePointer--;
     } else {
         activePagePointer = currentBookmarkedPage;
-        if (activePagePointer % 2 === 0) activePagePointer--;
     }
 
     renderReaderPages();
@@ -937,40 +1009,44 @@ function jumpToBookmark() {
 }
 
 function nextPage() {
-    if (activePagePointer + 2 <= totalReaderPages) {
-        const bookWrapper = document.querySelector('.book-double-page-wrapper');
-        if (bookWrapper) bookWrapper.classList.add('page-fade-out');
+    const step = 1;
+    if (activePagePointer + step <= totalReaderPages) {
+        const articleCard = document.querySelector('.reader-article-card');
+        if (articleCard) articleCard.style.opacity = '0.35';
 
         setTimeout(() => {
-            activePagePointer += 2;
+            activePagePointer += step;
             renderReaderPages();
-            if (bookWrapper) bookWrapper.classList.remove('page-fade-out');
-            document.querySelectorAll('.page-inner-content').forEach(c => {
-                c.scrollTop = 0;
-                c.scrollLeft = 0;
-            });
+            if (articleCard) articleCard.style.opacity = '1';
+            const viewport = document.querySelector('.reader-book-viewport');
+            if (viewport) viewport.scrollTop = 0;
         }, 200);
     }
 }
 
 function prevPage() {
-    if (activePagePointer - 2 >= 1) {
-        const bookWrapper = document.querySelector('.book-double-page-wrapper');
-        if (bookWrapper) bookWrapper.classList.add('page-fade-out');
+    const step = 1;
+    if (activePagePointer - step >= 1) {
+        const articleCard = document.querySelector('.reader-article-card');
+        if (articleCard) articleCard.style.opacity = '0.35';
 
         setTimeout(() => {
-            activePagePointer -= 2;
+            activePagePointer -= step;
             renderReaderPages();
-            if (bookWrapper) bookWrapper.classList.remove('page-fade-out');
-            document.querySelectorAll('.page-inner-content').forEach(c => {
-                c.scrollTop = 0;
-                c.scrollLeft = 0;
-            });
+            if (articleCard) articleCard.style.opacity = '1';
+            const viewport = document.querySelector('.reader-book-viewport');
+            if (viewport) viewport.scrollTop = 0;
         }, 200);
     }
 }
 
 function saveProgressToDatabase(bookId, pageNum) {
+    // Check if autoSave is disabled by user settings
+    if (typeof booknestSettings !== 'undefined' && !booknestSettings.autoSave) {
+        console.log("Progress auto-save is disabled by user settings.");
+        return;
+    }
+
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const readerOverlay = document.getElementById('reader-overlay');
     if (!readerOverlay) return;
@@ -1423,4 +1499,302 @@ function closeWishlistModal() {
 function openBookFromWishlist(el) {
     closeWishlistModal();
     openBookDetailFromElement(el);
+}
+
+// Global click event listener to show loading spinner for all "Add to Cart" actions
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('button, a');
+    if (!btn) return;
+    
+    const onclickAttr = btn.getAttribute('onclick') || '';
+    if (onclickAttr.includes('addToCart') || btn.classList.contains('btn-add-to-cart') || btn.classList.contains('btn-buy-book') || btn.classList.contains('btn-wishlist-buy')) {
+        if (btn.classList.contains('btn-loading') || btn.disabled) return;
+        
+        btn.classList.add('btn-loading');
+        const originalHtml = btn.innerHTML;
+        btn.style.pointerEvents = 'none';
+        
+        // Check if button is an icon-only card button or text button
+        if (btn.classList.contains('btn-card-cart') || btn.classList.contains('btn-wishlist-buy') || btn.tagName === 'A') {
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+        } else {
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Adding...';
+        }
+        
+        // Restore button state after a safe timeout (1.2s) when server response has returned
+        setTimeout(() => {
+            btn.classList.remove('btn-loading');
+            btn.style.pointerEvents = '';
+            btn.innerHTML = originalHtml;
+        }, 1200);
+    }
+});
+
+// ==========================================================================
+// APP SETTINGS STATE MANAGEMENT
+// ==========================================================================
+const settingsModal = document.getElementById('settings-modal');
+const settingsPreviewBox = document.getElementById('settings-preview-box');
+
+// Default Settings structure
+let booknestSettings = {
+    theme: 'light',
+    fontSize: 'md',
+    fontStyle: 'sans',
+    autoMusic: true,
+    autoSave: true
+};
+
+// Load settings from LocalStorage on initialization
+function initAppSettings() {
+    let saved = null;
+    try {
+        saved = localStorage.getItem('booknest_settings');
+    } catch (e) {
+        console.warn("localStorage is not accessible, using default settings.", e);
+    }
+    if (saved) {
+        try {
+            const parsed = JSON.parse(saved);
+            if (parsed && typeof parsed === 'object') {
+                booknestSettings = Object.assign({}, booknestSettings, parsed);
+            }
+        } catch (e) {
+            console.error("Failed to parse saved settings, resetting defaults.", e);
+        }
+    }
+    applySettingsToDOM();
+}
+
+// Open settings modal
+function openAppSettingsModal() {
+    const modal = document.getElementById('settings-modal') || settingsModal;
+    if (modal) {
+        // Load settings values into Form fields
+        // 1. Theme active button state
+        document.querySelectorAll('.theme-opt-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.classList.contains(`theme-${booknestSettings.theme}`)) {
+                btn.classList.add('active');
+            }
+        });
+        
+        // 2. Select dropdowns
+        const fontSizeSel = document.getElementById('setting-font-size');
+        if (fontSizeSel) fontSizeSel.value = booknestSettings.fontSize;
+        
+        const fontStyleSel = document.getElementById('setting-font-style');
+        if (fontStyleSel) fontStyleSel.value = booknestSettings.fontStyle;
+        
+        // 3. Toggle Checkboxes
+        const autoMusicChk = document.getElementById('setting-auto-music');
+        if (autoMusicChk) autoMusicChk.checked = booknestSettings.autoMusic;
+        
+        const autoSaveChk = document.getElementById('setting-auto-save');
+        if (autoSaveChk) autoSaveChk.checked = booknestSettings.autoSave;
+        
+        // 4. Update preview
+        updateSettingsPreview();
+        
+        // Show modal
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+// Close settings modal
+function closeAppSettingsModal() {
+    const modal = document.getElementById('settings-modal') || settingsModal;
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+// Set active theme option value inside modal
+function setSettingTheme(themeName) {
+    booknestSettings.theme = themeName;
+    document.querySelectorAll('.theme-opt-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.classList.contains(`theme-${themeName}`)) {
+            btn.classList.add('active');
+        }
+    });
+    updateSettingsPreview();
+}
+
+// Update the live preview box state dynamically
+function updateSettingsPreview() {
+    const previewBox = document.getElementById('settings-preview-box') || settingsPreviewBox;
+    if (previewBox) {
+        // Read form state
+        const fontSizeSel = document.getElementById('setting-font-size');
+        const fontStyleSel = document.getElementById('setting-font-style');
+        
+        const fontSize = fontSizeSel ? fontSizeSel.value : 'md';
+        const fontStyle = fontStyleSel ? fontStyleSel.value : 'sans';
+        const theme = booknestSettings.theme || 'light';
+        
+        // Apply Preview Styles
+        previewBox.className = 'settings-preview-box'; // reset classes
+        
+        // Theme styles preview
+        if (theme === 'dark') {
+            previewBox.style.backgroundColor = '#162c26';
+            previewBox.style.color = '#FAF9F5';
+            previewBox.style.borderColor = '#CCA353';
+        } else if (theme === 'sepia') {
+            previewBox.style.backgroundColor = '#efe7d5';
+            previewBox.style.color = '#4c3c2a';
+            previewBox.style.borderColor = '#c7ba9d';
+        } else {
+            // Light
+            previewBox.style.backgroundColor = '#FFFFFF';
+            previewBox.style.color = '#122521';
+            previewBox.style.borderColor = '#e4decb';
+        }
+        
+        // Font size preview style
+        let sizeVal = '0.92rem';
+        if (fontSize === 'sm') sizeVal = '0.82rem';
+        else if (fontSize === 'lg') sizeVal = '1.15rem';
+        else if (fontSize === 'xl') sizeVal = '1.35rem';
+        previewBox.querySelector('.preview-text').style.fontSize = sizeVal;
+        
+        // Font style preview style
+        let fontVal = "'Inter', sans-serif";
+        if (fontStyle === 'serif') fontVal = "'Georgia', serif";
+        else if (fontStyle === 'mono') fontVal = "'Courier New', monospace";
+        previewBox.style.fontFamily = fontVal;
+    }
+}
+
+// Save all settings and apply them to the Reader Overlay
+function saveAppSettings() {
+    const fontSizeSel = document.getElementById('setting-font-size');
+    const fontStyleSel = document.getElementById('setting-font-style');
+    const autoMusicChk = document.getElementById('setting-auto-music');
+    const autoSaveChk = document.getElementById('setting-auto-save');
+    
+    booknestSettings.fontSize = fontSizeSel ? fontSizeSel.value : 'md';
+    booknestSettings.fontStyle = fontStyleSel ? fontStyleSel.value : 'sans';
+    booknestSettings.autoMusic = autoMusicChk ? autoMusicChk.checked : true;
+    booknestSettings.autoSave = autoSaveChk ? autoSaveChk.checked : true;
+    
+    // Save to LocalStorage
+    try {
+        localStorage.setItem('booknest_settings', JSON.stringify(booknestSettings));
+    } catch (e) {
+        console.warn("localStorage is not accessible, settings not saved.", e);
+    }
+    
+    // Apply changes to Reader Overlay in real-time
+    applySettingsToDOM();
+    
+    // Close modal
+    closeAppSettingsModal();
+}
+
+// Bind settings class states directly onto the reader overlay container
+function applySettingsToDOM() {
+    const readerOverlay = document.getElementById('reader-overlay');
+    if (readerOverlay) {
+        // Reset classes
+        readerOverlay.classList.remove(
+            'reader-theme-light', 'reader-theme-dark', 'reader-theme-sepia',
+            'reader-font-sm', 'reader-font-md', 'reader-font-lg', 'reader-font-xl',
+            'reader-font-serif', 'reader-font-sans', 'reader-font-mono'
+        );
+        
+        // Append settings classes
+        readerOverlay.classList.add(`reader-theme-${booknestSettings.theme}`);
+        readerOverlay.classList.add(`reader-font-${booknestSettings.fontSize}`);
+        readerOverlay.classList.add(`reader-font-${booknestSettings.fontStyle}`);
+    }
+}
+
+// Run settings initialization on page load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAppSettings);
+} else {
+    initAppSettings();
+}
+
+// Remove downloaded book from customer's library dashboard
+function removeBookFromLibraryTrigger() {
+    const removeBtn = document.getElementById('btn-remove-library');
+    if (!removeBtn) return;
+    
+    const id = removeBtn.getAttribute('data-id');
+    const title = document.getElementById('modal-title').innerText;
+    
+    const confirmModal = document.getElementById('confirm-delete-modal');
+    const confirmTitle = document.getElementById('confirm-book-title');
+    const confirmActionBtn = document.getElementById('btn-confirm-delete-action');
+    
+    if (confirmModal && confirmTitle && confirmActionBtn) {
+        confirmTitle.innerText = `"${title}"`;
+        
+        // Bind the actual delete call to the confirm button inside the modal
+        confirmActionBtn.onclick = function() {
+            // Disable buttons inside the modal & show spinner loading
+            confirmActionBtn.disabled = true;
+            confirmActionBtn.style.pointerEvents = 'none';
+            confirmActionBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Removing...';
+            
+            const cancelBtn = confirmModal.querySelector('.btn-confirm-cancel');
+            if (cancelBtn) {
+                cancelBtn.disabled = true;
+                cancelBtn.style.pointerEvents = 'none';
+            }
+            
+            // Fetch request
+            fetch(`/customer/library/remove/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // Successful deletion: refresh page to update bookshelf
+                    location.reload();
+                } else {
+                    alert(data.message || 'Failed to remove book.');
+                    closeConfirmDeleteModal();
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('An error occurred. Please try again.');
+                closeConfirmDeleteModal();
+            });
+        };
+        
+        // Show confirm modal
+        confirmModal.classList.add('active');
+    }
+}
+
+function closeConfirmDeleteModal() {
+    const confirmModal = document.getElementById('confirm-delete-modal');
+    if (confirmModal) {
+        confirmModal.classList.remove('active');
+        
+        // Reset button states inside
+        const confirmActionBtn = document.getElementById('btn-confirm-delete-action');
+        if (confirmActionBtn) {
+            confirmActionBtn.disabled = false;
+            confirmActionBtn.style.pointerEvents = '';
+            confirmActionBtn.innerHTML = 'Remove';
+        }
+        
+        const cancelBtn = confirmModal.querySelector('.btn-confirm-cancel');
+        if (cancelBtn) {
+            cancelBtn.disabled = false;
+            cancelBtn.style.pointerEvents = '';
+        }
+    }
 }

@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // 2. Active Author Navigation
     const emptyState = document.getElementById('empty-state');
     const activeWorkspace = document.getElementById('active-workspace');
+    const workspaceRight = document.getElementById('workspace-right');
+    const closeWorkspaceBtn = document.getElementById('close-workspace-btn');
     const authorHeaderAvatar = document.getElementById('author-header-avatar');
     const activeAuthorTitle = document.getElementById('active-author-title');
     const activeAuthorSubtitle = document.getElementById('active-author-subtitle');
@@ -30,6 +32,24 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let activeAuthorCard = null;
 
+    // Close mobile workspace modal
+    if (closeWorkspaceBtn && workspaceRight) {
+        closeWorkspaceBtn.addEventListener('click', function() {
+            workspaceRight.classList.remove('mobile-open');
+            document.body.style.overflow = '';
+        });
+    }
+
+    // Close modal on backdrop click
+    if (workspaceRight) {
+        workspaceRight.addEventListener('click', function(e) {
+            if (window.innerWidth <= 991 && e.target === workspaceRight) {
+                workspaceRight.classList.remove('mobile-open');
+                document.body.style.overflow = '';
+            }
+        });
+    }
+    
     authorCards.forEach(card => {
         card.addEventListener('click', function() {
             const authorId = this.getAttribute('data-id');
@@ -46,6 +66,14 @@ document.addEventListener('DOMContentLoaded', function() {
             // Load Author details in Workspace
             emptyState.style.display = 'none';
             activeWorkspace.style.display = 'flex';
+            
+            // Show modal on mobile
+            if (workspaceRight) {
+                workspaceRight.classList.add('mobile-open');
+                if (window.innerWidth <= 991) {
+                    document.body.style.overflow = 'hidden'; // Prevent background scroll on mobile only
+                }
+            }
             
             // Set Header Avatar
             const imgEl = this.querySelector('img');
@@ -115,8 +143,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'book-card-item';
         itemDiv.setAttribute('data-id', book.id);
-        
-        const coverSrc = book.image ? `/storage/${book.image}` : '/images/default-book.png';
+        const coverHtml = book.image 
+            ? `<img src="/storage/${book.image}" alt="${book.name}" class="book-card-cover">` 
+            : `<div class="book-card-cover-placeholder"><i class="fa-solid fa-book"></i></div>`;
         const pdfBadge = book.pdf_file ? `<span class="badge-pdf-attached"><i class="fa-solid fa-file-circle-check"></i> PDF Attached</span>` : '';
         
         let classificationBadges = '';
@@ -126,11 +155,15 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
+        const statusBadge = book.status === 'inactive' 
+            ? `<span class="badge-stock-danger" style="margin-left: 8px; padding: 2px 6px; font-size: 0.7rem; border-radius: 4px;">Deactivated</span>` 
+            : '';
+
         itemDiv.innerHTML = `
             <div class="book-card-details">
-                <img src="${coverSrc}" alt="${book.name}" class="book-card-cover">
+                ${coverHtml}
                 <div class="book-card-meta">
-                    <h5>${book.name}</h5>
+                    <h5>${book.name} ${statusBadge}</h5>
                     <p>${book.pages} pages &nbsp; ${classificationBadges} &nbsp; ${pdfBadge}</p>
                 </div>
             </div>
@@ -223,6 +256,11 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('book-name').value = book.name;
         document.getElementById('book-price').value = Math.round(book.price);
         document.getElementById('book-stock').value = book.stock_quantity;
+        
+        const statusSelect = document.getElementById('book-status');
+        if (statusSelect) {
+            statusSelect.value = book.status || 'active';
+        }
         document.getElementById('book-pages').value = book.pages || 250;
 
         const synopsisTextarea = bookCreatorForm.querySelector('textarea[name="description"]');

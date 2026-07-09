@@ -3,8 +3,8 @@
 @section('title', 'My Library - Booknest')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/customer/dashboard.css') }}?v=1.2.2">
-<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.2.3">
+<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.4.9">
+<link rel="stylesheet" href="{{ asset('css/customer/dashboard.css') }}?v=1.3.9">
 @endsection
 
 @section('content')
@@ -129,6 +129,11 @@
             <button class="btn-wishlist-trigger" onclick="openWishlistModal()">
                 <i class="fa-solid fa-heart"></i> Wishlist
                 <span class="wishlist-badge">{{ auth()->guard('customer')->user()->wishlistBooks->count() }}</span>
+            </button>
+
+            <!-- App Settings Trigger Button -->
+            <button class="btn-wishlist-trigger btn-settings-trigger" onclick="openAppSettingsModal()" title="App Settings">
+                <i class="fa-solid fa-sliders"></i> Settings
             </button>
 
             <!-- Local Search Box -->
@@ -348,81 +353,183 @@
     </div>
 </div>
 
-<!-- Library Book Detail Modal (Read Overlay Trigger) -->
-<div class="detail-modal-overlay" id="detail-modal" onclick="if(event.target === this) closeBookDetail()">
-    <div class="detail-modal-content">
-        <!-- Close Button -->
-        <button class="modal-close-btn" onclick="closeBookDetail()">
+<!-- App Settings Modal Overlay -->
+<div class="wishlist-modal-overlay settings-modal-overlay" id="settings-modal" onclick="if(event.target === this) closeAppSettingsModal()">
+    <div class="wishlist-modal-content settings-modal-content">
+        <button class="wishlist-modal-close-btn" onclick="closeAppSettingsModal()">
             <i class="fa-solid fa-xmark"></i>
         </button>
-
-        <div class="modal-body-grid">
-            <!-- Left Side: 3D Book view -->
-            <div class="modal-book-view">
-                <div class="book-3d-container">
-                    <div class="book-3d" id="modal-book-3d">
-                        <div class="book-cover-front">
-                            <div class="book-cover-emboss">
-                                <div class="book-cover-title-box">
-                                    <div class="book-cover-title" id="modal-book-cover-title">Book Title</div>
-                                    <div class="book-cover-author" id="modal-book-cover-author">Book Author</div>
-                                </div>
-                                <div class="book-cover-badge">
-                                    <i class="fa-solid fa-book-open-reader"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="book-spine"></div>
-                    </div>
+        <h3 class="wishlist-modal-title"><i class="fa-solid fa-sliders"></i> App Settings</h3>
+        
+        <div class="settings-modal-body">
+            <!-- Section: Reading Theme -->
+            <div class="settings-section">
+                <h4><i class="fa-solid fa-palette"></i> Reading Theme</h4>
+                <div class="theme-options-grid">
+                    <button class="theme-opt-btn theme-light active" onclick="setSettingTheme('light')">
+                        <span class="theme-color-dot" style="background-color: #FAF9F5; border: 1px solid #d4cbb8;"></span>
+                        <span class="theme-opt-label">Light (Default)</span>
+                    </button>
+                    <button class="theme-opt-btn theme-dark" onclick="setSettingTheme('dark')">
+                        <span class="theme-color-dot" style="background-color: #122521; border: 1px solid #CCA353;"></span>
+                        <span class="theme-opt-label">Dark Room</span>
+                    </button>
+                    <button class="theme-opt-btn theme-sepia" onclick="setSettingTheme('sepia')">
+                        <span class="theme-color-dot" style="background-color: #f4edd8; border: 1px solid #c7ba9d;"></span>
+                        <span class="theme-opt-label">Sepia Paper</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- Right Side: details & triggers -->
-            <div class="modal-book-details">
-                <h2 id="modal-title" class="details-title">Book Name</h2>
-                <div id="modal-author" class="details-author">By Author</div>
+            <!-- Section: Font Preferences -->
+            <div class="settings-section font-section-grid">
+                <div class="form-group-settings">
+                    <label for="setting-font-size"><i class="fa-solid fa-text-height"></i> Font Size</label>
+                    <select id="setting-font-size" class="settings-select" onchange="updateSettingsPreview()">
+                        <option value="sm">Small</option>
+                        <option value="md" selected>Medium (Default)</option>
+                        <option value="lg">Large</option>
+                        <option value="xl">Extra Large</option>
+                    </select>
+                </div>
+                
+                <div class="form-group-settings">
+                    <label for="setting-font-style"><i class="fa-solid fa-font"></i> Font Style</label>
+                    <select id="setting-font-style" class="settings-select" onchange="updateSettingsPreview()">
+                        <option value="sans" selected>Sans-Serif (Modern)</option>
+                        <option value="serif">Serif (Classic)</option>
+                        <option value="mono">Monospace (Code)</option>
+                    </select>
+                </div>
+            </div>
 
-                <div class="details-meta-grid">
-                    <div class="meta-item">
-                        <span class="meta-item-lbl">Pages</span>
-                        <span id="modal-pages" class="meta-item-val">0</span>
+            <!-- Section: Toggle Switches -->
+            <div class="settings-section toggle-switches-grid">
+                <div class="settings-toggle-row">
+                    <div class="toggle-meta">
+                        <strong>Auto-Play Ambient Music</strong>
+                        <p class="toggle-desc">Automatically play cozy background music when opening the book reader.</p>
                     </div>
-                    <div class="meta-item">
-                        <span class="meta-item-lbl">Price</span>
-                        <span id="modal-price" class="meta-item-val">0 Ks</span>
+                    <label class="switch-toggle-label">
+                        <input type="checkbox" id="setting-auto-music" checked onchange="updateSettingsPreview()">
+                        <span class="switch-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="settings-toggle-row">
+                    <div class="toggle-meta">
+                        <strong>Auto-Save Progress</strong>
+                        <p class="toggle-desc">Automatically save book reading page counts to your cloud library.</p>
                     </div>
-                    <div class="meta-item">
-                        <span class="meta-item-lbl">Progress</span>
-                        <span id="modal-progress" class="meta-item-val color-success">0%</span>
-                    </div>
-                    <div class="meta-item">
-                        <span class="meta-item-lbl">Bookmark</span>
-                        <span id="modal-bookmark" class="meta-item-val text-mute">None</span>
+                    <label class="switch-toggle-label">
+                        <input type="checkbox" id="setting-auto-save" checked onchange="updateSettingsPreview()">
+                        <span class="switch-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Section: Live Preview Box -->
+            <div class="settings-section">
+                <h4><i class="fa-solid fa-eye"></i> Reading Live Preview</h4>
+                <div class="settings-preview-box" id="settings-preview-box">
+                    <h5 class="preview-chapter">CHAPTER I: The Reading Cozy</h5>
+                    <p class="preview-text">Booknest offers an immersive digital reading experience. Change the settings above and watch this text style transform dynamically to find your perfect reading comfort.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="settings-modal-footer">
+            <button class="btn-settings-save" onclick="saveAppSettings()">
+                <i class="fa-solid fa-circle-check"></i> Apply Settings
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Library Book Detail Modal (Read Overlay Trigger) -->
+<div class="detail-modal-overlay" id="detail-modal" onclick="if(event.target === this) closeBookDetail()">
+    <div class="detail-modal-wrapper">
+        <div class="detail-modal-content">
+            <!-- Close Button -->
+            <button class="modal-close-btn" onclick="closeBookDetail()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="modal-body-grid">
+                <!-- Left Side: 3D Book view -->
+                <div class="modal-book-view">
+                    <div class="book-3d-container">
+                        <div class="book-3d" id="modal-book-3d">
+                            <div class="book-cover-front">
+                                <div class="book-cover-emboss">
+                                    <div class="book-cover-title-box">
+                                        <div class="book-cover-title" id="modal-book-cover-title">Book Title</div>
+                                        <div class="book-cover-author" id="modal-book-cover-author">Book Author</div>
+                                    </div>
+                                    <div class="book-cover-badge">
+                                        <i class="fa-solid fa-book-open-reader"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="book-spine"></div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="details-description-box">
-                    <h4>Book Summary</h4>
-                    <p id="modal-desc">Book description placeholder...</p>
-                </div>
+                <!-- Right Side: details & triggers -->
+                <div class="modal-book-details">
+                    <h2 id="modal-title" class="details-title">Book Name</h2>
+                    <div id="modal-author" class="details-author">By Author</div>
 
-                <div class="details-action-buttons">
-                    <button id="btn-read-trigger" class="btn-read-book">
-                        <i class="fa-solid fa-book-open"></i> Read Book
-                    </button>
-                    <button id="btn-resume-bookmark" class="btn-resume-bookmark display-none">
-                        <i class="fa-solid fa-bookmark"></i> Resume from Bookmark
-                    </button>
-                    <button id="btn-add-to-cart-modal" class="btn-buy-book display-none" onclick="addToCartFromDashboardModal(this)">
-                        <i class="fa-solid fa-cart-plus"></i> Buy Book
-                    </button>
-                    <button id="btn-wishlist-modal" class="btn-wishlist-modal-toggle" onclick="toggleWishlistFromModal(this)">
-                        <i class="fa-regular fa-heart"></i> Wishlist
-                    </button>
-                    <!-- Reviews Trigger Button -->
-                    <button id="btn-reviews-modal-trigger" class="btn-wishlist-modal-toggle" onclick="openReviewsModalFromDashboard()">
-                        <i class="fa-regular fa-comment-dots"></i> Reviews
-                    </button>
+                    <div class="details-meta-grid">
+                        <div class="meta-item">
+                            <span class="meta-item-lbl">Pages</span>
+                            <span id="modal-pages" class="meta-item-val">0</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-item-lbl">Price</span>
+                            <span id="modal-price" class="meta-item-val">0 Ks</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-item-lbl">Progress</span>
+                            <span id="modal-progress" class="meta-item-val color-success">0%</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-item-lbl">Bookmark</span>
+                            <span id="modal-bookmark" class="meta-item-val text-mute">None</span>
+                        </div>
+                    </div>
+
+                    <div class="details-description-box">
+                        <h4>Book Summary</h4>
+                        <p id="modal-desc">Book description placeholder...</p>
+                    </div>
+
+                    <div class="details-action-buttons">
+                        <button id="btn-read-trigger" class="btn-read-book">
+                            <i class="fa-solid fa-book-open"></i> Read Book
+                        </button>
+                        <button id="btn-resume-bookmark" class="btn-resume-bookmark display-none">
+                            <i class="fa-solid fa-bookmark"></i> Resume from Bookmark
+                        </button>
+                        <button id="btn-add-to-cart-modal" class="btn-buy-book display-none" onclick="addToCartFromDashboardModal(this)">
+                            <i class="fa-solid fa-cart-plus"></i> Buy Book
+                        </button>
+                        
+                        <div class="details-secondary-actions">
+                            <button id="btn-wishlist-modal" class="btn-wishlist-modal-toggle" onclick="toggleWishlistFromModal(this)">
+                                <i class="fa-regular fa-heart"></i> Wishlist
+                            </button>
+                            <!-- Reviews Trigger Button -->
+                            <button id="btn-reviews-modal-trigger" class="btn-wishlist-modal-toggle" onclick="openReviewsModalFromDashboard()">
+                                <i class="fa-regular fa-comment-dots"></i> Reviews
+                            </button>
+                            <!-- Remove from Library Button -->
+                            <button id="btn-remove-library" class="btn-wishlist-modal-toggle btn-danger-remove" onclick="removeBookFromLibraryTrigger()">
+                                <i class="fa-regular fa-trash-can"></i> Remove
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -537,67 +644,74 @@
             </button>
         </div>
 
-        <!-- Bookmark Current Page Toggle Button -->
-        <button id="btn-reader-bookmark" class="btn-reader-bookmark" onclick="toggleBookmark()" title="Bookmark Current Page">
-            <i class="fa-regular fa-bookmark"></i>
-        </button>
+        <!-- Action Buttons Group (Right side) -->
+        <div class="reader-action-group" style="display: flex; align-items: center; gap: 18px;">
+            <!-- Reader Settings Gear Button -->
+            <button class="btn-reader-bookmark btn-reader-settings-gear" onclick="openAppSettingsModal()" title="Reader Settings" style="margin: 0 !important;">
+                <i class="fa-solid fa-gear"></i>
+            </button>
 
-        <div class="reader-close-action" onclick="closeReader()">
-            <i class="fa-solid fa-xmark"></i>
+            <!-- Bookmark Current Page Toggle Button -->
+            <button id="btn-reader-bookmark" class="btn-reader-bookmark" onclick="toggleBookmark()" title="Bookmark Current Page" style="margin: 0 !important;">
+                <i class="fa-regular fa-bookmark"></i>
+            </button>
+
+            <div class="reader-close-action" onclick="closeReader()" style="margin: 0 !important; padding-left: 6px;">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
         </div>
     </div>
 
-    <!-- The 3D Book Viewport -->
+    <!-- Wattpad-Style Layout Viewport -->
     <div class="reader-book-viewport">
-        <div class="book-double-page-wrapper">
-            <!-- Left Page -->
-            <div class="reader-page page-left">
-                <div class="page-header" id="page-l-header">CHAPTER I</div>
-                <div class="page-inner-content" id="page-l-content">
-                    <canvas id="canvas-page-l" class="pdf-page-canvas"></canvas>
-                    <div class="reader-text-container">
-                        <p>Loading book contents...</p>
-                    </div>
+        <div class="reader-wattpad-layout">
+            <!-- Left Sidebar: Author Profile -->
+            <div class="reader-left-sidebar">
+                <div class="reader-author-card" style="padding-bottom: 1.5rem !important;">
+                    <img id="reader-author-avatar" src="" class="reader-author-img" onerror="this.src='https://ui-avatars.com/api/?name=Author&background=d4cbb8&color=122521&bold=true'">
+                    <span class="by-author-lbl">by</span>
+                    <strong id="reader-author-name" class="reader-author-name-text" style="margin-bottom: 0 !important;">Author Name</strong>
                 </div>
-                <div class="page-footer-num" id="page-l-num">Page 1</div>
-            </div>
-
-            <!-- Flipping Center Sheet Sheet -->
-            <div class="reader-page-flipping" id="flipping-page">
-                <!-- Front Page side -->
-                <div class="page-face face-front">
-                    <div class="page-header" id="page-flip-f-header">CHAPTER I</div>
-                    <div class="page-inner-content" id="page-flip-f-content">
-                        <canvas id="canvas-page-flip-f" class="pdf-page-canvas"></canvas>
-                        <div class="reader-text-container">
-                            <p></p>
-                        </div>
-                    </div>
-                    <div class="page-footer-num" id="page-flip-f-num"></div>
-                </div>
-                <!-- Back Page side -->
-                <div class="page-face face-back">
-                    <div class="page-header" id="page-flip-b-header">CHAPTER II</div>
-                    <div class="page-inner-content" id="page-flip-b-content">
-                        <canvas id="canvas-page-flip-b" class="pdf-page-canvas"></canvas>
-                        <div class="reader-text-container">
-                            <p></p>
-                        </div>
-                    </div>
-                    <div class="page-footer-num" id="page-flip-b-num"></div>
+                <div class="reader-share-icons">
+                    <span class="share-title">Contact</span>
+                    <a href="https://www.facebook.com" target="_blank" class="share-icon share-fb" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://www.tiktok.com" target="_blank" class="share-icon share-tt" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="https://t.me" target="_blank" class="share-icon share-tg" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
                 </div>
             </div>
 
-            <!-- Right Page -->
-            <div class="reader-page page-right">
-                <div class="page-header" id="page-r-header">CHAPTER II</div>
-                <div class="page-inner-content" id="page-r-content">
-                    <canvas id="canvas-page-r" class="pdf-page-canvas"></canvas>
-                    <div class="reader-text-container">
-                        <p>Loading...</p>
+            <!-- Center Column: Reading Content -->
+            <div class="reader-center-content">
+                <div class="reader-article-card">
+                    <div class="reader-article-header">
+                        <span class="reader-episode-num" id="reader-episode-num">Chapter 1</span>
+                        <h1 id="reader-chapter-title" class="reader-chapter-title-text">Book Title</h1>
+                        <div class="reader-article-stats">
+                            <span><i class="fa-solid fa-star" style="color: var(--brand-gold);"></i> <span id="reader-avg-rating">0.0</span> Rating</span>
+                            <span><i class="fa-regular fa-comment"></i> <span id="reader-comments-count">0</span> Comments</span>
+                        </div>
+                    </div>
+
+                    <!-- Left Page content containers are recycled for unified styling -->
+                    <div class="reader-page page-left" style="width:100% !important; margin:0 !important; box-shadow:none !important; border:none !important; background:transparent !important; padding: 0 !important;">
+                        <div class="page-inner-content" id="page-l-content">
+                            <!-- Canvas displays here in PDF mode -->
+                            <canvas id="canvas-page-l" class="pdf-page-canvas"></canvas>
+                            <!-- Text displays here in Text mode -->
+                            <div class="reader-text-container">
+                                <p>Loading book contents...</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="page-footer-num" id="page-r-num">Page 2</div>
+            </div>
+
+            <!-- Right Sidebar: Recommended Books -->
+            <div class="reader-right-sidebar">
+                <h4 class="sidebar-rec-title">YOU'LL ALSO LIKE</h4>
+                <div class="rec-books-list" id="reader-rec-books-list">
+                    <!-- Loaded dynamically via JS -->
+                </div>
             </div>
         </div>
     </div>
@@ -626,6 +740,21 @@
         </button>
     </div>
 </div>
+
+<!-- Custom Premium Confirmation Modal Overlay -->
+<div class="confirm-modal-overlay" id="confirm-delete-modal" onclick="if(event.target === this) closeConfirmDeleteModal()">
+    <div class="confirm-modal-card">
+        <div class="confirm-modal-icon">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h3 class="confirm-modal-title">Remove Book</h3>
+        <p class="confirm-modal-message">Are you sure you want to remove <strong id="confirm-book-title"></strong> from your library? This will delete your reading progress.</p>
+        <div class="confirm-modal-actions">
+            <button type="button" onclick="closeConfirmDeleteModal()" class="btn-confirm-cancel">Cancel</button>
+            <button type="button" id="btn-confirm-delete-action" class="btn-confirm-delete">Remove</button>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -635,5 +764,5 @@
         window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
     }
 </script>
-<script src="{{ asset('js/customer/dashboard_custom.js') }}?v=1.2.8"></script>
+<script src="{{ asset('js/customer/dashboard_custom.js') }}?v=1.3.6"></script>
 @endsection

@@ -1,16 +1,16 @@
 :root {
-    --primary: #66275b; /* Warm Amber 600 */
-    --primary-dark: #bd85c0; /* Dark Amber 700 */
-    --primary-light: #fef3c7; /* Light Amber 100 */
-    --secondary: #64748b; /* Slate 500 */
-    --dark: #1e293b; /* Slate 800 */
-    --darker: #0f172a; /* Slate 900 */
-    --light: rgba(248, 250, 252, 0.4); /* Glass slate light */
-    --white: rgba(255, 255, 255, 0.45); /* Glass base white */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --primary: #1b3d34; /* Deep Forest Green */
+    --primary-dark: #122822; /* Darker Pine Green */
+    --primary-light: #cca353; /* Soft Brass Gold Accent */
+    --secondary: #5c7a71; /* Sage Green Gray */
+    --dark: #162a24; /* Deep Forest Green-Black Text */
+    --darker: #0e1c18; /* Deepest Pine Text */
+    --light: rgba(246, 243, 235, 0.4); /* Cozy Ivory Light */
+    --white: rgba(255, 255, 255, 0.7); /* Card bg overlay */
+    --shadow-sm: 0 1px 2px 0 rgba(22, 42, 36, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(22, 42, 36, 0.1), 0 2px 4px -2px rgba(22, 42, 36, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(22, 42, 36, 0.1), 0 4px 6px -4px rgba(22, 42, 36, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(22, 42, 36, 0.15), 0 8px 10px -6px rgba(22, 42, 36, 0.15);
     --border-radius-sm: 0.375rem;
     --border-radius-md: 0.5rem;
     --border-radius-lg: 1rem;
@@ -36,7 +36,7 @@ body {
     overflow-x: hidden;
     padding: 1.5rem;
     /* Custom Feather Quill Cursor */
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="%23b45309" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>') 2 22, auto;
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="%23cca353" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>') 2 22, auto;
 }
 
 /* 3D Wrapper */
@@ -75,12 +75,12 @@ body {
     bottom: -15px;
     left: -15px;
     right: -15px;
-    background: #451a03; /* Deep rich brown cover */
+    background: #0f201c; /* Deep Forest Green hardcover */
     border-radius: calc(var(--border-radius-xl) + 5px);
     z-index: -1;
     transform: translateZ(-15px); /* Push the cover backwards in 3D */
     box-shadow: inset 0 0 20px rgba(0,0,0,0.6), 0 35px 50px -10px rgba(0,0,0,0.8);
-    border: 1px solid #78350f;
+    border: 1.5px solid var(--primary-light);
 }
 
 /* Base Page Styling (Solid Paper) */
@@ -88,8 +88,8 @@ body {
     height: 100%;
     position: relative;
     overflow: hidden;
-    background: #eadac6; /* Solid warm book paper color to prevent bleeding */
-    border: 1px solid #dcbfa2;
+    background: #fdfaf2; /* Solid warm book paper color */
+    border: 1px solid #e5dfd3;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -113,7 +113,7 @@ body {
 
 /* 1. LEFT STATIC PAGE (Branding) - Amber Theme */
 .left-page {
-    background: linear-gradient(135deg, #7b3106 0%, #0f172a 100%); /* Solid dark theme */
+    background: linear-gradient(135deg, #1b3d34 0%, #0b1412 100%); /* Solid dark theme */
     color: var(--white);
     padding: 2.25rem 2.25rem;
     border-radius: var(--border-radius-xl) 0 0 var(--border-radius-xl);
@@ -176,8 +176,8 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background: #eadac6; /* Solid paper color to prevent bleed through */
-    border: 1px solid #dcbfa2;
+    background: #fdfaf2; /* Solid paper color to prevent bleed through */
+    border: 1px solid #e5dfd3;
     transition: opacity 0.5s ease;
 }
 
@@ -191,7 +191,7 @@ body {
 
 /* Back Side: Decorative/Back trigger info - Amber Theme */
 .page-back {
-    background: linear-gradient(135deg, #0f172a 0%, #7b3106 100%); /* Solid dark theme */
+    background: linear-gradient(135deg, #0b1412 0%, #1b3d34 100%); /* Solid dark theme */
     padding: 2.25rem 2.25rem;
     border-radius: var(--border-radius-xl) 0 0 var(--border-radius-xl);
     border-right: none;
@@ -354,7 +354,7 @@ body {
 .form-input:focus {
     border-color: var(--primary);
     background-color: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.2);
+    box-shadow: 0 0 0 3px rgba(27, 61, 52, 0.2);
 }
 
 .form-input:focus + i {
@@ -406,13 +406,13 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: var(--transition-smooth);
-    box-shadow: 0 4px 6px -1px rgba(217, 119, 6, 0.25);
+    box-shadow: 0 4px 6px -1px rgba(27, 61, 52, 0.25);
 }
 
 .btn-submit:hover {
     background: var(--primary-dark);
     transform: translateY(-1px);
-    box-shadow: 0 10px 15px -3px rgba(217, 119, 6, 0.35);
+    box-shadow: 0 10px 15px -3px rgba(27, 61, 52, 0.35);
 }
 
 .btn-submit:active {
@@ -456,6 +456,10 @@ body {
 }
 
 @media (max-width: 768px) {
+    .auth-wrapper {
+        max-width: 460px !important;
+    }
+
     /* Hide the 3D book spine crease on collapsed mobile view */
     .book::before {
         display: none !important;
@@ -552,4 +556,55 @@ body {
 
 .btn-icon-back-margin {
     margin-right: 0.5rem;
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 0.6rem !important;
+    }
+    .page-front, .right-page, .page-back {
+        padding: 1.5rem 1.15rem !important;
+    }
+    .form-options {
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 0.25rem !important;
+    }
+    .form-title {
+        font-size: 1.35rem !important;
+    }
+    .book::after {
+        top: -3px !important;
+        bottom: -8px !important;
+        left: -8px !important;
+        right: -8px !important;
+        border-radius: var(--border-radius-lg) !important;
+    }
+}
+
+/* Password Visibility Toggle Eye Icon styling */
+.password-toggle-icon {
+    position: absolute;
+    right: 1.1rem;
+    left: auto !important;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #475569;
+    font-size: 0.95rem;
+    transition: var(--transition-smooth);
+    z-index: 10;
+}
+
+.password-toggle-icon:hover {
+    color: var(--primary);
+}
+
+.form-input.password-field {
+    padding-right: 2.8rem;
+}
+
+.book.single-page::before {
+    display: none !important;
 }

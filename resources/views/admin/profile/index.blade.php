@@ -93,7 +93,7 @@
 
                     <div class="status-form-group">
                         <label for="phone">Phone Number</label>
-                        <input type="text" name="phone" id="phone" value="{{ old('phone', $staff->phone) }}" class="status-select-control @error('phone') is-invalid @enderror" required>
+                        <input type="text" name="phone" id="phone" value="{{ old('phone', $staff->phone) }}" class="status-select-control @error('phone') is-invalid @enderror" required pattern="^[0-9]{9,11}$" minlength="9" maxlength="11" title="Phone number must be between 9 and 11 digits (numbers only)">
                         @error('phone')
                             <span class="form-error-msg">{{ $message }}</span>
                         @enderror

@@ -3,7 +3,7 @@
 @section('title', 'Edit Profile - Booknest')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/customer/dashboard.css') }}?v=1.1.0">
+<link rel="stylesheet" href="{{ asset('css/customer/dashboard.css') }}?v=1.3.2">
 @endsection
 
 @section('content')
@@ -74,7 +74,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="phone">Phone Number <span class="required-star">*</span></label>
-                                <input type="text" id="phone" name="phone" value="{{ old('phone', $customer->phone) }}" required placeholder="e.g. 09xxxxxxxx">
+                                <input type="text" id="phone" name="phone" value="{{ old('phone', $customer->phone) }}" required placeholder="e.g. 09xxxxxxxx" pattern="^[0-9]{9,11}$" minlength="9" maxlength="11" title="Phone number must be between 9 and 11 digits (numbers only)">
                             </div>
                             <div class="form-group">
                                 <label for="gender">Gender</label>
@@ -100,6 +100,51 @@
                             <textarea id="address" name="address" rows="3" placeholder="e.g. No. 12, Bahan Road, Yangon.">{{ old('address', $customer->address) }}</textarea>
                         </div>
                     </div>
+
+                    <!-- Saved Shipping Addresses (SRS Multiple Saved Addresses) -->
+                    <div class="profile-card" id="saved-addresses-card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap: wrap; gap: 10px;">
+                            <h3 style="margin-bottom:0;"><i class="fa-solid fa-address-book"></i> Saved Shipping Addresses</h3>
+                            <button type="button" class="test-btn" style="padding:6px 12px; font-size:0.8rem; margin:0;" onclick="openAddressModal()">
+                                <i class="fa-solid fa-plus"></i> Add New Address
+                            </button>
+                        </div>
+                        
+                        <div class="address-list-container" id="address-list">
+                            @forelse($customer->addresses as $addr)
+                                <div class="address-item-row" id="address-row-{{ $addr->id }}" style="padding:12px; background:rgba(0,0,0,0.02); border:1px solid rgba(0,0,0,0.05); border-radius:8px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; gap: 15px; flex-wrap: wrap;">
+                                    <div style="flex-grow:1;">
+                                        <div style="font-weight:700; font-size:0.9rem; color:#5c3a21; display:flex; align-items:center; gap:8px;">
+                                            <span>{{ $addr->receiver_name }}</span>
+                                            @if($addr->is_default)
+                                                <span style="font-size:0.65rem; background:#e2f2e5; color:#2d7a43; padding:2px 6px; border-radius:4px; font-weight:700;">DEFAULT</span>
+                                            @endif
+                                        </div>
+                                        <div style="font-size:0.82rem; color:#4a5568; margin-top:4px;">
+                                            <i class="fa-solid fa-phone" style="font-size:0.75rem;"></i> {{ $addr->phone_number }}
+                                            @if($addr->email)
+                                                | <i class="fa-solid fa-envelope" style="font-size:0.75rem;"></i> {{ $addr->email }}
+                                            @endif
+                                        </div>
+                                        <div style="font-size:0.82rem; color:#718096; margin-top:4px;">
+                                            <i class="fa-solid fa-location-pin" style="font-size:0.75rem;"></i> {{ $addr->address_line }}
+                                        </div>
+                                    </div>
+                                    <div style="display:flex; gap:6px; flex-shrink:0;">
+                                        @if(!$addr->is_default)
+                                            <button type="button" class="test-btn" style="padding:4px 8px; font-size:0.75rem; background:none; border:1px solid #718096; color:#718096; margin:0;" onclick="setDefaultAddress({{ $addr->id }})">Set Default</button>
+                                        @endif
+                                        <button type="button" class="test-btn" style="padding:4px 8px; font-size:0.75rem; background:none; border:1px solid #e0a96d; color:#5c3a21; margin:0;" onclick="editAddress({{ json_encode($addr) }})"><i class="fa-solid fa-pen"></i></button>
+                                        <button type="button" class="test-btn" style="padding:4px 8px; font-size:0.75rem; background:none; border:1px solid #e53e3e; color:#e53e3e; margin:0;" onclick="deleteAddress({{ $addr->id }})"><i class="fa-solid fa-trash"></i></button>
+                                    </div>
+                                </div>
+                            @empty
+                                <p class="text-mute" id="no-addresses-msg" style="font-size: 0.85rem; padding: 10px 0; color: #a0aec0;">No saved shipping addresses found. Add one to quickly use it during checkout.</p>
+                            @endforelse
+                        </div>
+                    </div>
+
+
 
                     <!-- Password Settings -->
                     <div class="profile-card">
@@ -131,10 +176,49 @@
                 </div>
             </div>
         </form>
+        
+        <!-- AJAX Address Modal (Placed outside to prevent nested forms) -->
+        <div id="address-modal" class="settings-modal-overlay">
+            <div class="address-modal-card">
+                <h3 id="modal-title" class="address-modal-title"><i class="fa-solid fa-location-dot"></i> Save Address</h3>
+                <button type="button" class="address-modal-close-btn" onclick="closeAddressModal()">&times;</button>
+                
+                <form id="address-form" onsubmit="saveAddress(event)">
+                    <input type="hidden" id="address-id" name="id">
+                    <div class="address-form-group">
+                        <label for="addr_receiver_name">Receiver Name <span class="required-star">*</span></label>
+                        <input type="text" id="addr_receiver_name" required placeholder="e.g. John Doe">
+                    </div>
+                    <div class="address-form-group">
+                        <label for="addr_phone_number">Phone Number <span class="required-star">*</span></label>
+                        <input type="text" id="addr_phone_number" required placeholder="e.g. 09123456789" pattern="^[0-9]{9,11}$" minlength="9" maxlength="11" title="Phone number must be between 9 and 11 digits (numbers only)">
+                    </div>
+                    <div class="address-form-group">
+                        <label for="addr_email">Email Address (Optional)</label>
+                        <input type="email" id="addr_email" placeholder="e.g. email@domain.com">
+                    </div>
+                    <div class="address-form-group">
+                        <label for="addr_address_line">Full Address <span class="required-star">*</span></label>
+                        <textarea id="addr_address_line" required rows="3" placeholder="No, Street, Township, City..."></textarea>
+                    </div>
+                    <div class="address-checkbox-group">
+                        <input type="checkbox" id="addr_is_default">
+                        <label for="addr_is_default">Set as default address</label>
+                    </div>
+                    
+                    <div class="address-modal-actions">
+                        <button type="button" class="address-modal-btn btn-secondary" onclick="closeAddressModal()">Cancel</button>
+                        <button type="submit" class="address-modal-btn btn-primary">Save Address</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
+const csrfToken = "{{ csrf_token() }}";
+
 document.addEventListener('DOMContentLoaded', function () {
     const imageUpload = document.getElementById('image-upload');
     const avatarPreview = document.getElementById('avatar-preview');
@@ -158,6 +242,134 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    const addressModal = document.getElementById('address-modal');
+    if (addressModal) {
+        addressModal.addEventListener('click', function (e) {
+            if (e.target === addressModal) {
+                closeAddressModal();
+            }
+        });
+    }
 });
+
+// Saved Address Functions
+function openAddressModal() {
+    const modal = document.getElementById('address-modal');
+    const form = document.getElementById('address-form');
+    const modalTitle = document.getElementById('modal-title');
+    const addrIdInput = document.getElementById('address-id');
+
+    if (form) form.reset();
+    if (addrIdInput) addrIdInput.value = '';
+    if (modalTitle) modalTitle.innerHTML = '<i class="fa-solid fa-location-dot"></i> Save Address';
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeAddressModal() {
+    const modal = document.getElementById('address-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+function editAddress(addr) {
+    const modal = document.getElementById('address-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const addrIdInput = document.getElementById('address-id');
+    const nameInput = document.getElementById('addr_receiver_name');
+    const phoneInput = document.getElementById('addr_phone_number');
+    const emailInput = document.getElementById('addr_email');
+    const lineInput = document.getElementById('addr_address_line');
+    const defaultCheckbox = document.getElementById('addr_is_default');
+
+    if (modalTitle) modalTitle.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit Address';
+    if (addrIdInput) addrIdInput.value = addr.id;
+    if (nameInput) nameInput.value = addr.receiver_name;
+    if (phoneInput) phoneInput.value = addr.phone_number;
+    if (emailInput) emailInput.value = addr.email || '';
+    if (lineInput) lineInput.value = addr.address_line;
+    if (defaultCheckbox) defaultCheckbox.checked = addr.is_default;
+    if (modal) modal.style.display = 'flex';
+}
+
+function saveAddress(e) {
+    e.preventDefault();
+    
+    const idVal = document.getElementById('address-id').value;
+    const url = idVal ? `/customer/addresses/${idVal}` : '/customer/addresses';
+    const method = idVal ? 'PUT' : 'POST';
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({
+            _method: method,
+            receiver_name: document.getElementById('addr_receiver_name').value,
+            phone_number: document.getElementById('addr_phone_number').value,
+            email: document.getElementById('addr_email').value,
+            address_line: document.getElementById('addr_address_line').value,
+            is_default: document.getElementById('addr_is_default').checked ? 1 : 0
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            closeAddressModal();
+            location.reload(); // Reload to refresh list and default badge
+        } else {
+            alert(data.message || 'Error occurred while saving address.');
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('An error occurred. Please try again.');
+    });
+}
+
+function deleteAddress(id) {
+    showCustomConfirm('Are you sure you want to delete this shipping address?', function() {
+        fetch(`/customer/addresses/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.message || 'Error occurred while deleting address.');
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('An error occurred. Please try again.');
+        });
+    });
+}
+
+function setDefaultAddress(id) {
+    fetch(`/customer/addresses/${id}/default`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert(data.message || 'Error occurred while setting default address.');
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('An error occurred. Please try again.');
+    });
+}
 </script>
 @endsection

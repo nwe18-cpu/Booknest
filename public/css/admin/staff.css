@@ -1,0 +1,157 @@
+/* Staff Management Custom Stylesheet */
+
+.staff-avatar-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.staff-avatar-initials {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #f1e4d8;
+    color: #5c3a21;
+    font-weight: 700;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid var(--brand-gold);
+    box-shadow: 0 4px 8px rgba(22, 42, 36, 0.05);
+    text-transform: uppercase;
+}
+
+/* Status Badges */
+.badge-status-staff {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.badge-status-active {
+    background-color: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.badge-status-inactive {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+/* Role Badges */
+.badge-role-staff {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.badge-role-admin {
+    background-color: #f3e8ff;
+    color: #581c87;
+    border: 1px solid #e9d5ff;
+}
+
+.badge-role-member {
+    background-color: #dbeafe;
+    color: #1e3a8a;
+    border: 1px solid #bfdbfe;
+}
+
+/* Grid Filter Layout */
+.staff-filters-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 44px;
+    gap: 16px;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .staff-filters-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
+
+/* Form Styles inside Modals */
+.form-group-modern {
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group-modern label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.form-group-modern input,
+.form-group-modern select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border-color);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    background-color: #FAF9F5;
+    color: var(--text-main);
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group-modern input:focus,
+.form-group-modern select:focus {
+    border-color: var(--brand-gold);
+    box-shadow: 0 0 0 3px rgba(204, 163, 83, 0.15);
+    outline: none;
+}
+
+.hint-text-xs {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.required-star {
+    color: var(--accent-red);
+    font-weight: 700;
+}
+
+/* Action buttons alignment in modal */
+.modal-footer-modern {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 16px;
+}
+
+.btn-modern-cancel {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: 1.5px solid var(--border-color);
+    background: #FFFFFF;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-modern-cancel:hover {
+    background: #f6f3eb;
+    color: var(--text-main);
+}
+
+

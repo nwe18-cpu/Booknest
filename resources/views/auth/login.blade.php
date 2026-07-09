@@ -16,7 +16,7 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/variables.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/auth/auth.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/auth/auth.css') }}?v=1.0.3">
 </head>
 <body>
 
@@ -87,7 +87,7 @@
                     <div class="form-group">
                         <label class="form-label" for="reg-phone">Phone Number</label>
                         <div class="input-wrapper">
-                            <input class="form-input @error('reg_phone') is-invalid @enderror" type="tel" id="reg-phone" name="reg_phone" placeholder="09xxxxxxxxx" value="{{ old('reg_phone') }}" required>
+                            <input class="form-input @error('reg_phone') is-invalid @enderror" type="tel" id="reg-phone" name="reg_phone" placeholder="09xxxxxxxxx" value="{{ old('reg_phone') }}" required pattern="^[0-9]{9,11}$" minlength="9" maxlength="11" title="Phone number must be between 9 and 11 digits (numbers only)">
                             <i class="fa-solid fa-phone"></i>
                         </div>
                         @error('reg_phone')
@@ -101,8 +101,9 @@
                     <div class="form-group">
                         <label class="form-label" for="reg-password">Password</label>
                         <div class="input-wrapper">
-                            <input class="form-input @error('reg_password') is-invalid @enderror" type="password" id="reg-password" name="reg_password" placeholder="At least 8 characters" required>
+                            <input class="form-input password-field @error('reg_password') is-invalid @enderror" type="password" id="reg-password" name="reg_password" placeholder="At least 8 characters" required>
                             <i class="fa-solid fa-lock"></i>
+                            <i class="fa-solid fa-eye-slash password-toggle-icon" data-target="reg-password"></i>
                         </div>
                         @error('reg_password')
                             <span class="error-message error-message-inline">
@@ -151,8 +152,9 @@
                         <div class="form-group">
                             <label class="form-label" for="login-password">Password</label>
                             <div class="input-wrapper">
-                                <input class="form-input @error('password') is-invalid @enderror" type="password" id="login-password" name="password" placeholder="••••••••" required>
+                                <input class="form-input password-field @error('password') is-invalid @enderror" type="password" id="login-password" name="password" placeholder="••••••••" required>
                                 <i class="fa-solid fa-lock"></i>
+                                <i class="fa-solid fa-eye-slash password-toggle-icon" data-target="login-password"></i>
                             </div>
                             @error('password')
                                 <span class="error-message error-message-inline">
@@ -166,7 +168,7 @@
                                 <input type="checkbox" id="remember-me" name="remember">
                                 <span>Remember me</span>
                             </label>
-                            <a href="#" class="forgot-link">Forgot Password?</a>
+                            <a href="{{ route('customer.forgot_password') }}" class="forgot-link">Forgot Password?</a>
                         </div>
                         
                         <button type="submit" class="btn-submit">

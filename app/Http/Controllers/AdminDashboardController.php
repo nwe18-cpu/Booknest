@@ -68,6 +68,36 @@ class AdminDashboardController extends Controller
             ->count();
         $totalCustomersCount = Customer::count();
         $totalReviewsCount = Review::count();
+        
+        // New Registered Customers in last 7 days
+        $newCustomersCount = Customer::where('created_at', '>=', Carbon::now()->subDays(7))->count();
+        
+        // Total Order Volumes
+        $totalOrders = Order::count();
+
+        // RBAC View limits: Non-admin staff cannot view daily sales, today's sales, or order volumes
+        $staffUser = auth()->guard('staff')->user();
+        $isAdmin = ($staffUser && $staffUser->role && $staffUser->role->name === 'admin');
+        
+        if (!$isAdmin) {
+            $todaySales = 0;
+            $salesData = array_fill_keys(array_keys($salesData), 0.0);
+            $maxVal = 1;
+            $totalOrders = 0;
+        }
+
+        // 5. Active Staff List
+        $activeStaff = \App\Models\Staff::with('role')
+            ->where('status', 'active')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+            
+        // 6. Recent Activity Logs (Audit Trail)
+        $activeStaffLogs = \App\Models\ActivityLog::with('staff')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
 
         // 4. Calculate SVG Graph coordinates (viewBox 0 0 280 100)
         $points = [];
@@ -92,7 +122,11 @@ class AdminDashboardController extends Controller
             'todaySales',
             'activeVipCount',
             'totalCustomersCount',
-            'totalReviewsCount'
+            'totalReviewsCount',
+            'newCustomersCount',
+            'totalOrders',
+            'activeStaff',
+            'activeStaffLogs'
         ));
     }
 }

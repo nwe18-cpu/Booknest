@@ -23,7 +23,7 @@
 
     <!-- CSS Variables and Base Layout -->
     <link rel="stylesheet" href="{{ asset('css/variables.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v=1.0.3">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v=1.1.8">
 
     <!-- Page Specific Styles (if any) -->
     @yield('styles')
@@ -51,7 +51,7 @@
                     <div class="nav-actions">
                         <!-- Theme Toggle Button (Warm Mode) -->
                         <button class="theme-toggle-btn" id="theme-toggle-btn" aria-label="Toggle Warm Sepia Mode" title="Toggle Warm Mode">
-                            <i class="fa-solid fa-leaf"></i>
+                            <i class="fa-regular fa-lightbulb"></i>
                         </button>
 
                         <!-- Notification Button & Dropdown -->
@@ -103,7 +103,7 @@
                                     <form action="{{ url('/admin/logout') }}" method="POST" id="admin-logout-form" class="hidden-form">
                                         @csrf
                                     </form>
-                                    <a href="#" class="dropdown-link" onclick="event.preventDefault(); document.getElementById('admin-logout-form').submit();">
+                                    <a href="#" class="dropdown-link dropdown-link-logout" onclick="event.preventDefault(); document.getElementById('admin-logout-form').submit();">
                                         <i class="fa-solid fa-right-from-bracket"></i> Logout
                                     </a>
                                 </div>
@@ -129,14 +129,14 @@
                                     <form action="{{ route('customer.logout') }}" method="POST" id="customer-logout-form" class="hidden-form">
                                         @csrf
                                     </form>
-                                    <a href="#" class="dropdown-link" onclick="event.preventDefault(); document.getElementById('customer-logout-form').submit();">
+                                    <a href="#" class="dropdown-link dropdown-link-logout" onclick="event.preventDefault(); document.getElementById('customer-logout-form').submit();">
                                         <i class="fa-solid fa-right-from-bracket"></i> Logout
                                     </a>
                                 </div>
                             </div>
                         @else
-                            <a href="{{ url('/login') }}" class="dropdown-link login-action-btn">
-                                <i class="fa-solid fa-user-lock"></i> Login
+                            <a href="{{ url('/login') }}" class="login-action-btn" title="Login">
+                                <i class="fa-solid fa-user-lock"></i> <span>Login</span>
                             </a>
                         @endif
                     </div>
@@ -291,6 +291,215 @@
 
             initSearchClearButtons();
         });
+    </script>
+    
+    <!-- Reusable Custom Confirmation Modal -->
+    <div class="custom-confirm-overlay" id="custom-confirm-modal">
+        <div class="custom-confirm-card">
+            <div class="custom-confirm-icon">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h4 class="custom-confirm-title" id="custom-confirm-title">Confirm Action</h4>
+            <p class="custom-confirm-message" id="custom-confirm-message">Are you sure you want to proceed?</p>
+            <div class="custom-confirm-actions">
+                <button class="custom-confirm-btn btn-cancel" id="custom-confirm-cancel-btn">Cancel</button>
+                <button class="custom-confirm-btn btn-confirm" id="custom-confirm-ok-btn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reusable Custom Alert Modal -->
+    <div class="custom-confirm-overlay" id="custom-alert-modal">
+        <div class="custom-confirm-card">
+            <div class="custom-confirm-icon">
+                <i class="fa-solid fa-circle-exclamation"></i>
+            </div>
+            <h4 class="custom-confirm-title" id="custom-alert-title">Alert</h4>
+            <p class="custom-confirm-message" id="custom-alert-message">Something went wrong.</p>
+            <div class="custom-confirm-actions">
+                <button class="custom-confirm-btn btn-confirm" id="custom-alert-ok-btn" style="width: 100%;">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Modal Confirm Helper and Global Form Submission Interceptor -->
+    <script>
+        (function() {
+            let activeConfirmCallback = null;
+
+            window.showCustomConfirm = function(message, onConfirm) {
+                const modal = document.getElementById('custom-confirm-modal');
+                const messageEl = document.getElementById('custom-confirm-message');
+                if (!modal || !messageEl) return;
+
+                messageEl.textContent = message;
+                modal.classList.add('show');
+                activeConfirmCallback = onConfirm;
+            };
+
+            window.showCustomAlert = function(message) {
+                const modal = document.getElementById('custom-alert-modal');
+                const messageEl = document.getElementById('custom-alert-message');
+                if (!modal || !messageEl) return;
+
+                messageEl.textContent = message;
+                modal.classList.add('show');
+            };
+
+            window.validateForm = function(form) {
+                if (!form.checkValidity()) {
+                    const firstInvalid = form.querySelector(':invalid');
+                    if (firstInvalid) {
+                        firstInvalid.focus();
+                        firstInvalid.classList.add('validation-shake');
+                        setTimeout(() => {
+                            firstInvalid.classList.remove('validation-shake');
+                        }, 500);
+
+                        let fieldName = firstInvalid.getAttribute('placeholder') || firstInvalid.getAttribute('name') || 'field';
+                        if (firstInvalid.previousElementSibling && firstInvalid.previousElementSibling.tagName === 'LABEL') {
+                            fieldName = firstInvalid.previousElementSibling.textContent.replace('*', '').replace(':', '').trim();
+                        }
+                        
+                        let errorMsg = `Please fill out the "${fieldName}" field correctly.`;
+                        if (firstInvalid.validity.valueMissing) {
+                            errorMsg = `"${fieldName}" is required.`;
+                        } else if (firstInvalid.validity.patternMismatch) {
+                            errorMsg = firstInvalid.getAttribute('title') || `Please enter a valid format for "${fieldName}".`;
+                        } else if (firstInvalid.validity.tooShort) {
+                            errorMsg = `"${fieldName}" must be at least ${firstInvalid.minLength} characters.`;
+                        } else if (firstInvalid.validity.tooLong) {
+                            errorMsg = `"${fieldName}" cannot exceed ${firstInvalid.maxLength} characters.`;
+                        } else if (firstInvalid.type === 'email') {
+                            errorMsg = `Please enter a valid email address.`;
+                        }
+                        
+                        window.showCustomAlert(errorMsg);
+                    }
+                    return false;
+                }
+                return true;
+            };
+
+            // Override native window.alert globally
+            window.alert = function(message) {
+                window.showCustomAlert(message);
+            };
+
+            const confirmModal = document.getElementById('custom-confirm-modal');
+            const confirmCancelBtn = document.getElementById('custom-confirm-cancel-btn');
+            const confirmOkBtn = document.getElementById('custom-confirm-ok-btn');
+
+            if (confirmModal && confirmCancelBtn && confirmOkBtn) {
+                const closeConfirmModal = function() {
+                    confirmModal.classList.remove('show');
+                    activeConfirmCallback = null;
+                };
+
+                confirmCancelBtn.addEventListener('click', closeConfirmModal);
+                confirmModal.addEventListener('click', function(e) {
+                    if (e.target === confirmModal) closeConfirmModal();
+                });
+
+                confirmOkBtn.addEventListener('click', function() {
+                    if (activeConfirmCallback) {
+                        activeConfirmCallback();
+                    }
+                    closeConfirmModal();
+                });
+            }
+
+            const alertModal = document.getElementById('custom-alert-modal');
+            const alertOkBtn = document.getElementById('custom-alert-ok-btn');
+
+            if (alertModal && alertOkBtn) {
+                const closeAlertModal = function() {
+                    alertModal.classList.remove('show');
+                };
+
+                alertOkBtn.addEventListener('click', closeAlertModal);
+                alertModal.addEventListener('click', function(e) {
+                    if (e.target === alertModal) closeAlertModal();
+                });
+            }
+
+            // Disable default browser validation bubbles globally
+            document.addEventListener('invalid', function(e) {
+                e.preventDefault();
+            }, true);
+
+            // Global client-side validation check on form submission
+            document.addEventListener('submit', function(e) {
+                const form = e.target;
+                
+                // If form has novalidate, let it submit or handle manually
+                if (form.noValidate) {
+                    return;
+                }
+
+                if (!form.checkValidity()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const firstInvalid = form.querySelector(':invalid');
+                    if (firstInvalid) {
+                        firstInvalid.focus();
+                        firstInvalid.classList.add('validation-shake');
+                        setTimeout(() => {
+                            firstInvalid.classList.remove('validation-shake');
+                        }, 500);
+
+                        let fieldName = firstInvalid.getAttribute('placeholder') || firstInvalid.getAttribute('name') || 'field';
+                        if (firstInvalid.previousElementSibling && firstInvalid.previousElementSibling.tagName === 'LABEL') {
+                            fieldName = firstInvalid.previousElementSibling.textContent.replace('*', '').replace(':', '').trim();
+                        }
+                        
+                        let errorMsg = `Please fill out the "${fieldName}" field correctly.`;
+                        if (firstInvalid.validity.valueMissing) {
+                            errorMsg = `"${fieldName}" is required.`;
+                        } else if (firstInvalid.validity.patternMismatch) {
+                            errorMsg = firstInvalid.getAttribute('title') || `Please enter a valid format for "${fieldName}".`;
+                        } else if (firstInvalid.validity.tooShort) {
+                            errorMsg = `"${fieldName}" must be at least ${firstInvalid.minLength} characters.`;
+                        } else if (firstInvalid.validity.tooLong) {
+                            errorMsg = `"${fieldName}" cannot exceed ${firstInvalid.maxLength} characters.`;
+                        } else if (firstInvalid.type === 'email') {
+                            errorMsg = `Please enter a valid email address.`;
+                        }
+                        
+                        if (window.showCustomAlert) {
+                            window.showCustomAlert(errorMsg);
+                        } else {
+                            alert(errorMsg);
+                        }
+                    }
+                    return;
+                }
+
+                // Global interception of native confirm on form submission
+                if (form.dataset.confirmVerified === "true") {
+                    return; // Allow form submission
+                }
+
+                const onsubmitAttr = form.getAttribute('onsubmit');
+                if (onsubmitAttr && onsubmitAttr.includes('confirm(')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // Extract message from confirm('...')
+                    let msg = "Are you sure you want to proceed?";
+                    const match = onsubmitAttr.match(/confirm\(['"](.*)['"]\)/);
+                    if (match && match[1]) {
+                        msg = match[1];
+                    }
+
+                    window.showCustomConfirm(msg, function() {
+                        form.dataset.confirmVerified = "true";
+                        form.submit();
+                    });
+                }
+            }, true);
+        })();
     </script>
     
     <!-- Page Specific Scripts -->

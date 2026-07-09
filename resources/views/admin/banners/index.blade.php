@@ -9,6 +9,16 @@
         </div>
     @endif
 
+    @if($errors->any())
+        <div class="alert alert-danger banners-alert-danger">
+            <ul style="margin: 0; padding-left: 0; list-style-type: none; display: flex; flex-direction: column; gap: 6px;">
+                @foreach($errors->all() as $error)
+                    <li><i class="fa-solid fa-triangle-exclamation"></i> {{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <div class="data-table-card banners-table-card">
         <div class="card-header-flex banners-card-header">
             <div class="header-title-group">
@@ -189,5 +199,5 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/admin/banners.js') }}?v=1.0.1"></script>
+<script src="{{ asset('js/admin/banners.js') }}?v=1.0.2"></script>
 @endsection

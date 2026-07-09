@@ -101,6 +101,10 @@ class CustomerController extends Controller
 
         $book = Item::findOrFail($id);
 
+        if ($book->status !== 'active') {
+            return redirect()->back()->with('error', 'This book is currently unavailable.');
+        }
+
         if (!$book->pdf_file) {
             return redirect()->back()->with('error', 'This book does not have a PDF version available.');
         }
@@ -137,6 +141,10 @@ class CustomerController extends Controller
         }
 
         $book = Item::findOrFail($id);
+
+        if ($book->status !== 'active') {
+            abort(403, 'This book is currently unavailable.');
+        }
 
         if (!$book->pdf_file) {
             abort(404, 'This book does not have a PDF version available.');
@@ -239,6 +247,36 @@ class CustomerController extends Controller
     }
 
     /**
+     * Remove downloaded book from customer's library dashboard.
+     */
+    public function removeDownloadedBook($id)
+    {
+        $customer = Auth::guard('customer')->user();
+        
+        // Find and delete the download record
+        $deleted = \App\Models\CustomerDownload::where('customer_id', $customer->id)
+            ->where('item_id', $id)
+            ->delete();
+
+        if ($deleted) {
+            // Also clean up any reading progress associated with this book
+            \App\Models\ReadingProgress::where('customer_id', $customer->id)
+                ->where('item_id', $id)
+                ->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Book removed from your library successfully!'
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'This book was not found in your library.'
+        ], 404);
+    }
+
+    /**
      * Show Bookstore Home/Catalog page.
      */
     public function storeHome()
@@ -264,6 +302,10 @@ class CustomerController extends Controller
      */
     public function cart()
     {
+        $customer = Auth::guard('customer')->user();
+        if (!$customer || !$customer->hasActiveSubscription()) {
+            return redirect()->route('customer.subscription.index')->with('error', 'Please subscribe to a membership plan to purchase books.');
+        }
         return view('customer.store.cart');
     }
 
@@ -319,12 +361,27 @@ class CustomerController extends Controller
      */
     public function addToCart(Request $request)
     {
+        $customer = Auth::guard('customer')->user();
+        if (!$customer || !$customer->hasActiveSubscription()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please subscribe to a membership plan to purchase books.'
+            ]);
+        }
+
         $request->validate([
             'item_id' => 'required|exists:items,id',
             'quantity' => 'required|integer|min:1'
         ]);
 
         $book = Item::findOrFail($request->item_id);
+
+        if ($book->status !== 'active') {
+            return response()->json([
+                'success' => false,
+                'message' => 'This book is currently unavailable.'
+            ], 422);
+        }
 
         if ($book->stock_quantity < $request->quantity) {
             return response()->json([
@@ -445,6 +502,11 @@ class CustomerController extends Controller
      */
     public function checkout()
     {
+        $customer = Auth::guard('customer')->user();
+        if (!$customer || !$customer->hasActiveSubscription()) {
+            return redirect()->route('customer.subscription.index')->with('error', 'Please subscribe to a membership plan to purchase books.');
+        }
+
         $cart = session()->get('cart', []);
 
         if (empty($cart)) {
@@ -459,7 +521,8 @@ class CustomerController extends Controller
             $totalAmount += $item['price'] * $item['quantity'];
         }
 
-        return view('customer.store.checkout', compact('cart', 'totalQuantity', 'totalAmount'));
+        $addresses = $customer->addresses;
+        return view('customer.store.checkout', compact('cart', 'totalQuantity', 'totalAmount', 'addresses'));
     }
 
     /**
@@ -467,12 +530,20 @@ class CustomerController extends Controller
      */
     public function processCheckout(Request $request)
     {
+        $customer = Auth::guard('customer')->user();
+        if (!$customer || !$customer->hasActiveSubscription()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please subscribe to a membership plan to purchase books.'
+            ]);
+        }
+
         $request->validate([
             'receiver_name' => 'required|string|max:255',
             'phone_number' => 'required|string|max:255',
             'address_line' => 'required|string',
             'email' => 'required|email|max:255',
-            'payment_method' => 'required|in:cod,stripe',
+            'payment_method' => 'required|in:cod,kpay,wave,stripe',
         ]);
 
         $cart = session()->get('cart', []);
@@ -516,6 +587,7 @@ class CustomerController extends Controller
             $order = Order::create([
                 'customer_id' => $customer->id,
                 'total_amount' => $totalAmount,
+                'payment_method' => $request->payment_method,
                 'payment_status' => 'pending',
                 'status' => 'pending'
             ]);
@@ -543,14 +615,6 @@ class CustomerController extends Controller
             ]);
 
             DB::commit();
-
-            // Create Order Placed Notification
-            Notification::create([
-                'customer_id' => $customer->id,
-                'title' => 'Order Placed Successfully',
-                'message' => 'Order ID #' . $order->id . ' has been received and will be processed soon.',
-                'is_read' => false,
-            ]);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
@@ -559,14 +623,22 @@ class CustomerController extends Controller
             ], 422);
         }
 
-        if ($request->payment_method === 'cod') {
+        if (in_array($request->payment_method, ['cod', 'kpay', 'wave'])) {
+            // Create Order Placed Notification
+            Notification::create([
+                'customer_id' => $customer->id,
+                'title' => 'Order Placed Successfully',
+                'message' => 'Order ID #' . $order->id . ' has been received via ' . strtoupper($request->payment_method) . ' and will be processed soon.',
+                'is_read' => false,
+            ]);
+
             // Clear cart session immediately
             session()->forget('cart');
             
             return response()->json([
                 'success' => true,
                 'message' => 'Order placed successfully.',
-                'redirect_url' => route('customer.store.orders')
+                'redirect_url' => route('customer.store.checkout.success', ['order_id' => $order->id])
             ]);
         }
 
@@ -594,8 +666,8 @@ class CustomerController extends Controller
                     'payment_method_types' => ['card'],
                     'line_items' => $lineItems,
                     'mode' => 'payment',
-                    'success_url' => route('customer.store.checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
-                    'cancel_url' => route('customer.store.checkout'),
+                    'success_url' => route('customer.store.checkout.success') . '?session_id={CHECKOUT_SESSION_ID}&order_id=' . $order->id,
+                    'cancel_url' => route('customer.store.checkout.cancel') . '?order_id=' . $order->id,
                     'metadata' => [
                         'order_id' => $order->id,
                     ],
@@ -605,6 +677,7 @@ class CustomerController extends Controller
 
                 return response()->json([
                     'success' => true,
+                    'message' => 'Order created! Redirecting to Stripe for payment...',
                     'redirect_url' => $session->url
                 ]);
             } catch (\Exception $e) {
@@ -638,17 +711,28 @@ class CustomerController extends Controller
      */
     public function paymentSuccess(Request $request)
     {
+        $orderId = $request->get('order_id');
         $sessionId = $request->get('session_id');
-        if (!$sessionId) {
-            return redirect()->route('customer.store.home')->with('error', 'Invalid Session ID.');
+
+        if (!$orderId && $sessionId) {
+            $order = Order::where('stripe_session_id', $sessionId)->first();
+        } elseif ($orderId) {
+            $order = Order::with(['customer', 'orderItems.item.author', 'shippingAddress'])->find($orderId);
+        } else {
+            return redirect()->route('customer.store.home')->with('error', 'Invalid Order ID.');
         }
 
-        $order = Order::where('stripe_session_id', $sessionId)->first();
         if (!$order) {
             return redirect()->route('customer.store.home')->with('error', 'Order not found.');
         }
+        
+        // Gate access: Ensure it's the customer's own order
+        if ($order->customer_id !== Auth::guard('customer')->id()) {
+            abort(403, 'Unauthorized action.');
+        }
 
-        if ($order->payment_status !== 'paid') {
+        // If Stripe payment success is verified
+        if ($sessionId && $order->payment_status !== 'paid') {
             try {
                 \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
                 $session = \Stripe\Checkout\Session::retrieve($sessionId);
@@ -668,7 +752,7 @@ class CustomerController extends Controller
                     ]);
                 }
             } catch (\Exception $e) {
-                // If retrieve fails, let it log or handle gracefully
+                // Ignore or handle
             }
         }
 
@@ -676,6 +760,38 @@ class CustomerController extends Controller
         session()->forget('cart');
 
         return view('customer.store.success', compact('order'));
+    }
+
+    /**
+     * Handle Stripe Checkout payment cancel callback.
+     */
+    public function paymentCancel(Request $request)
+    {
+        $orderId = $request->get('order_id');
+        if ($orderId) {
+            $order = Order::where('id', $orderId)
+                ->where('status', 'pending')
+                ->where('payment_status', 'pending')
+                ->first();
+            if ($order) {
+                try {
+                    DB::beginTransaction();
+                    foreach ($order->orderItems as $orderItem) {
+                        $book = Item::find($orderItem->item_id);
+                        if ($book) {
+                            $book->increment('stock_quantity', $orderItem->quantity);
+                        }
+                    }
+                    $order->shippingAddress()->delete();
+                    $order->orderItems()->delete();
+                    $order->delete();
+                    DB::commit();
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                }
+            }
+        }
+        return redirect()->route('customer.store.checkout')->with('error', 'Stripe payment was cancelled. You can verify details and try again.');
     }
 
     /**
@@ -985,6 +1101,14 @@ class CustomerController extends Controller
         }
 
         $book = Item::findOrFail($id);
+
+        if ($book->status !== 'active') {
+            return response()->json([
+                'success' => false,
+                'message' => 'This book is currently unavailable.'
+            ], 422);
+        }
+
         $exists = $customer->wishlistBooks()->where('item_id', $book->id)->exists();
 
         if ($exists) {
@@ -1001,6 +1125,141 @@ class CustomerController extends Controller
             'success' => true,
             'status' => $status,
             'message' => $message,
+        ]);
+    }
+
+    /**
+     * Store a new shipping address.
+     */
+    public function storeAddress(Request $request)
+    {
+        $customer = Auth::guard('customer')->user();
+        if (!$customer) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        $request->validate([
+            'receiver_name' => 'required|string|max:255',
+            'phone_number' => ['required', 'string', 'max:20', 'regex:/^(09|\+959|959)[0-9]{7,9}$/'],
+            'address_line' => 'required|string|max:1000',
+            'email' => 'nullable|email|max:255',
+            'is_default' => 'nullable|boolean',
+        ]);
+
+        $isDefault = $request->has('is_default') && $request->is_default;
+
+        // If this is the first address, force it to be default
+        if ($customer->addresses()->count() === 0) {
+            $isDefault = true;
+        }
+
+        if ($isDefault) {
+            $customer->addresses()->update(['is_default' => false]);
+        }
+
+        $address = $customer->addresses()->create([
+            'receiver_name' => $request->receiver_name,
+            'phone_number' => $request->phone_number,
+            'address_line' => $request->address_line,
+            'email' => $request->email,
+            'is_default' => $isDefault,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Shipping address saved successfully.',
+            'address' => $address
+        ]);
+    }
+
+    /**
+     * Update an existing shipping address.
+     */
+    public function updateAddress(Request $request, $id)
+    {
+        $customer = Auth::guard('customer')->user();
+        if (!$customer) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        $address = $customer->addresses()->findOrFail($id);
+
+        $request->validate([
+            'receiver_name' => 'required|string|max:255',
+            'phone_number' => ['required', 'string', 'max:20', 'regex:/^(09|\+959|959)[0-9]{7,9}$/'],
+            'address_line' => 'required|string|max:1000',
+            'email' => 'nullable|email|max:255',
+            'is_default' => 'nullable|boolean',
+        ]);
+
+        $isDefault = $request->has('is_default') && $request->is_default;
+
+        if ($isDefault) {
+            $customer->addresses()->update(['is_default' => false]);
+        }
+
+        $address->update([
+            'receiver_name' => $request->receiver_name,
+            'phone_number' => $request->phone_number,
+            'address_line' => $request->address_line,
+            'email' => $request->email,
+            'is_default' => $isDefault,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Shipping address updated successfully.',
+            'address' => $address
+        ]);
+    }
+
+    /**
+     * Delete a shipping address.
+     */
+    public function deleteAddress($id)
+    {
+        $customer = Auth::guard('customer')->user();
+        if (!$customer) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        $address = $customer->addresses()->findOrFail($id);
+        $wasDefault = $address->is_default;
+
+        $address->delete();
+
+        // If the deleted address was default, make another address default
+        if ($wasDefault) {
+            $nextAddress = $customer->addresses()->first();
+            if ($nextAddress) {
+                $nextAddress->update(['is_default' => true]);
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Shipping address deleted successfully.'
+        ]);
+    }
+
+    /**
+     * Set a shipping address as default.
+     */
+    public function setDefaultAddress($id)
+    {
+        $customer = Auth::guard('customer')->user();
+        if (!$customer) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        $address = $customer->addresses()->findOrFail($id);
+
+        $customer->addresses()->update(['is_default' => false]);
+        $address->update(['is_default' => true]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Default shipping address updated.'
         ]);
     }
 }

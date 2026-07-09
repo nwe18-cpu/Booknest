@@ -3,7 +3,7 @@
 @section('title', 'Booknest - Best Books Collection')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.2.2">
+<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.5.4">
 @endsection
 
 @section('content')
@@ -25,6 +25,28 @@
         @endif
     </div>
 
+    <!-- Slider Navigation Arrows -->
+    <button class="hero-slider-arrow prev" onclick="changeHeroSlide(-1)" aria-label="Previous Slide">
+        <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <button class="hero-slider-arrow next" onclick="changeHeroSlide(1)" aria-label="Next Slide">
+        <i class="fa-solid fa-chevron-right"></i>
+    </button>
+
+    <!-- Slider Dot Indicators -->
+    <div class="hero-slider-dots">
+        @if($banners->count() > 0)
+            @foreach($banners as $banner)
+                <span class="hero-dot @if($loop->first) active @endif" onclick="setHeroSlide({{ $loop->index }})"></span>
+            @endforeach
+        @else
+            <span class="hero-dot active" onclick="setHeroSlide(0)"></span>
+            <span class="hero-dot" onclick="setHeroSlide(1)"></span>
+            <span class="hero-dot" onclick="setHeroSlide(2)"></span>
+            <span class="hero-dot" onclick="setHeroSlide(3)"></span>
+        @endif
+    </div>
+
     <!-- Wavy Bottom Shape Divider -->
     <div class="hero-shape-divider">
         <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
@@ -33,15 +55,84 @@
     </div>
 </section>
 
-<!-- Main Store Catalog Section -->
-<div class="store-catalog-wrapper container" id="store-catalog">
-    <!-- Static Search Box, search-input id is unique and singular! -->
-    <div class="store-search-box-container">
-        <div class="hero-search-box">
-            <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input type="text" id="search-input" onkeyup="filterSearch()" placeholder="Search by book name or author...">
+<!-- Hero Value Propositions / Features Showcase Section -->
+<section class="hero-features-showcase">
+    <div class="container">
+        <div class="features-grid-wrapper">
+            
+            <!-- Column 1: Curriculum -->
+            <div class="feature-column-card">
+                <div class="feature-header-wrap">
+                    <h3 class="feature-title">Curriculum? <span class="highlight-text">Sorted!</span></h3>
+                    <p class="feature-desc">Grade-specific books sets & curriculum reading lists curated for all academic levels.</p>
+                </div>
+                
+                <!-- SVG Donut Gauge -->
+                <div class="feature-gauge-box">
+                    <svg viewBox="0 0 100 100" class="gauge-svg">
+                        <!-- Background track -->
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#f4f1ea" stroke-width="10" />
+                        <!-- Active progress arc (gold/green) -->
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="var(--brand-gold)" stroke-width="10" 
+                                stroke-dasharray="251" stroke-dashoffset="62" stroke-linecap="round" transform="rotate(-90 50 50)" />
+                        <!-- Text inside -->
+                        <text x="50" y="47" class="gauge-value" text-anchor="middle">G 1-12</text>
+                        <text x="50" y="65" class="gauge-label" text-anchor="middle">Kits Ready</text>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Column 2: VIP Subscriptions -->
+            <div class="feature-column-card">
+                <div class="feature-header-wrap">
+                    <h3 class="feature-title">VIP Access? <span class="highlight-text">Active!</span></h3>
+                    <p class="feature-desc">Get unlimited reading access, digital streaming files, and shipping on physical books orders.</p>
+                </div>
+                
+                <!-- SVG Segmented Donut Gauge -->
+                <div class="feature-gauge-box">
+                    <svg viewBox="0 0 100 100" class="gauge-svg">
+                        <!-- Track -->
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#f4f1ea" stroke-width="10" />
+                        <!-- Segment 1: Green -->
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#2d6a4f" stroke-width="10" 
+                                stroke-dasharray="251" stroke-dashoffset="120" stroke-linecap="round" transform="rotate(-90 50 50)" />
+                        <!-- Segment 2: Gold -->
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#cca353" stroke-width="10" 
+                                stroke-dasharray="251" stroke-dashoffset="190" stroke-linecap="round" transform="rotate(30 50 50)" />
+                        <text x="50" y="47" class="gauge-value" text-anchor="middle">VIP</text>
+                        <text x="50" y="65" class="gauge-label" text-anchor="middle">Unlimited</text>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Column 3: Flexible Payments -->
+            <div class="feature-column-card">
+                <div class="feature-header-wrap">
+                    <h3 class="feature-title">Payment? <span class="highlight-text">Flexible!</span></h3>
+                    <p class="feature-desc">Swift home delivery across Myanmar with COD, KBZPay, WaveMoney, or international cards.</p>
+                </div>
+                
+                <!-- SVG Gauge Arc -->
+                <div class="feature-gauge-box">
+                    <svg viewBox="0 0 100 100" class="gauge-svg">
+                        <!-- Track -->
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#f4f1ea" stroke-width="10" />
+                        <!-- Active progress arc (purple/gold) -->
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#581c87" stroke-width="10" 
+                                stroke-dasharray="251" stroke-dashoffset="80" stroke-linecap="round" transform="rotate(-90 50 50)" />
+                        <text x="50" y="47" class="gauge-value" text-anchor="middle">COD</text>
+                        <text x="50" y="65" class="gauge-label" text-anchor="middle">& Wallets</text>
+                    </svg>
+                </div>
+            </div>
+            
         </div>
     </div>
+</section>
+
+<!-- Main Store Catalog Section -->
+<div class="store-catalog-wrapper container" id="store-catalog">
     <!-- Section 1: Top Seller & Popular Downloads -->
     @if($books->count() > 0)
         <div class="store-section-container">
@@ -137,6 +228,30 @@
             </svg>
         </div>
     @endif
+
+    <!-- Static Search Box & Sort Dropdown -->
+    <div class="store-search-box-container" style="margin-top: 1rem; margin-bottom: 3rem;">
+        <div class="hero-search-box">
+            <input type="text" id="search-input" onkeyup="filterSearch()" placeholder="Search by book name or author...">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        </div>
+        
+        <!-- Custom Sort Dropdown -->
+        <div class="custom-sort-dropdown" id="custom-sort-select">
+            <label class="sort-label">Sort By</label>
+            <div class="sort-selected" onclick="toggleSortDropdown(event)">
+                <span id="current-sort-label">default</span>
+                <i class="fa-solid fa-chevron-down sort-arrow"></i>
+            </div>
+            <div class="sort-options-list display-none" id="sort-options-list">
+                <div class="sort-option active" data-value="default" onclick="selectSortOption('default', 'default', event)">default</div>
+                <div class="sort-option" data-value="price-low-high" onclick="selectSortOption('price-low-high', 'price low to high', event)">price low to high</div>
+                <div class="sort-option" data-value="price-high-low" onclick="selectSortOption('price-high-low', 'price high to low', event)">price high to low</div>
+                <div class="sort-option" data-value="name-a-z" onclick="selectSortOption('name-a-z', 'product name a-z', event)">product name a-z</div>
+                <div class="sort-option" data-value="name-z-a" onclick="selectSortOption('name-z-a', 'product name z-a', event)">product name z-a</div>
+            </div>
+        </div>
+    </div>
 
     <!-- Section 2: Classified Hits -->
     <div class="store-section-container">
@@ -315,76 +430,128 @@
 
 <!-- Book Details Modal (Overlay) -->
 <div class="detail-modal-overlay" id="detail-modal" onclick="if(event.target === this) closeBookDetail()">
-    <div class="detail-modal-content">
-        <!-- Close Button -->
-        <button class="modal-close-btn" onclick="closeBookDetail()">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
+    <div class="detail-modal-wrapper">
+        <div class="detail-modal-content">
+            <!-- Close Button -->
+            <button class="modal-close-btn" onclick="closeBookDetail()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
 
-        <div class="modal-body-grid">
-            <!-- Left Panel: 3D Book Cover View -->
-            <div class="modal-book-view">
-                <div class="book-3d-container">
-                    <div class="book-3d" id="modal-book-3d">
-                        <div class="book-cover-front">
-                            <div class="book-cover-emboss">
-                                <div class="book-cover-title-box">
-                                    <div class="book-cover-title" id="modal-book-cover-title">Book Title</div>
-                                    <div class="book-cover-author" id="modal-book-cover-author">Book Author</div>
-                                </div>
-                                <div class="book-cover-badge">
-                                    <i class="fa-solid fa-book-open-reader"></i>
+            <!-- Desktop Layout (Hidden on mobile) -->
+            <div class="modal-body-grid">
+                <!-- Left Panel: 3D Book Cover View -->
+                <div class="modal-book-view">
+                    <div class="book-3d-container">
+                        <div class="book-3d" id="modal-book-3d">
+                            <div class="book-cover-front">
+                                <div class="book-cover-emboss">
+                                    <div class="book-cover-title-box">
+                                        <div class="book-cover-title" id="modal-book-cover-title">Book Title</div>
+                                        <div class="book-cover-author" id="modal-book-cover-author">Book Author</div>
+                                    </div>
+                                    <div class="book-cover-badge">
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="book-spine"></div>
                         </div>
-                        <div class="book-spine"></div>
+                    </div>
+                </div>
+
+                <!-- Right Panel: Details and action triggers -->
+                <div class="modal-book-details">
+                    <div class="details-top-group">
+                        <h2 id="modal-title" class="details-title">Book Name</h2>
+                        <div id="modal-author" class="details-author">By Author</div>
+                    </div>
+
+                    <div class="details-meta-grid">
+                        <div class="meta-item">
+                            <span class="meta-item-lbl">Pages</span>
+                            <span id="modal-pages" class="meta-item-val">0</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-item-lbl">Price</span>
+                            <span id="modal-price" class="meta-item-val">0 Ks</span>
+                        </div>
+                    </div>
+
+                    <div class="details-description-box">
+                        <h4>Book Summary</h4>
+                        <p id="modal-desc">Book description placeholder...</p>
+                    </div>
+
+                    <div class="details-action-buttons">
+                        <button id="btn-buy-modal" class="btn-buy-book" onclick="addToCartFromModal(this)">
+                            <i class="fa-solid fa-cart-plus"></i> Buy Book
+                        </button>
+                        <a id="btn-download-modal" href="#" class="btn-download-book display-none">
+                            <i class="fa-solid fa-file-pdf"></i> Download PDF
+                        </a>
+                        <button id="btn-wishlist-modal" class="btn-wishlist-modal-toggle" onclick="toggleWishlistFromModal(this)">
+                            <i class="fa-regular fa-heart"></i> Wishlist
+                        </button>
+                        <button id="btn-reviews-modal-trigger" class="btn-wishlist-modal-toggle" onclick="openReviewsModalFromDetails()">
+                            <i class="fa-regular fa-comment-dots"></i> Reviews
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Right Panel: Metadata & Action -->
-            <div class="modal-book-details">
-                <h2 id="modal-title" class="details-title">Book Name</h2>
-                <div id="modal-author" class="details-author">By Author</div>
-
-                <!-- Meta Details Grid -->
-                <div class="details-meta-grid">
-                    <div class="meta-item">
-                        <span class="meta-item-lbl">Pages</span>
-                        <span id="modal-pages" class="meta-item-val">0</span>
+            <!-- Mobile Layout (Hidden on desktop) -->
+            <div class="mobile-detail-layout">
+                <div class="mobile-detail-header">
+                    <!-- 3D Book Cover Cover -->
+                    <div class="mobile-book-cover-wrapper">
+                        <div class="book-3d" id="modal-book-3d-mobile">
+                            <div class="book-cover-front">
+                                <div class="book-cover-emboss">
+                                    <div class="book-cover-title-box">
+                                        <div class="book-cover-title" id="modal-book-cover-title-mobile">Book Title</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="book-spine"></div>
+                        </div>
                     </div>
-                    <div class="meta-item">
-                        <span class="meta-item-lbl">Stock Status</span>
-                        <span id="modal-stock" class="meta-item-val color-success">0 In Stock</span>
-                    </div>
-                    <div class="meta-item">
-                        <span class="meta-item-lbl">Price</span>
-                        <span id="modal-price" class="meta-item-val color-primary">0 Ks</span>
+                    <!-- Metadata Info (Right side of cover) -->
+                    <div class="mobile-detail-meta">
+                        <h2 id="modal-title-mobile" class="details-title">Book Name</h2>
+                        <div id="modal-author-mobile" class="details-author">By Author</div>
+                        <div class="mobile-meta-pills">
+                            <span class="meta-pill"><i class="fa-solid fa-file-lines"></i> <span id="modal-pages-mobile">0</span> pages</span>
+                            <span class="meta-pill price-pill"><i class="fa-solid fa-tags"></i> <span id="modal-price-mobile">0 Ks</span></span>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Description summary -->
                 <div class="details-description-box">
                     <h4>Book Summary</h4>
-                    <p id="modal-desc">Book description placeholder...</p>
+                    <p id="modal-desc-mobile">Book description placeholder...</p>
                 </div>
 
-                <!-- Action Button Controls -->
-                <div class="details-action-buttons">
-                    <button id="btn-add-to-cart-modal" class="btn-buy-book">
-                        <i class="fa-solid fa-cart-plus"></i> Buy Book
+                <!-- Fixed sticky actions bar -->
+                <div class="mobile-detail-actions">
+                    <button id="btn-buy-mobile" class="btn-m-buy">
+                        <i class="fa-solid fa-cart-shopping"></i> Buy Book
                     </button>
-                    <a id="btn-download-pdf-modal" href="#" class="btn-download-pdf display-none">
+                    <a id="btn-download-mobile" href="#" class="btn-m-download display-none">
                         <i class="fa-solid fa-file-pdf"></i> Download PDF
                     </a>
-                    <button id="btn-wishlist-modal" class="btn-wishlist-modal-toggle" onclick="toggleWishlistFromModal(this)">
-                        <i class="fa-regular fa-heart"></i> Wishlist
+                    <button id="btn-wishlist-mobile" class="btn-m-wishlist" onclick="toggleWishlistFromModal(this)">
+                        <i class="fa-regular fa-heart"></i>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- You May Also Like Section -->
-        <div class="detail-recommendations-container" id="detail-recommendations-section">
+    </div>
+
+    <!-- You May Also Like Section (Separate Card, Screen-Full) -->
+    <div class="detail-recommendations-card" id="detail-recommendations-section">
+        <div class="recommendations-container-inner">
             <h3 class="recommendations-title"><i class="fa-solid fa-wand-magic-sparkles text-accent"></i> You may also like</h3>
             <div class="recommendations-row" id="modal-recommendations-list">
                 <!-- Recommended books are loaded dynamically here -->
@@ -474,5 +641,5 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/customer/store.js') }}?v=1.0.8"></script>
+<script src="{{ asset('js/customer/store.js') }}?v=1.2.0"></script>
 @endsection

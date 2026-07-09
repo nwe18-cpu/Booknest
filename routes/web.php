@@ -9,7 +9,8 @@ use App\Http\Controllers\Admin\ClassificationController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\Admin\SubscriptionController;
-use App\Http\Controllers\AdminDashboardController; // Dashboard Controller ကို ခေါ်ယူခြင်း
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\Admin\ActivityLogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,8 @@ Route::get('/store', [CustomerController::class, 'storeHome']);
 Route::get('/login', [CustomerAuthController::class, 'showAuthForm'])->name('login');
 Route::post('/login', [CustomerAuthController::class, 'login'])->name('customer.login');
 Route::post('/register', [CustomerAuthController::class, 'register'])->name('customer.register');
+Route::get('/forgot-password', [CustomerAuthController::class, 'showForgotPasswordForm'])->name('customer.forgot_password');
+Route::post('/forgot-password', [CustomerAuthController::class, 'resetPassword'])->name('customer.forgot_password.reset');
 
 Route::get('/store/cart/data', [CustomerController::class, 'getCartData'])->name('customer.store.cart.data');
 Route::get('/store/books/{id}/reviews', [CustomerController::class, 'getBookReviews'])->name('customer.books.reviews');
@@ -32,10 +35,17 @@ Route::middleware('auth:customer')->group(function () {
     Route::get('/customer/dashboard', [CustomerController::class, 'index'])->name('customer.dashboard');
     Route::post('/customer/reading-progress', [CustomerController::class, 'saveProgress'])->name('customer.save_progress');
     Route::post('/customer/reading-progress/bookmark', [CustomerController::class, 'toggleBookmark'])->name('customer.toggle_bookmark');
+    Route::post('/customer/library/remove/{id}', [CustomerController::class, 'removeDownloadedBook'])->name('customer.books.remove');
     Route::post('/store/books/{id}/wishlist', [CustomerController::class, 'toggleWishlist'])->name('customer.books.wishlist.toggle');
     Route::post('/store/books/{id}/reviews', [CustomerController::class, 'submitBookReview'])->name('customer.books.reviews.submit');
     Route::get('/customer/profile', [CustomerController::class, 'showProfile'])->name('customer.profile.show');
     Route::post('/customer/profile', [CustomerController::class, 'updateProfile'])->name('customer.profile.update');
+    
+    // Saved Address Management
+    Route::post('/customer/addresses', [CustomerController::class, 'storeAddress'])->name('customer.addresses.store');
+    Route::put('/customer/addresses/{id}', [CustomerController::class, 'updateAddress'])->name('customer.addresses.update');
+    Route::delete('/customer/addresses/{id}', [CustomerController::class, 'deleteAddress'])->name('customer.addresses.delete');
+    Route::post('/customer/addresses/{id}/default', [CustomerController::class, 'setDefaultAddress'])->name('customer.addresses.default');
     Route::get('/customer/notifications', [CustomerController::class, 'getNotifications'])->name('customer.notifications.get');
     Route::post('/customer/notifications/mark-all-read', [CustomerController::class, 'markAllNotificationsRead'])->name('customer.notifications.mark_read');
     
@@ -49,6 +59,7 @@ Route::middleware('auth:customer')->group(function () {
     Route::get('/store/checkout', [CustomerController::class, 'checkout'])->name('customer.store.checkout');
     Route::post('/store/checkout', [CustomerController::class, 'processCheckout'])->name('customer.store.checkout.process');
     Route::get('/store/checkout/success', [CustomerController::class, 'paymentSuccess'])->name('customer.store.checkout.success');
+    Route::get('/store/checkout/cancel', [CustomerController::class, 'paymentCancel'])->name('customer.store.checkout.cancel');
     Route::get('/store/orders', [CustomerController::class, 'orders'])->name('customer.store.orders');
     
     // Subscription / Membership Routes
@@ -62,6 +73,7 @@ Route::middleware('auth:customer')->group(function () {
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
 use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\StaffController;
 
 /* ==========================================================================
    2. ADMIN PANEL ROUTES (Grouped & Prefixed)
@@ -115,11 +127,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
             // Subscription Management Routes
             Route::get('/subscriptions', [SubscriptionController::class, 'index'])->name('subscriptions.index');
+
+            // Staff Management Routes
+            Route::resource('staff', StaffController::class)->except(['show']);
         });
 
         // Profile Settings Routes
         Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
         Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+        // Activity History Route
+        Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
     });
 
 });

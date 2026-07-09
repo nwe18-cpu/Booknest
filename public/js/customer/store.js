@@ -74,7 +74,7 @@ function renderCartDrawer(data) {
                     <div class="cart-item">
                         <div class="cart-item-book-container">
                             <div class="cart-item-book">
-                                <div class="cart-item-cover ${item.image ? 'has-cover-image' : item.cover_class}" ${item.image ? `style="background-image: url('${item.image}'); background-size: cover; background-position: center;"` : ''}>
+                                <div class="cart-item-cover ${item.image ? 'has-cover-image' : (item.cover_class || 'book-color-1')}" ${item.image ? `style="background-image: url('${item.image}'); background-size: cover; background-position: center;"` : ''}>
                                     ${item.image ? '' : `<span class="cart-item-cover-text">${escapeHtml(item.name)}</span>`}
                                 </div>
                             </div>
@@ -131,7 +131,7 @@ function renderCartDrawer(data) {
                     <div class="cart-item">
                         <div class="cart-item-book-container">
                             <div class="cart-item-book">
-                                <div class="cart-item-cover ${item.image ? 'has-cover-image' : item.cover_class}" ${item.image ? `style="background-image: url('${item.image}'); background-size: cover; background-position: center;"` : ''}>
+                                <div class="cart-item-cover ${item.image ? 'has-cover-image' : (item.cover_class || 'book-color-1')}" ${item.image ? `style="background-image: url('${item.image}'); background-size: cover; background-position: center;"` : ''}>
                                     ${item.image ? '' : `<span class="cart-item-cover-text">${escapeHtml(item.name)}</span>`}
                                 </div>
                             </div>
@@ -299,13 +299,13 @@ function removeCartItem(itemId) {
 
 // Modal Detail Window Controls
 function openBookDetail(id, title, author, desc, price, stock, totalPages, colorClass, pdfFile, image, isWishlisted, categories) {
+    // 1. Populate Desktop Elements
     document.getElementById('modal-title').innerText = title;
     document.getElementById('modal-author').innerText = 'By ' + author;
     document.getElementById('modal-desc').innerText = desc || 'No description available for this book.';
     document.getElementById('modal-pages').innerText = totalPages;
     document.getElementById('modal-price').innerText = parseFloat(price).toLocaleString() + ' Ks';
     
-    // Set Wishlist button state in modal
     const wishlistBtn = document.getElementById('btn-wishlist-modal');
     if (wishlistBtn) {
         wishlistBtn.setAttribute('data-id', id);
@@ -331,7 +331,6 @@ function openBookDetail(id, title, author, desc, price, stock, totalPages, color
         }
     }
 
-    // PDF Download Button toggle
     const pdfBtn = document.getElementById('btn-download-pdf-modal');
     if (pdfBtn) {
         if (pdfFile) {
@@ -342,7 +341,6 @@ function openBookDetail(id, title, author, desc, price, stock, totalPages, color
         }
     }
 
-    // Reapply coloring classes and image background
     const modalBook3D = document.getElementById('modal-book-3d');
     if (modalBook3D) {
         modalBook3D.className = 'book-3d ' + colorClass;
@@ -357,7 +355,7 @@ function openBookDetail(id, title, author, desc, price, stock, totalPages, color
             if (titleBox) titleBox.style.display = 'none';
             if (badge) badge.style.display = 'none';
         } else {
-            coverFront.style.backgroundImage = "none";
+            coverFront.style.backgroundImage = "";
             if (titleBox) titleBox.style.display = 'flex';
             if (badge) badge.style.display = 'flex';
         }
@@ -369,7 +367,6 @@ function openBookDetail(id, title, author, desc, price, stock, totalPages, color
     const coverAuthor = document.getElementById('modal-book-cover-author');
     if (coverAuthor) coverAuthor.innerText = author;
 
-    // Trigger click button
     const cartBtn = document.getElementById('btn-add-to-cart-modal');
     if (cartBtn) {
         cartBtn.onclick = function() {
@@ -378,15 +375,139 @@ function openBookDetail(id, title, author, desc, price, stock, totalPages, color
         };
     }
 
+    // 2. Populate Mobile-Only Elements
+    const mobileTitle = document.getElementById('modal-title-mobile') || document.getElementById('modal-mobile-title');
+    if (mobileTitle) mobileTitle.innerText = title;
+    
+    const mobileAuthor = document.getElementById('modal-author-mobile') || document.getElementById('modal-mobile-author');
+    if (mobileAuthor) mobileAuthor.innerText = 'By ' + author;
+
+    const mobilePages = document.getElementById('modal-pages-mobile');
+    if (mobilePages) mobilePages.innerText = totalPages;
+
+    const mobilePrice = document.getElementById('modal-price-mobile');
+    if (mobilePrice) mobilePrice.innerText = parseFloat(price).toLocaleString() + ' Ks';
+
+    const mobileDesc = document.getElementById('modal-desc-mobile') || document.getElementById('modal-mobile-desc');
+    if (mobileDesc) mobileDesc.innerText = desc || 'No description available for this book.';
+
+    // Populate Mobile 3D Book Cover
+    const mobileBook3D = document.getElementById('modal-book-3d-mobile');
+    if (mobileBook3D) {
+        mobileBook3D.className = 'book-3d ' + colorClass;
+        const coverFront = mobileBook3D.querySelector('.book-cover-front');
+        const titleBox = mobileBook3D.querySelector('.book-cover-title-box');
+        
+        if (image) {
+            coverFront.style.backgroundImage = "url('" + image + "')";
+            coverFront.style.backgroundSize = "cover";
+            coverFront.style.backgroundPosition = "center";
+            if (titleBox) titleBox.style.display = 'none';
+        } else {
+            coverFront.style.backgroundImage = "";
+            if (titleBox) titleBox.style.display = 'flex';
+        }
+    }
+    
+    const mobileCoverTitle = document.getElementById('modal-book-cover-title-mobile');
+    if (mobileCoverTitle) mobileCoverTitle.innerText = title;
+
+    // Set mobile cover (legacy elements fallback)
+    const mobileCover = document.getElementById('modal-mobile-cover');
+    if (mobileCover) {
+        if (image) {
+            mobileCover.style.backgroundImage = "url('" + image + "')";
+            mobileCover.style.backgroundSize = "cover";
+            mobileCover.style.backgroundPosition = "center";
+            mobileCover.innerHTML = "";
+            mobileCover.className = 'mobile-detail-cover';
+        } else {
+            mobileCover.style.backgroundImage = "";
+            mobileCover.className = 'mobile-detail-cover ' + colorClass;
+            mobileCover.innerHTML = `<div class="fallback-cover-text">${escapeHtml(title)}</div>`;
+        }
+    }
+
+    // Author avatar circular thumbnail (legacy fallback)
+    const mobileAvatar = document.getElementById('modal-mobile-author-avatar');
+    if (mobileAvatar) {
+        const initials = author ? author.trim().charAt(0).toUpperCase() : 'A';
+        mobileAvatar.innerText = initials;
+        const hue = (author ? author.length * 35 : 120) % 360;
+        mobileAvatar.style.backgroundColor = `hsl(${hue}, 40%, 35%)`;
+    }
+
+    // Copy tags dynamically from the list card to the mobile modal (legacy fallback)
+    const mobileTags = document.getElementById('modal-mobile-tags');
+    if (mobileTags) {
+        mobileTags.innerHTML = "";
+        const card = document.querySelector(`.book-card-premium[data-id="${id}"], .promo-book-ad-card[data-id="${id}"]`);
+        if (card) {
+            const tagsContainer = card.querySelector('.book-tags');
+            if (tagsContainer) {
+                mobileTags.innerHTML = tagsContainer.innerHTML;
+            }
+        }
+        if (!mobileTags.innerHTML) {
+            mobileTags.innerHTML = `<span class="book-tag">Best Seller</span>`;
+        }
+    }
+
+    // Hook Wishlist button for mobile modal
+    const mobileWishlistBtn = document.getElementById('btn-wishlist-mobile');
+    if (mobileWishlistBtn) {
+        mobileWishlistBtn.setAttribute('data-id', id);
+        if (isWishlisted) {
+            mobileWishlistBtn.classList.add('active');
+            mobileWishlistBtn.innerHTML = '<i class="fa-solid fa-heart"></i>';
+        } else {
+            mobileWishlistBtn.classList.remove('active');
+            mobileWishlistBtn.innerHTML = '<i class="fa-regular fa-heart"></i>';
+        }
+    }
+
+    // Hook Buy button for mobile modal
+    const mobileBuyBtn = document.getElementById('btn-buy-mobile');
+    if (mobileBuyBtn) {
+        if (parseInt(stock) > 0) {
+            mobileBuyBtn.disabled = false;
+            mobileBuyBtn.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> Buy Book';
+            mobileBuyBtn.onclick = function() {
+                closeBookDetail();
+                addToCart(id, 1);
+            };
+        } else {
+            mobileBuyBtn.disabled = true;
+            mobileBuyBtn.innerHTML = 'Out of Stock';
+        }
+    }
+
+    // Hook PDF download button for mobile modal
+    const mobilePdfBtn = document.getElementById('btn-download-mobile');
+    if (mobilePdfBtn) {
+        if (pdfFile) {
+            mobilePdfBtn.href = '/store/books/' + id + '/download';
+            mobilePdfBtn.classList.remove('display-none');
+        } else {
+            mobilePdfBtn.classList.add('display-none');
+        }
+    }
+
     const modal = document.getElementById('detail-modal');
-    if (modal) modal.classList.add('active');
+    if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
     
     loadBookRecommendations(id, categories || '');
 }
 
 function closeBookDetail() {
     const modal = document.getElementById('detail-modal');
-    if (modal) modal.classList.remove('active');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
 }
 
 function openReviewsModal(id, title, author) {
@@ -404,6 +525,17 @@ function openReviewsModal(id, title, author) {
 function closeReviewsModal() {
     const modal = document.getElementById('reviews-modal');
     if (modal) modal.classList.remove('active');
+}
+
+function openReviewsModalFromDetails() {
+    const wishlistBtn = document.getElementById('btn-wishlist-modal');
+    if (!wishlistBtn) return;
+    
+    const id = wishlistBtn.getAttribute('data-id');
+    const title = document.getElementById('modal-title').innerText;
+    const author = document.getElementById('modal-author').innerText.replace(/^By\s+/i, '');
+    
+    openReviewsModal(id, title, author);
 }
 
 function openBookDetailFromElement(el) {
@@ -667,13 +799,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize hero slideshow if multiple slides exist
     const slides = document.querySelectorAll('.hero-slides .hero-slide');
+    let currentHeroSlideIdx = 0;
+    let heroSlideInterval = null;
+
+    function showHeroSlide(index) {
+        const slides = document.querySelectorAll('.hero-slides .hero-slide');
+        const dots = document.querySelectorAll('.hero-slider-dots .hero-dot');
+        if (slides.length === 0) return;
+        
+        if (index >= slides.length) {
+            currentHeroSlideIdx = 0;
+        } else if (index < 0) {
+            currentHeroSlideIdx = slides.length - 1;
+        } else {
+            currentHeroSlideIdx = index;
+        }
+        
+        slides.forEach(slide => slide.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+        
+        if (slides[currentHeroSlideIdx]) {
+            slides[currentHeroSlideIdx].classList.add('active');
+        }
+        if (dots[currentHeroSlideIdx]) {
+            dots[currentHeroSlideIdx].classList.add('active');
+        }
+    }
+
+    window.changeHeroSlide = function(direction) {
+        showHeroSlide(currentHeroSlideIdx + direction);
+        resetHeroTimer();
+    };
+
+    window.setHeroSlide = function(index) {
+        showHeroSlide(index);
+        resetHeroTimer();
+    };
+
+    function resetHeroTimer() {
+        if (heroSlideInterval) {
+            clearInterval(heroSlideInterval);
+        }
+        const slides = document.querySelectorAll('.hero-slides .hero-slide');
+        if (slides.length > 1) {
+            heroSlideInterval = setInterval(() => {
+                showHeroSlide(currentHeroSlideIdx + 1);
+            }, 6000);
+        }
+    }
+
     if (slides.length > 1) {
-        let currentSlideIdx = 0;
-        setInterval(() => {
-            slides[currentSlideIdx].classList.remove('active');
-            currentSlideIdx = (currentSlideIdx + 1) % slides.length;
-            slides[currentSlideIdx].classList.add('active');
-        }, 6000); // Rotate slide every 6 seconds
+        resetHeroTimer();
     }
 });
 
@@ -684,8 +860,57 @@ window.addEventListener('resize', () => {
     });
 });
 
+// Full-Screen Payment Overlay Loader Helpers
+function showFullScreenLoader(titleText = 'Securely Connecting to Stripe', descText = 'Please do not close this window or refresh the page.') {
+    let overlay = document.getElementById('full-screen-loader-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'full-screen-loader-overlay';
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100vw';
+        overlay.style.height = '100vh';
+        overlay.style.backgroundColor = 'rgba(11, 20, 18, 0.9)'; // Deep forest-black overlay
+        overlay.style.zIndex = '99999';
+        overlay.style.display = 'flex';
+        overlay.style.flexDirection = 'column';
+        overlay.style.justifyContent = 'center';
+        overlay.style.alignItems = 'center';
+        overlay.style.color = '#ffffff';
+        overlay.style.fontFamily = "'Outfit', 'Inter', sans-serif";
+        overlay.style.transition = 'opacity 0.3s ease';
+        
+        overlay.innerHTML = `
+            <div style="text-align: center; padding: 2rem; background: rgba(18, 37, 33, 0.95); border: 2px solid #cca353; border-radius: 16px; box-shadow: 0 12px 36px rgba(0,0,0,0.5); max-width: 450px; width: 90%;">
+                <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 3.5rem; color: #cca353; margin-bottom: 1.5rem; display: inline-block;"></i>
+                <h2 style="font-size: 1.6rem; font-weight: 700; margin: 0 0 0.5rem 0; color: #ffffff;" id="loader-title">${titleText}</h2>
+                <p style="font-size: 0.95rem; opacity: 0.85; margin: 0; line-height: 1.5;" id="loader-desc">${descText}</p>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+    } else {
+        document.getElementById('loader-title').innerText = titleText;
+        document.getElementById('loader-desc').innerText = descText;
+        overlay.style.display = 'flex';
+    }
+}
+
+function hideFullScreenLoader() {
+    const overlay = document.getElementById('full-screen-loader-overlay');
+    if (overlay) {
+        overlay.style.display = 'none';
+    }
+}
+
 // Checkout Submit Form Handler
 function submitCheckout(e) {
+    const form = document.getElementById('checkout-form');
+    if (form && window.validateForm && !window.validateForm(form)) {
+        e.preventDefault();
+        return;
+    }
+    
     e.preventDefault();
     
     const submitBtn = document.getElementById('btn-submit-order');
@@ -697,6 +922,13 @@ function submitCheckout(e) {
     const formData = new FormData(document.getElementById('checkout-form'));
     const data = {};
     formData.forEach((value, key) => data[key] = value);
+
+    const paymentMethod = data['payment_method'] || 'cod';
+    if (paymentMethod === 'kpay' || paymentMethod === 'wave') {
+        showFullScreenLoader('Connecting to Payment Gateway', `Initializing secure transfer link to ${paymentMethod === 'kpay' ? 'KBZPay' : 'Wave Pay'}. Please wait...`);
+    } else if (paymentMethod === 'stripe') {
+        showFullScreenLoader('Connecting to Stripe', 'Preparing secure checkout window. Please wait...');
+    }
 
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -712,17 +944,26 @@ function submitCheckout(e) {
     .then(res => res.json())
     .then(resData => {
         if (resData.success) {
-            showToast('Order generated successfully!', false);
+            if (paymentMethod === 'kpay' || paymentMethod === 'wave') {
+                document.getElementById('loader-title').innerText = 'Payment Request Approved';
+                document.getElementById('loader-desc').innerText = 'Redirecting to your order confirmation and invoice receipt...';
+            } else if (paymentMethod === 'stripe') {
+                document.getElementById('loader-title').innerText = 'Redirecting to Stripe';
+                document.getElementById('loader-desc').innerText = 'Please complete your payment on the secure Stripe page...';
+            }
+            showToast(resData.message || 'Order placed successfully!', false);
             setTimeout(() => {
                 window.location.href = resData.redirect_url;
-            }, 1000);
+            }, 1500);
         } else {
+            hideFullScreenLoader();
             showToast(resData.message || 'Validation failed. Please verify form details.', true);
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<i class="fa-solid fa-lock"></i> Place Secure Order';
         }
     })
     .catch(err => {
+        hideFullScreenLoader();
         console.error('Checkout submit failed', err);
         showToast('Failed to process order. Please try again.', true);
         submitBtn.disabled = false;
@@ -1004,6 +1245,17 @@ function toggleWishlist(itemId, element) {
                     modalBtn.innerHTML = '<i class="fa-regular fa-heart"></i> Wishlist';
                 }
             }
+
+            const mobileModalBtn = document.getElementById('btn-wishlist-mobile');
+            if (mobileModalBtn && mobileModalBtn.getAttribute('data-id') == itemId) {
+                if (added) {
+                    mobileModalBtn.classList.add('active');
+                    mobileModalBtn.innerHTML = '<i class="fa-solid fa-heart"></i>';
+                } else {
+                    mobileModalBtn.classList.remove('active');
+                    mobileModalBtn.innerHTML = '<i class="fa-regular fa-heart"></i>';
+                }
+            }
         } else {
             showToast(data.message || 'Failed to toggle wishlist', true);
         }
@@ -1069,7 +1321,7 @@ function loadBookRecommendations(currentBookId, categoriesStr) {
     
     // Sort by score descending (most categories matching), then randomize
     candidates.sort((a, b) => b.score - a.score || Math.random() - 0.5);
-    const recs = candidates.slice(0, 3);
+    const recs = candidates.slice(0, 6);
     
     const recSection = document.getElementById('detail-recommendations-section');
     if (recs.length === 0) {
@@ -1138,4 +1390,151 @@ function toggleDeliveryInfo(btn, orderId) {
         }
     }
 }
+
+// Global click event listener to show loading spinner for all "Add to Cart" actions
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('button, a');
+    if (!btn) return;
+    
+    const onclickAttr = btn.getAttribute('onclick') || '';
+    if (onclickAttr.includes('addToCart') || btn.classList.contains('btn-add-to-cart') || btn.classList.contains('btn-buy-book')) {
+        if (btn.classList.contains('btn-loading') || btn.disabled) return;
+        
+        btn.classList.add('btn-loading');
+        const originalHtml = btn.innerHTML;
+        btn.style.pointerEvents = 'none';
+        
+        // Check if button is an icon-only card button or text button
+        if (btn.classList.contains('btn-card-cart') || btn.classList.contains('btn-wishlist-buy') || btn.tagName === 'A') {
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+        } else {
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Adding...';
+        }
+        
+        // Restore button state after a safe timeout (1.2s) when server response has returned
+        setTimeout(() => {
+            btn.classList.remove('btn-loading');
+            btn.style.pointerEvents = '';
+            btn.innerHTML = originalHtml;
+        }, 1200);
+    }
+});
+
+// Client-side Sort Dropdown Controls
+function toggleSortDropdown(e) {
+    if (e) e.stopPropagation();
+    const selectBox = document.getElementById('custom-sort-select');
+    const optionsList = document.getElementById('sort-options-list');
+    if (selectBox && optionsList) {
+        selectBox.classList.toggle('active');
+        optionsList.classList.toggle('display-none');
+    }
+}
+
+function selectSortOption(value, label, e) {
+    if (e) e.stopPropagation();
+    
+    // Update active class in options list
+    document.querySelectorAll('.custom-sort-dropdown .sort-option').forEach(opt => {
+        opt.classList.remove('active');
+        if (opt.getAttribute('data-value') === value) {
+            opt.classList.add('active');
+        }
+    });
+
+    // Update label text
+    const currentLabel = document.getElementById('current-sort-label');
+    if (currentLabel) currentLabel.innerText = label;
+
+    // Hide dropdown
+    const selectBox = document.getElementById('custom-sort-select');
+    const optionsList = document.getElementById('sort-options-list');
+    if (selectBox && optionsList) {
+        selectBox.classList.remove('active');
+        optionsList.classList.add('display-none');
+    }
+
+    // Trigger client-side sort
+    sortBooks(value);
+}
+
+function sortBooks(criteria) {
+    const books = Array.from(document.querySelectorAll('.books-rows-container .book-container-3d'));
+    if (books.length === 0) return;
+
+    books.sort((a, b) => {
+        const cardA = a.querySelector('.book-card-premium, .promo-book-ad-card');
+        const cardB = b.querySelector('.book-card-premium, .promo-book-ad-card');
+        if (!cardA || !cardB) return 0;
+
+        const priceA = parseFloat(cardA.getAttribute('data-price')) || 0;
+        const priceB = parseFloat(cardB.getAttribute('data-price')) || 0;
+
+        const titleA = (a.getAttribute('data-title') || '').toLowerCase();
+        const titleB = (b.getAttribute('data-title') || '').toLowerCase();
+
+        const indexA = parseInt(a.getAttribute('data-index')) || 0;
+        const indexB = parseInt(b.getAttribute('data-index')) || 0;
+
+        if (criteria === 'price-low-high') {
+            return priceA - priceB;
+        } else if (criteria === 'price-high-low') {
+            return priceB - priceA;
+        } else if (criteria === 'name-a-z') {
+            return titleA.localeCompare(titleB);
+        } else if (criteria === 'name-z-a') {
+            return titleB.localeCompare(titleA);
+        } else if (criteria === 'default') {
+            return indexA - indexB;
+        }
+        return 0;
+    });
+
+    // Re-distribute sorted books back to the visible rows
+    const firstRow = document.querySelector('.books-rows-container .books-row');
+    const rows = Array.from(document.querySelectorAll('.books-rows-container .books-row'));
+    
+    // Check if category filter is active (flattened state)
+    const activeTab = document.querySelector('.filter-tab.active');
+    const isFiltered = activeTab && activeTab.getAttribute('onclick') && !activeTab.getAttribute('onclick').includes('all');
+
+    if (isFiltered && firstRow) {
+        // If filtered, just append all sorted books to the first row (flat structure)
+        books.forEach(book => {
+            firstRow.appendChild(book);
+        });
+    } else {
+        // Otherwise, re-chunk and distribute them across original rows (up to 12 per row)
+        let bookIndex = 0;
+        rows.forEach(row => {
+            row.innerHTML = '';
+            for (let i = 0; i < 12 && bookIndex < books.length; i++) {
+                const book = books[bookIndex];
+                row.appendChild(book);
+                originalBookParents.set(book, row); // Update original parent mapping for filters
+                bookIndex++;
+            }
+        });
+    }
+
+    // Update visibility and slide arrow states
+    updateRowVisibility();
+}
+
+// Close sort dropdown when clicking outside
+document.addEventListener('click', function(e) {
+    const selectBox = document.getElementById('custom-sort-select');
+    const optionsList = document.getElementById('sort-options-list');
+    if (selectBox && optionsList && !selectBox.contains(e.target)) {
+        selectBox.classList.remove('active');
+        optionsList.classList.add('display-none');
+    }
+});
+
+// Initialize book indices for sorting preservation
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.books-rows-container .book-container-3d').forEach((book, idx) => {
+        book.setAttribute('data-index', idx);
+    });
+});
 

@@ -99,4 +99,9 @@ class Customer extends Authenticatable
     {
         return $this->belongsToMany(Item::class, 'wishlists', 'customer_id', 'item_id')->withTimestamps();
     }
+
+    public function addresses()
+    {
+        return $this->hasMany(CustomerAddress::class, 'customer_id')->orderBy('is_default', 'desc');
+    }
 }

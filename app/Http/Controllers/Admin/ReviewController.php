@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\ActivityLogger;
 
 class ReviewController extends Controller
 {
@@ -77,8 +78,12 @@ class ReviewController extends Controller
      */
     public function destroy($id)
     {
-        $review = Review::findOrFail($id);
+        $review = Review::with(['customer', 'item'])->findOrFail($id);
+        $customerName = $review->customer?->name ?? 'Unknown Customer';
+        $bookName = $review->item?->name ?? 'Unknown Book';
+        
         $review->delete();
+        ActivityLogger::log('delete', "Deleted/moderated book review by customer '{$customerName}' for book '{$bookName}'.");
 
         return redirect()->route('admin.reviews.index')->with('success', 'Review deleted successfully!');
     }

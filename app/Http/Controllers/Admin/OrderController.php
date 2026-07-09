@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use App\Helpers\ActivityLogger;
 
 class OrderController extends Controller
 {
@@ -71,6 +72,7 @@ class OrderController extends Controller
             'payment_status' => $request->payment_status,
             'status' => $request->status,
         ]);
+        ActivityLogger::log('status_change', "Updated Order #{$order->id} status (Customer: {$order->customer?->name}) - Payment: {$request->payment_status}, Order: {$request->status}.");
 
         // Dynamic Notifications for the Customer
         if ($order->customer_id) {

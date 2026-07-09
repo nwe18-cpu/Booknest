@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\ReadingProgress;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Helpers\ActivityLogger;
 
 class CustomerController extends Controller
 {
@@ -78,6 +79,7 @@ class CustomerController extends Controller
         
         $newStatus = $customer->status === 'active' ? 'inactive' : 'active';
         $customer->update(['status' => $newStatus]);
+        ActivityLogger::log('status_change', "Toggled customer account status for '{$customer->name}' (ID: {$customer->id}) to {$newStatus}.");
 
         $message = $newStatus === 'active' 
             ? "Customer account '{$customer->name}' has been successfully unblocked/activated." 
@@ -108,6 +110,7 @@ class CustomerController extends Controller
             'subscription_status' => $request->subscription_status,
             'subscription_expires_at' => $expiresAt,
         ]);
+        ActivityLogger::log('update', "Manually updated VIP subscription status for customer '{$customer->name}' (ID: {$customer->id}) to {$request->subscription_status} (Expires: " . ($expiresAt ? $expiresAt->toDateString() : 'N/A') . ").");
 
         return redirect()->back()->with('success', "VIP membership details for '{$customer->name}' updated successfully.");
     }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Author;
 use Illuminate\Support\Facades\Storage;
+use App\Helpers\ActivityLogger;
 
 class AuthorController extends Controller
 {
@@ -34,7 +35,8 @@ class AuthorController extends Controller
             $data['image'] = $request->file('image')->store('authors', 'public');
         }
 
-        Author::create($data);
+        $author = Author::create($data);
+        ActivityLogger::log('create', "Created author '{$author->name}' (ID: {$author->id}).");
 
         return redirect()->route('admin.authors.index')->with('success', 'Author created successfully!');
     }
@@ -62,6 +64,7 @@ class AuthorController extends Controller
         }
 
         $author->update($data);
+        ActivityLogger::log('update', "Updated author '{$author->name}' (ID: {$author->id}) details.");
 
         return redirect()->route('admin.authors.index')->with('success', 'Author updated successfully!');
     }
@@ -77,7 +80,10 @@ class AuthorController extends Controller
             \Illuminate\Support\Facades\Storage::disk('public')->delete($author->image);
         }
 
+        $authorName = $author->name;
+        $authorId = $author->id;
         $author->delete();
+        ActivityLogger::log('delete', "Deleted author '{$authorName}' (ID: {$authorId}).");
 
         return redirect()->route('admin.authors.index')->with('success', 'Author deleted successfully!');
     }
@@ -96,6 +102,7 @@ class AuthorController extends Controller
         }
 
         $author = Author::create($data);
+        ActivityLogger::log('create', "Quick-created author '{$author->name}' (ID: {$author->id}) from Book Form.");
 
         return response()->json([
             'success' => true,

@@ -201,61 +201,7 @@
         </div>
     </div>
 
-    <!-- Bottom Row: Downloads & Reading Progress -->
-    <div class="data-table-card margin-top-25">
-        <div class="detail-card-header">
-            <i class="fa-solid fa-book-reader color-brand-gold-font-size-1-25"></i>
-            <h4>Downloads & Reading Progress</h4>
-        </div>
 
-        <div class="table-responsive">
-            <table class="modern-table">
-                <thead>
-                    <tr>
-                        <th>Cover</th>
-                        <th>Book Title</th>
-                        <th>Author</th>
-                        <th>Current Page</th>
-                        <th>Total Pages</th>
-                        <th>Completion Progress</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($progressList as $progress)
-                        @php
-                            $pages = $progress->item->pages ?? 0;
-                            $current = $progress->current_page ?? 0;
-                            $pct = $pages > 0 ? min(100, round(($current / $pages) * 100)) : 0;
-                        @endphp
-                        <tr>
-                            <td>
-                                <img src="{{ $progress->item->image ? asset('storage/' . $progress->item->image) : asset('images/default-book.png') }}" alt="{{ $progress->item->name }}" class="table-book-cover">
-                            </td>
-                            <td><strong>{{ $progress->item->name }}</strong></td>
-                            <td><span class="text-author">{{ $progress->item->author?->name ?? 'Unknown Author' }}</span></td>
-                            <td>Page {{ $current }}</td>
-                            <td>{{ $pages }} pages</td>
-                            <td>
-                                <div class="progress-bar-track-small">
-                                    <div class="progress-bar-fill-small" style="width: {{ $pct }}%"></div>
-                                </div>
-                                <strong class="progress-percentage">{{ $pct }}%</strong>
-                                @if($progress->completed)
-                                    <span class="completed-text"><i class="fa-solid fa-circle-check"></i> Completed</span>
-                                @endif
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="table-empty-state">
-                                📚 No active reading progress or book downloads recorded for this customer.
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-    </div>
 
 </div>
 @endsection

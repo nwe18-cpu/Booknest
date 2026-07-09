@@ -104,6 +104,60 @@ class CustomerAuthController extends Controller
     }
 
     /**
+     * Show the forgot password form.
+     */
+    public function showForgotPasswordForm()
+    {
+        if (Auth::guard('customer')->check()) {
+            return redirect()->route('customer.dashboard');
+        }
+        return view('auth.forgot_password');
+    }
+
+    /**
+     * Handle forgot password reset.
+     */
+    public function resetPassword(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => 'required|email|exists:customers,email',
+            'phone' => 'required|string',
+            'password' => ['required', 'string', 'min:8', 'confirmed', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])/'],
+        ], [
+            'email.exists' => 'The provided email is not registered.',
+            'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
+        ]);
+
+        $customer = Customer::where('email', $validated['email'])->first();
+
+        // Normalize phone formats for safe comparison
+        $dbPhone = preg_replace('/[^0-9]/', '', $customer->phone);
+        $inputPhone = preg_replace('/[^0-9]/', '', $validated['phone']);
+
+        if (str_starts_with($dbPhone, '959')) {
+            $dbPhone = substr($dbPhone, 3);
+        } elseif (str_starts_with($dbPhone, '09')) {
+            $dbPhone = substr($dbPhone, 2);
+        }
+
+        if (str_starts_with($inputPhone, '959')) {
+            $inputPhone = substr($inputPhone, 3);
+        } elseif (str_starts_with($inputPhone, '09')) {
+            $inputPhone = substr($inputPhone, 2);
+        }
+
+        if ($dbPhone !== $inputPhone) {
+            return back()->withErrors(['phone' => 'The phone number does not match our records.'])->withInput();
+        }
+
+        // Reset password
+        $customer->password = Hash::make($validated['password']);
+        $customer->save();
+
+        return redirect()->route('login')->with('success', 'Password reset successfully! Please login with your new password.');
+    }
+
+    /**
      * Log the customer out.
      */
     public function logout(Request $request)

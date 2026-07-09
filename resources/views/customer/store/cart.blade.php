@@ -3,7 +3,7 @@
 @section('title', 'Shopping Cart - Booknest')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.1.6">
+<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.4.3">
 @endsection
 
 @section('content')
@@ -20,5 +20,5 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/customer/store.js') }}?v=1.0.5"></script>
+<script src="{{ asset('js/customer/store.js') }}?v=1.1.3"></script>
 @endsection
