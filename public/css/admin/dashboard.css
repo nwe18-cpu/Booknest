@@ -51,14 +51,10 @@ body {
     background: linear-gradient(135deg, #0b1412 0%, #122521 50%, #0d1a13 100%);
     box-shadow: inset -4px 0 24px rgba(0, 0, 0, 0.65), 0 12px 36px rgba(0, 0, 0, 0.4);
     margin: 0;
-    border-radius: 0; /* Flush docked sidebar with square corners */
-    height: 100vh; /* Full viewport height */
-    position: fixed;
+    border-radius: 0;    height: 100vh;    position: fixed;
     top: 0;
-    left: 0; /* Flush with the left edge of the screen */
-    border: none;
-    border-right: 3px solid var(--brand-gold); /* Only gold border separating sidebar from content */
-    /* Golden shelf frame */
+    left: 0;    border: none;
+    border-right: 3px solid var(--brand-gold);    /* Golden shelf frame */
     overflow: hidden;
     padding: 20px 0;
     display: flex;
@@ -77,12 +73,10 @@ body {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    position: relative; /* Context for absolute positioned children like close button */
-}
+    position: relative;}
 
 .sidebar-close-btn {
-    display: none; /* Hidden on desktop */
-}
+    display: none;}
 
 .sidebar-brand i {
     color: #ffd166;
@@ -116,8 +110,7 @@ body {
 }
 
 .sidebar-section-heading {
-    color: rgba(250, 245, 230, 0.4); /* Muted gold cream */
-    font-size: 0.72rem;
+    color: rgba(250, 245, 230, 0.4);    font-size: 0.72rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1.5px;
@@ -126,8 +119,7 @@ body {
     font-family: 'Outfit', sans-serif;
     border-bottom: 1.5px dashed rgba(204, 163, 83, 0.1);
     margin-bottom: 4px;
-    pointer-events: none; /* Make heading non-interactive */
-}
+    pointer-events: none;}
 
 /* Custom Scrollbar for Cozy Sidebar */
 .sidebar-menu::-webkit-scrollbar {
@@ -220,8 +212,7 @@ body {
 .sidebar-menu li a span {
     z-index: 2;
     transition: transform 0.3s ease;
-    white-space: nowrap; /* Prevent menu item text from wrapping to two lines */
-}
+    white-space: nowrap;}
 
 .sidebar-menu li a i {
     font-size: 1.1rem;
@@ -305,8 +296,7 @@ body {
     position: sticky;
     top: 20px;
     z-index: 1000;
-    background-color: var(--sidebar-bg); /* Match Sidebar Color */
-    backdrop-filter: blur(12px);
+    background-color: var(--sidebar-bg);    backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     height: 65px;
     display: flex;
@@ -692,8 +682,7 @@ body {
 
 /* Dark Offer Box Style */
 .offer-box-dark {
-    background-color: #ffffff; /* Match white card styling */
-    color: var(--text-main);
+    background-color: #ffffff;    color: var(--text-main);
     border-radius: 16px;
     padding: 24px;
     display: flex;
@@ -720,8 +709,7 @@ body {
 }
 
 .btn-manage-offer {
-    background: var(--sidebar-bg); /* Match dark green theme for action buttons */
-    color: #ffffff;
+    background: var(--sidebar-bg);    color: #ffffff;
     text-decoration: none;
     padding: 10px 22px;
     border-radius: 10px;
@@ -1038,8 +1026,7 @@ body {
         display: flex !important;
         align-items: center;
         justify-content: center;
-        background: rgba(204, 163, 83, 0.15) !important; /* Soft gold tint */
-        border: 1px solid rgba(204, 163, 83, 0.3) !important;
+        background: rgba(204, 163, 83, 0.15) !important;        border: 1px solid rgba(204, 163, 83, 0.3) !important;
         color: var(--brand-gold) !important;
         font-size: 1.1rem !important;
         cursor: pointer;
@@ -1062,8 +1049,7 @@ body {
     }
 
     .sidebar-brand {
-        margin-top: 45px !important; /* Shift down to make room for close button */
-    }
+        margin-top: 45px !important;    }
 
     .sidebar.active {
         transform: translateX(0) !important;
@@ -3236,8 +3222,7 @@ body {
 .pagination-wrapper nav span.relative.z-0.inline-flex,
 .pagination-wrapper nav div>span {
     display: inline-flex !important;
-    gap: 8px !important; /* Spacing between buttons */
-    background-color: transparent !important;
+    gap: 8px !important;    background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
     overflow: visible !important;
@@ -3254,8 +3239,7 @@ body {
     padding: 0 !important;
     font-size: 0.9rem !important;
     font-weight: 600 !important;
-    color: var(--sidebar-bg) !important; /* Brand deep forest green */
-    text-decoration: none !important;
+    color: var(--sidebar-bg) !important;    text-decoration: none !important;
     background-color: transparent !important;
     border: none !important;
     border-radius: 8px !important;
@@ -3279,8 +3263,7 @@ body {
 .pagination-wrapper nav div>span span[aria-current="page"] span,
 .pagination-wrapper nav span.relative.z-0.inline-flex span[aria-current="page"],
 .pagination-wrapper nav div>span span[aria-current="page"] {
-    background-color: var(--sidebar-bg) !important; /* Solid Dark Green */
-    color: #ffffff !important;
+    background-color: var(--sidebar-bg) !important;    color: #ffffff !important;
     border-radius: 8px !important;
     width: 36px !important;
     height: 36px !important;
@@ -3377,8 +3360,7 @@ body {
     padding: 11px 16px;
     border: 1.5px solid #EAE6DF;
     border-radius: 10px;
-    background-color: #FAF9F5; /* Warm background matching our clean cream palette */
-    color: var(--text-main);
+    background-color: #FAF9F5;    color: var(--text-main);
     font-size: 0.9rem;
     font-weight: 500;
     outline: none;
@@ -3397,8 +3379,7 @@ body {
     background-repeat: no-repeat;
     background-position: right 16px center;
     background-size: 15px;
-    padding-right: 42px; /* Prevent text overlap with custom arrow */
-    cursor: pointer;
+    padding-right: 42px;    cursor: pointer;
 }
 
 .filters-row-card-inline .filter-input:focus {
@@ -3435,8 +3416,7 @@ body {
 }
 
 .filters-row-card-inline .btn-filter-reset i {
-    transition: none; /* Let the parent button rotation control the icon */
-}
+    transition: none;}
 
 /* Responsive grid stacking for mobile viewports */
 @media (max-width: 768px) {
@@ -3462,8 +3442,7 @@ body {
     }
     
     .filters-row-card-inline .btn-filter-reset:hover {
-        transform: scale(1.02); /* Don't spin the whole wide button on mobile, just scale */
-    }
+        transform: scale(1.02);    }
 }
 
 /* Close button default: hidden on desktop */
@@ -3922,8 +3901,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(18, 37, 33, 0.75); /* Deep forest green-tinted backdrop */
-    backdrop-filter: blur(5px);
+    background: rgba(18, 37, 33, 0.75);    backdrop-filter: blur(5px);
     z-index: 12000;
     display: flex;
     align-items: center;
@@ -4365,8 +4343,7 @@ select:focus:invalid {
     }
     
     .nav-view-store-btn span {
-        display: none !important; /* Hide label, keep icon on tablet/mobile */
-    }
+        display: none !important;    }
 }
 
 @media (max-width: 768px) {
@@ -4555,8 +4532,7 @@ select:focus:invalid {
     color: var(--text-muted);
     font-weight: 700;
     width: 40px;
-    padding-bottom: 8px; /* Offset to align with SVG plot bounds */
-    font-family: 'Outfit', sans-serif;
+    padding-bottom: 8px;    font-family: 'Outfit', sans-serif;
     user-select: none;
 }
 

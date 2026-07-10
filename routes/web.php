@@ -103,7 +103,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Author Management URL: /admin/authors/...
         Route::get('/authors/{author}/books', [CatalogController::class, 'getAuthorBooks'])->name('authors.books');
-        Route::post('/authors/quick-store', [AuthorController::class, 'quickStore'])->name('authors.quick-store');
         Route::resource('authors', AuthorController::class)->except(['show']);
         Route::resource('classifications', ClassificationController::class)->except(['show']);
         Route::resource('banners', \App\Http\Controllers\Admin\BannerController::class)->except(['show']);

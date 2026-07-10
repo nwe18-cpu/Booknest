@@ -3,10 +3,7 @@
    ========================================================================== */
 
 :root {
-    --primary: #cca353; /* Brand Gold */
-    --primary-dark: #122a24; /* Deep Forest Green Dark */
-    --primary-light: #f6f3eb; /* Warm Cream */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --primary: #cca353;    --primary-dark: #122a24;    --primary-light: #f6f3eb;    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .left-page {
@@ -44,8 +41,7 @@
 }
 
 .branding-desc {
-    color: #d2d9cf !important; /* var(--border-color) */
-}
+    color: #d2d9cf !important;}
 
 /* Helper classes for inline styles */
 .portal-title {
@@ -68,8 +64,7 @@
 }
 
 .login-subtitle {
-    color: #5c7a71 !important; /* var(--text-muted) */
-}
+    color: #5c7a71 !important;}
 
 .alert-login-success {
     background-color: #dcfce7 !important;
@@ -87,8 +82,7 @@
 }
 
 .login-checkbox-label {
-    color: #5c7a71 !important; /* var(--text-muted) */
-}
+    color: #5c7a71 !important;}
 
 .login-store-link {
     color: var(--primary) !important;

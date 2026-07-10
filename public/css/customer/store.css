@@ -2,16 +2,8 @@
    Cream & Chocolate Theme Variables
    ========================================================================== */
 :root {
-    --bg-cream: #0b1412;               /* Rich Deep Evergreen Black (Page background) */
-    --bg-cream-dark: #122521;          /* Sleek Deep Pine Card Background */
-    --card-cream: #122521;             /* Card Dark Background */
-    --border-cream: #1c352f;           /* Dark Pine Border */
-    --text-chocolate-dark: #e5eae7;    /* Light Sage-White Text Color */
-    --text-chocolate-mid: #849f97;     /* Muted Sage Green */
-    --text-chocolate-light: #6c8c83;   /* Sage Gray Text */
-    --brand-chocolate: #e5eae7;
-    --brand-gold: #cca353;             /* Soft Brass Gold Accent */
-    --brand-gold-light: #1c352f;
+    --bg-cream: #0b1412;    --bg-cream-dark: #122521;    --card-cream: #122521;    --border-cream: #1c352f;    --text-chocolate-dark: #e5eae7;    --text-chocolate-mid: #849f97;    --text-chocolate-light: #6c8c83;    --brand-chocolate: #e5eae7;
+    --brand-gold: #cca353;    --brand-gold-light: #1c352f;
     --shadow-premium: 0 10px 30px rgba(0, 0, 0, 0.4);
     --shadow-premium-hover: 0 15px 35px rgba(0, 0, 0, 0.55);
     --transition-premium: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -23,9 +15,7 @@
     --tab-active-bg: var(--brand-gold);
     --tab-active-color: #0b1412;
     
-    --header-bg: #122521;       /* Deep Forest Green (Navbar background) */
-    --header-text: #e5eae7;     /* Light Cream */
-    --header-text-hover: #ffffff;
+    --header-bg: #122521;    --header-text: #e5eae7;    --header-text-hover: #ffffff;
 
     /* Card & Slider Premium Variables */
     --btn-wishlist-bg: rgba(255, 255, 255, 0.05);
@@ -68,17 +58,7 @@
 }
 
 html.warm-theme {
-    --bg-cream: #f6f3eb;               /* Light Cozy Ivory/Cream Background */
-    --bg-cream-dark: #e2ded4;          /* Slightly darker warm ivory */
-    --card-cream: #FAF6EB;             /* Soft Ivory Card Background */
-    --border-cream: #d2d9cf;           /* Soft Sage/Ivory Border */
-    --text-chocolate-dark: #162a24;    /* Deep Forest Green-Black Text */
-    --text-chocolate-mid: #3f5e56;     /* Olive/Forest Green */
-    --text-chocolate-light: #5c7a71;   /* Sage Green Gray */
-    --brand-chocolate: #1b3d34;        /* Deep Forest Green */
-    --brand-gold: #cca353;             /* Soft Brass Gold Accent */
-    --brand-gold-light: #e8ece5;       /* Light Sage Background Tint */
-    --shadow-premium: 0 10px 30px rgba(27, 61, 52, 0.05);
+    --bg-cream: #f6f3eb;    --bg-cream-dark: #e2ded4;    --card-cream: #FAF6EB;    --border-cream: #d2d9cf;    --text-chocolate-dark: #162a24;    --text-chocolate-mid: #3f5e56;    --text-chocolate-light: #5c7a71;    --brand-chocolate: #1b3d34;    --brand-gold: #cca353;    --brand-gold-light: #e8ece5;    --shadow-premium: 0 10px 30px rgba(27, 61, 52, 0.05);
     --shadow-premium-hover: 0 15px 35px rgba(27, 61, 52, 0.12);
     
     --tab-bg: #f0ede5;
@@ -88,9 +68,7 @@ html.warm-theme {
     --tab-active-bg: var(--brand-chocolate);
     --tab-active-color: #ffffff;
     
-    --header-bg: #1b3d34;       /* Deep Forest Green */
-    --header-text: #faf5e6;     /* Light Cream Yellow */
-    --header-text-hover: #ffffff;
+    --header-bg: #1b3d34;    --header-text: #faf5e6;    --header-text-hover: #ffffff;
 }
 
 /* Apply base theme overrides */
@@ -104,8 +82,7 @@ body {
    ========================================================================== */
 .hero-banner {
     position: relative;
-    height: 480px; /* Balanced height for graphic banners */
-    background: linear-gradient(135deg, #08120f 0%, #162c26 50%, #224238 100%);
+    height: 480px;    background: linear-gradient(135deg, #08120f 0%, #162c26 50%, #224238 100%);
     overflow: hidden;
     margin-bottom: 2.5rem;
 }
@@ -175,14 +152,12 @@ body {
 
 .hero-dot.active {
     background-color: var(--brand-gold);
-    width: 24px; /* Pill shape for active dot */
-    border-radius: 5px;
+    width: 24px;    border-radius: 5px;
 }
 
 @media (max-width: 768px) {
     .hero-banner {
-        height: 280px; /* Balanced mobile height */
-    }
+        height: 280px;    }
     .hero-slider-arrow {
         width: 36px;
         height: 36px;
@@ -227,8 +202,7 @@ body {
 .hero-slide.active {
     opacity: 1;
     visibility: visible;
-    transform: scale(1.03); /* subtle zoom for premium feel */
-}
+    transform: scale(1.03);}
 
 /* Store Search Box Container (Light themed on cream background) */
 .store-search-box-container {
@@ -315,32 +289,25 @@ body {
 .category-tabs-container {
     display: flex;
     gap: 0.8rem;
-    flex-wrap: nowrap; /* Prevent tabs from wrapping onto next lines */
-    overflow-x: auto;
-    scrollbar-width: none; /* Hide scrollbar for Firefox */
-    -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
-    padding: 0.5rem 1.5rem;
+    flex-wrap: nowrap;    overflow-x: auto;
+    scrollbar-width: none;    -ms-overflow-style: none;    padding: 0.5rem 1.5rem;
     margin-bottom: 2.8rem;
     justify-content: flex-start;
 }
 
 .category-tabs-container::-webkit-scrollbar {
-    display: none; /* Hide scrollbar for Chrome/Safari/Opera */
-}
+    display: none;}
 
 @media (min-width: 1100px) {
     .category-tabs-container {
-        justify-content: center; /* Center on desktop where all tabs fit */
-    }
+        justify-content: center;    }
 }
 
 .filter-tab {
-    flex-shrink: 0; /* Prevent tabs from compressing and wrapping text */
-    padding: 0.65rem 1.25rem;
+    flex-shrink: 0;    padding: 0.65rem 1.25rem;
     background-color: var(--tab-bg);
     border: 1px solid var(--tab-border);
-    border-radius: 12px; /* Premium rounded rectangle instead of pill capsule */
-    font-weight: 600;
+    border-radius: 12px;    font-weight: 600;
     font-size: 0.9rem;
     color: var(--text-chocolate-mid);
     display: flex;
@@ -354,8 +321,7 @@ body {
 
 .filter-tab i {
     font-size: 0.85rem;
-    color: var(--brand-gold); /* Premium brand gold icon by default */
-    transition: color 0.2s ease;
+    color: var(--brand-gold);    transition: color 0.2s ease;
 }
 
 .filter-tab:hover {
@@ -374,8 +340,7 @@ body {
 }
 
 .filter-tab.active i {
-    color: #ffd166; /* Bright warm gold for active icons */
-}
+    color: #ffd166;}
 
 /* ==========================================================================
    3. 3D BOOK CARDS & LISTINGS GRID
@@ -402,8 +367,7 @@ body {
     padding: 1.2rem 1rem;
     display: flex;
     flex-direction: column;
-    height: 395px; /* Increased height to accommodate larger 3D book cover */
-    box-sizing: border-box;
+    height: 395px;    box-sizing: border-box;
     cursor: pointer;
     box-shadow: var(--shadow-premium);
     transition: var(--transition-premium);
@@ -422,14 +386,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 210px; /* Adjusted wrapper height for larger cover */
-    margin-bottom: 0.5rem;
+    height: 210px;    margin-bottom: 0.5rem;
 }
 
 .book-3d {
-    width: 140px; /* Increased width to reduce empty card space */
-    height: 190px; /* Increased height for premium proportions */
-    position: relative;
+    width: 140px;    height: 190px;    position: relative;
     transform-style: preserve-3d;
     transform: rotateY(-18deg) rotateX(5deg);
     transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -2471,59 +2432,46 @@ body {
     position: relative;
     width: 100%;
     transition: var(--transition-premium);
-    padding: 0 70px; /* Increased side padding to push arrows further out from cards */
-    box-sizing: border-box;
+    padding: 0 70px;    box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
     .books-slider-container {
-        padding: 0; /* Clear padding on tablet/mobile where arrows are hidden */
-    }
+        padding: 0;    }
 }
 
 .books-row {
     display: flex;
-    flex-wrap: nowrap; /* Prevent wrapping onto next lines */
-    gap: 1.8rem;
+    flex-wrap: nowrap;    gap: 1.8rem;
     width: 100%;
     overflow-x: auto;
     scroll-behavior: smooth;
-    scrollbar-width: none; /* Hide scrollbar for Firefox */
-    -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
-    padding: 1.5rem 0.5rem; /* Add padding for 3D card scale and hover offset */
-    margin: -1.5rem -0.5rem; /* Negate padding to align layout */
-    transition: var(--transition-premium);
+    scrollbar-width: none;    -ms-overflow-style: none;    padding: 1.5rem 0.5rem;    margin: -1.5rem -0.5rem;    transition: var(--transition-premium);
     animation: fadeIn 0.4s ease;
 }
 
 .books-row::-webkit-scrollbar {
-    display: none; /* Hide scrollbar for Chrome/Safari/Opera */
-}
+    display: none;}
 
 .books-row .book-container-3d {
-    flex: 0 0 calc(25% - 1.35rem); /* Exactly 4 columns per row on desktop */
-    min-width: 230px; /* Prevent it from shrinking too narrow */
-    box-sizing: border-box;
+    flex: 0 0 calc(25% - 1.35rem);    min-width: 230px;    box-sizing: border-box;
     transition: var(--transition-premium);
 }
 
 @media (max-width: 1300px) {
     .books-row .book-container-3d {
-        flex: 0 0 240px; /* Scrollable cards width */
-    }
+        flex: 0 0 240px;    }
 }
 
 @media (max-width: 576px) {
     .books-row .book-container-3d {
-        flex: 0 0 220px; /* Mobile width */
-        min-width: 220px;
+        flex: 0 0 220px;        min-width: 220px;
     }
     .books-row {
         gap: 1.2rem;
     }
     .book-card-premium {
-        height: 335px; /* Increased to prevent overflow on mobile devices */
-        padding: 1rem 0.8rem;
+        height: 335px;        padding: 1rem 0.8rem;
     }
     .book-card-3d-wrapper {
         height: 155px;
@@ -2568,17 +2516,14 @@ body {
 }
 
 .slider-arrow.prev {
-    left: 8px; /* Positioned nicely in the 70px padding area */
-}
+    left: 8px;}
 
 .slider-arrow.next {
-    right: 8px; /* Positioned nicely in the 70px padding area */
-}
+    right: 8px;}
 
 @media (max-width: 768px) {
     .slider-arrow {
-        display: none !important; /* Hide arrows on tablets/mobiles, use touch-swipe scroll */
-    }
+        display: none !important;    }
     .row-separator-line-art {
         display: none !important;
     }
@@ -2667,8 +2612,7 @@ body {
 }
 
 .parchment-scroll::before {
-    display: none !important; /* Hide old gradient bar */
-}
+    display: none !important;}
 
 /* Wooden Dowels */
 .scroll-wood-top, .scroll-wood-bottom {
@@ -3384,8 +3328,7 @@ body {
    6. PREMIUM COMMENT-STYLE REVIEWS SYSTEM
    ========================================================================== */
 .reviews-section-container {
-    background-color: #eadac6; /* Warm open page parchment color */
-    border-radius: 8px;
+    background-color: #eadac6;    border-radius: 8px;
     margin-top: 1.5rem;
     padding: 2rem;
     box-shadow: inset 0 0 40px rgba(0,0,0,0.06);
@@ -3441,8 +3384,7 @@ body {
 }
 
 .avg-rating-stars {
-    color: #fbbf24; /* Golden stars */
-    font-size: 1.2rem;
+    color: #fbbf24;    font-size: 1.2rem;
     margin-bottom: 0.5rem;
     display: flex;
     gap: 0.2rem;
@@ -3896,8 +3838,7 @@ body {
 }
 
 .btn-card-wishlist.active i {
-    color: #ff4d6d !important; /* Soft warm pink-red */
-}
+    color: #ff4d6d !important;}
 
 html.warm-theme .btn-card-wishlist.active i {
     color: #d1345b !important;
@@ -3938,17 +3879,7 @@ html.warm-theme .btn-card-wishlist.active i {
 
 /* Warm Sepia Theme Variables Overrides for Bookstore Home */
 html.warm-theme {
-    --bg-cream: #f6f3eb;               /* Light Cozy Ivory/Cream Background */
-    --bg-cream-dark: #e2ded4;          /* Slightly darker warm ivory */
-    --card-cream: #FAF6EB;             /* Soft Ivory Card Background */
-    --border-cream: #d2d9cf;           /* Soft Sage/Ivory Border */
-    --text-chocolate-dark: #162a24;    /* Deep Forest Green-Black Text */
-    --text-chocolate-mid: #3f5e56;     /* Olive/Forest Green */
-    --text-chocolate-light: #5c7a71;   /* Sage Green Gray */
-    --brand-chocolate: #1b3d34;        /* Deep Forest Green */
-    --brand-gold: #cca353;             /* Soft Brass Gold Accent */
-    --brand-gold-light: #e8ece5;       /* Light Sage Background Tint */
-
+    --bg-cream: #f6f3eb;    --bg-cream-dark: #e2ded4;    --card-cream: #FAF6EB;    --border-cream: #d2d9cf;    --text-chocolate-dark: #162a24;    --text-chocolate-mid: #3f5e56;    --text-chocolate-light: #5c7a71;    --brand-chocolate: #1b3d34;    --brand-gold: #cca353;    --brand-gold-light: #e8ece5;
     /* Card & Slider Premium Variables (Warm Sepia Mode) */
     --btn-wishlist-bg: rgba(255, 255, 255, 0.85);
     --btn-wishlist-border: var(--border-cream);
@@ -4251,8 +4182,7 @@ html.dark-theme .recommendation-card:hover {
     cursor: pointer;
     box-shadow: var(--shadow-premium);
     transition: var(--transition-premium);
-    height: 220px; /* fixed height for alignment */
-    box-sizing: border-box;
+    height: 220px;    box-sizing: border-box;
 }
 
 /* Customized backgrounds for different book slots to give ad-like flavor */
@@ -5073,8 +5003,7 @@ html.dark-theme .recommendation-card:hover {
     }
     
     .orders-table {
-        min-width: 0 !important; /* Override desktop/tablet min-width to prevent overflow */
-    }
+        min-width: 0 !important;    }
     
     /* Convert each table row (tr) into a compact card */
     .orders-table tr {
@@ -5200,8 +5129,7 @@ html.dark-theme .recommendation-card:hover {
         border: none;
         box-shadow: none;
         border-radius: 0;
-        overflow-x: hidden !important; /* Hide horizontal scrollbar completely on mobile */
-        margin-top: 0.5rem;
+        overflow-x: hidden !important;        margin-top: 0.5rem;
     }
 }
 

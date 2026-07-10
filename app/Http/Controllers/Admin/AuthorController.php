@@ -87,26 +87,4 @@ class AuthorController extends Controller
 
         return redirect()->route('admin.authors.index')->with('success', 'Author deleted successfully!');
     }
-
-    public function quickStore(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255|unique:authors,name',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        $data = $request->only('name');
-
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('authors', 'public');
-        }
-
-        $author = Author::create($data);
-        ActivityLogger::log('create', "Quick-created author '{$author->name}' (ID: {$author->id}) from Book Form.");
-
-        return response()->json([
-            'success' => true,
-            'author' => $author
-        ]);
-    }
 }

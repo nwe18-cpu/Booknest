@@ -225,10 +225,7 @@
 /* Modern Tabs Navigation for Subscriptions */
 .tabs-navigation-modern {
     display: inline-flex;
-    background-color: #F4F1EA; /* Soft light beige background */
-    border: 1px solid var(--border-color); /* Cream border */
-    border-radius: 30px; /* Pill shape */
-    padding: 4px;
+    background-color: #F4F1EA;    border: 1px solid var(--border-color);    border-radius: 30px;    padding: 4px;
     gap: 4px;
     margin-bottom: 0;
 }
@@ -242,8 +239,7 @@
     font-weight: 700;
     color: var(--text-muted);
     cursor: pointer;
-    border-radius: 30px; /* Pill shape */
-    display: inline-flex;
+    border-radius: 30px;    display: inline-flex;
     align-items: center;
     gap: 8px;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);

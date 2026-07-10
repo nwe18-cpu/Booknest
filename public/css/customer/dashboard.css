@@ -2,33 +2,15 @@
    Cream & Chocolate Theme Variables for Dashboard
    ========================================================================== */
 :root {
-    --bg-cream: #0b1412;               /* Rich Deep Evergreen Black (Page background) */
-    --bg-cream-dark: #122521;          /* Sleek Deep Pine Card Background */
-    --card-cream: #122521;             /* Card Dark Background */
-    --border-cream: #1c352f;           /* Dark Pine Border */
-    --text-chocolate-dark: #e5eae7;    /* Light Sage-White Text Color */
-    --text-chocolate-mid: #849f97;     /* Muted Sage Green */
-    --text-chocolate-light: #6c8c83;   /* Sage Gray Text */
-    --brand-chocolate: #e5eae7;
-    --brand-gold: #cca353;             /* Soft Brass Gold Accent */
-    --brand-gold-light: #1c352f;
+    --bg-cream: #0b1412;    --bg-cream-dark: #122521;    --card-cream: #122521;    --border-cream: #1c352f;    --text-chocolate-dark: #e5eae7;    --text-chocolate-mid: #849f97;    --text-chocolate-light: #6c8c83;    --brand-chocolate: #e5eae7;
+    --brand-gold: #cca353;    --brand-gold-light: #1c352f;
     --shadow-premium: 0 10px 30px rgba(0, 0, 0, 0.4);
     --shadow-premium-hover: 0 15px 35px rgba(0, 0, 0, 0.55);
     --transition-premium: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 html.warm-theme {
-    --bg-cream: #f6f3eb;               /* Light Cozy Ivory/Cream Background */
-    --bg-cream-dark: #e2ded4;          /* Slightly darker warm ivory */
-    --card-cream: #FAF6EB;             /* Soft Ivory Card Background */
-    --border-cream: #d2d9cf;           /* Soft Sage/Ivory Border */
-    --text-chocolate-dark: #162a24;    /* Deep Forest Green-Black Text */
-    --text-chocolate-mid: #3f5e56;     /* Olive/Forest Green */
-    --text-chocolate-light: #5c7a71;   /* Sage Green Gray */
-    --brand-chocolate: #1b3d34;        /* Deep Forest Green */
-    --brand-gold: #cca353;             /* Soft Brass Gold Accent */
-    --brand-gold-light: #e8ece5;       /* Light Sage Background Tint */
-    --shadow-premium: 0 10px 30px rgba(27, 61, 52, 0.05);
+    --bg-cream: #f6f3eb;    --bg-cream-dark: #e2ded4;    --card-cream: #FAF6EB;    --border-cream: #d2d9cf;    --text-chocolate-dark: #162a24;    --text-chocolate-mid: #3f5e56;    --text-chocolate-light: #5c7a71;    --brand-chocolate: #1b3d34;    --brand-gold: #cca353;    --brand-gold-light: #e8ece5;    --shadow-premium: 0 10px 30px rgba(27, 61, 52, 0.05);
     --shadow-premium-hover: 0 15px 35px rgba(27, 61, 52, 0.12);
 }
 
@@ -1317,8 +1299,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2.5rem;
-    background-color: rgba(18, 30, 26, 0.82) !important; /* Elegant semi-translucent dark forest green background */
-    backdrop-filter: blur(16px) !important;
+    background-color: rgba(18, 30, 26, 0.82) !important;    backdrop-filter: blur(16px) !important;
     -webkit-backdrop-filter: blur(16px) !important;
     border-bottom: 1.5px solid rgba(204, 163, 83, 0.25) !important;
     z-index: 10;
@@ -1383,17 +1364,14 @@ body {
     height: 550px;
     display: flex;
     transform-style: preserve-3d;
-    background-color: #1e130c !important; /* Thick mahogany leather book cover backing */
-    padding: 10px 14px 14px 10px !important; /* Elegant frame border thickness */
-    border-radius: 14px !important;
+    background-color: #1e130c !important;    padding: 10px 14px 14px 10px !important;    border-radius: 14px !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
     box-shadow: 
         0 25px 65px rgba(0, 0, 0, 0.55),
         0 15px 25px rgba(0, 0, 0, 0.3),
         inset 0 1px 3px rgba(255, 255, 255, 0.1),
         -4px 4px 0px #2a1c12, 
-        -8px 8px 0px #1e130c !important; /* Stacked physical cover look */
-}
+        -8px 8px 0px #1e130c !important;}
 
 /* Split page lines in center */
 .book-double-page-wrapper::before {
@@ -1445,9 +1423,7 @@ body {
         inset 15px 0 25px rgba(0, 0, 0, 0.04),
         inset -10px 0 15px rgba(0, 0, 0, 0.06),
         -4px 4px 0px #eae3d2,
-        -8px 8px 0px #dfd7c2 !important; /* Left page thickness stack */
-    margin-left: 8px; /* Room for left thickness stack */
-    margin-bottom: 4px;
+        -8px 8px 0px #dfd7c2 !important;    margin-left: 8px;    margin-bottom: 4px;
 }
 
 .page-right {
@@ -1456,9 +1432,7 @@ body {
         inset -15px 0 25px rgba(0, 0, 0, 0.04),
         inset 10px 0 15px rgba(0, 0, 0, 0.06),
         4px 4px 0px #eae3d2,
-        8px 8px 0px #dfd7c2 !important; /* Right page thickness stack */
-    margin-right: 8px; /* Room for right thickness stack */
-    margin-bottom: 4px;
+        8px 8px 0px #dfd7c2 !important;    margin-right: 8px;    margin-bottom: 4px;
 }
 
 .page-header {
@@ -1563,8 +1537,7 @@ body {
 
 /* Control Dock */
 .reader-control-dock {
-    background-color: rgba(18, 30, 26, 0.82) !important; /* Elegant semi-translucent dark forest green background */
-    backdrop-filter: blur(16px) !important;
+    background-color: rgba(18, 30, 26, 0.82) !important;    backdrop-filter: blur(16px) !important;
     -webkit-backdrop-filter: blur(16px) !important;
     border-top: 1.5px solid rgba(204, 163, 83, 0.25) !important;
     padding: 1.25rem 2.5rem;
@@ -2171,8 +2144,7 @@ body {
     max-width: 100%;
     max-height: 100%;
     margin: auto;
-    display: none; /* Controlled via JS */
-    background-color: transparent;
+    display: none;    background-color: transparent;
     transition: opacity 0.3s ease;
 }
 
@@ -2199,8 +2171,7 @@ body {
     max-width: 95% !important;
     max-height: calc(100vh - 170px) !important;
     border-radius: 14px !important;
-    background-color: #1e130c !important; /* Thick leather book cover backing */
-    padding: 10px 14px 14px 10px !important;
+    background-color: #1e130c !important;    padding: 10px 14px 14px 10px !important;
     box-shadow: 
         0 25px 65px rgba(0, 0, 0, 0.55),
         0 15px 25px rgba(0, 0, 0, 0.3),
@@ -2232,14 +2203,12 @@ body {
     display: block !important;
     position: relative !important;
     width: 100% !important;
-    height: auto !important; /* Grow naturally to fit the canvas */
-}
+    height: auto !important;}
 
 .reader-overlay.pdf-mode .pdf-page-canvas {
     max-width: 100% !important;
     height: auto !important;
-    position: relative !important; /* Expand the height of parent wrapper */
-    display: block !important;
+    position: relative !important;    display: block !important;
     margin: 0 auto !important;
 }
 
@@ -2388,8 +2357,7 @@ body {
     backdrop-filter: blur(8px);
     z-index: 2500;
     display: flex;
-    justify-content: flex-end; /* Align slide drawer to the right */
-    align-items: stretch;
+    justify-content: flex-end;    align-items: stretch;
     opacity: 0;
     visibility: hidden;
     overflow: hidden !important;
@@ -2414,13 +2382,11 @@ body {
     padding: 3rem 2.25rem;
     display: flex;
     flex-direction: column;
-    transform: translateX(100%); /* Hide offscreen to the right */
-    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateX(100%);    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .wishlist-modal-overlay.active .wishlist-modal-content {
-    transform: translateX(0); /* Slide in */
-}
+    transform: translateX(0);}
 
 /* Close Button - Sleek styling */
 .wishlist-modal-close-btn {
@@ -2602,8 +2568,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
-    padding-right: 2rem; /* Avoid trash overlap */
-}
+    padding-right: 2rem;}
 
 .wishlist-item-title {
     font-size: 1.05rem;
@@ -3010,8 +2975,7 @@ html.warm-theme {
     .modal-book-view .book-3d {
         width: 140px !important;
         height: 200px !important;
-        transform: none !important; /* Flatten for cleaner mobile rendering */
-    }
+        transform: none !important;    }
     
     .modal-book-details {
         padding: 1.5rem !important;
@@ -3316,9 +3280,7 @@ html.warm-theme {
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 6px;
-    color: inherit !important; /* Force inheritance of dynamic text color */
-    opacity: 0.65;             /* Muted hierarchy */
-}
+    color: inherit !important;    opacity: 0.65;}
 
 .settings-preview-box .preview-text {
     font-size: 0.92rem;
@@ -4129,8 +4091,7 @@ html.warm-theme {
     margin: 0 !important;
     cursor: pointer;
     accent-color: var(--brand-gold);
-    display: inline-block !important; /* Force override display block from global styles */
-}
+    display: inline-block !important;}
 .address-checkbox-group label {
     font-size: 0.88rem;
     color: var(--text-chocolate-light);

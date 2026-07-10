@@ -84,8 +84,7 @@ ul {
 
 main {
     flex-grow: 1;
-    padding-top: 105px !important; /* offset for floating header: 15px top gap + 65px header + 25px container gap */
-}
+    padding-top: 105px !important;}
 
 .container {
     width: 100%;
@@ -418,8 +417,7 @@ html.warm-theme .dropdown-header p {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(15, 23, 42, 0.6); /* Slate 900 with transparency */
-    z-index: 990;
+    background-color: rgba(15, 23, 42, 0.6);    z-index: 990;
     opacity: 0;
     visibility: hidden;
     transition: var(--transition-smooth);
@@ -691,12 +689,10 @@ html.warm-theme .dropdown-header p {
     }
     
     main {
-        padding-top: 85px !important; /* 10px space + 60px header + 15px content gap */
-    }
+        padding-top: 85px !important;    }
 
     .nav-search {
-        display: none; /* hidden on small screen by default, will expand in mobile view if required */
-    }
+        display: none;    }
     
     .footer-grid {
         grid-template-columns: 1fr;
@@ -782,8 +778,7 @@ html.warm-theme .dropdown-header p {
 .notification-dropdown {
     position: absolute;
     top: calc(100% + 12px);
-    right: -80px; /* Offset to center relative to bell icon */
-    background-color: var(--white);
+    right: -80px;    background-color: var(--white);
     border: 1px solid var(--light-border);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-lg);
@@ -850,8 +845,7 @@ html.warm-theme .dropdown-header p {
 }
 
 .notification-item.unread {
-    background-color: rgba(200, 150, 88, 0.05); /* very soft cream gold backdrop */
-}
+    background-color: rgba(200, 150, 88, 0.05);}
 
 .notification-item:hover {
     background-color: var(--light);
@@ -972,18 +966,7 @@ html.warm-theme .dropdown-header p {
 
 /* Warm Sepia Theme Variable Overrides */
 html.warm-theme {
-    --primary: #1b3d34;           /* Deep Forest Green (Navbar background) */
-    --primary-dark: #122822;      /* Darker Pine Green */
-    --primary-light: #faf5e6;     /* Soft Muted Ivory/Cream */
-    --secondary: #3f5e56;         /* Olive/Forest Green */
-    --dark: #162a24;              /* Deep Forest Green-Black Text */
-    --darker: #0e1c18;            /* Deepest Pine Text */
-    --light: #f6f3eb;             /* Light Cozy Ivory/Cream Background */
-    --light-border: #d2d9cf;      /* Soft Sage/Ivory Border */
-    --white: #ffffff;             /* Card background */
-    --gray: #5c7a71;              /* Sage Green Gray */
-    --orange: #cca353;            /* Soft Brass Gold Accent */
-    --orange-light: #f2f5f0;
+    --primary: #1b3d34;    --primary-dark: #122822;    --primary-light: #faf5e6;    --secondary: #3f5e56;    --dark: #162a24;    --darker: #0e1c18;    --light: #f6f3eb;    --light-border: #d2d9cf;    --white: #ffffff;    --gray: #5c7a71;    --orange: #cca353;    --orange-light: #f2f5f0;
 }
 
 /* Body and components transition for smooth theme change */

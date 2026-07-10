@@ -9,9 +9,6 @@ use App\Helpers\ActivityLogger;
 
 class AdminAuthController extends Controller
 {
-    /**
-     * Show the admin login form.
-     */
     public function showLoginForm()
     {
         if (Auth::guard('staff')->check()) {
@@ -20,10 +17,7 @@ class AdminAuthController extends Controller
         return view('admin.auth.login');
     }
 
-    /**
-     * Handle admin login request.
-     */
-    public function login(Request $request)
+        public function login(Request $request)
     {
         $credentials = $request->validate([
             'email' => 'required|email',
@@ -52,11 +46,8 @@ class AdminAuthController extends Controller
             'email' => 'The provided credentials do not match our records.',
         ])->withInput($request->only('email'));
     }
-
-    /**
-     * Log the admin out.
-     */
-    public function logout(Request $request)
+    
+        public function logout(Request $request)
     {
         Auth::guard('staff')->logout();
 

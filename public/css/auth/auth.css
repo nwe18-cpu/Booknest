@@ -1,13 +1,5 @@
 :root {
-    --primary: #1b3d34; /* Deep Forest Green */
-    --primary-dark: #122822; /* Darker Pine Green */
-    --primary-light: #cca353; /* Soft Brass Gold Accent */
-    --secondary: #5c7a71; /* Sage Green Gray */
-    --dark: #162a24; /* Deep Forest Green-Black Text */
-    --darker: #0e1c18; /* Deepest Pine Text */
-    --light: rgba(246, 243, 235, 0.4); /* Cozy Ivory Light */
-    --white: rgba(255, 255, 255, 0.7); /* Card bg overlay */
-    --shadow-sm: 0 1px 2px 0 rgba(22, 42, 36, 0.05);
+    --primary: #1b3d34;    --primary-dark: #122822;    --primary-light: #cca353;    --secondary: #5c7a71;    --dark: #162a24;    --darker: #0e1c18;    --light: rgba(246, 243, 235, 0.4);    --white: rgba(255, 255, 255, 0.7);    --shadow-sm: 0 1px 2px 0 rgba(22, 42, 36, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(22, 42, 36, 0.1), 0 2px 4px -2px rgba(22, 42, 36, 0.1);
     --shadow-lg: 0 10px 15px -3px rgba(22, 42, 36, 0.1), 0 4px 6px -4px rgba(22, 42, 36, 0.1);
     --shadow-xl: 0 20px 25px -5px rgba(22, 42, 36, 0.15), 0 8px 10px -6px rgba(22, 42, 36, 0.15);
@@ -75,11 +67,9 @@ body {
     bottom: -15px;
     left: -15px;
     right: -15px;
-    background: #0f201c; /* Deep Forest Green hardcover */
-    border-radius: calc(var(--border-radius-xl) + 5px);
+    background: #0f201c;    border-radius: calc(var(--border-radius-xl) + 5px);
     z-index: -1;
-    transform: translateZ(-15px); /* Push the cover backwards in 3D */
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.6), 0 35px 50px -10px rgba(0,0,0,0.8);
+    transform: translateZ(-15px);    box-shadow: inset 0 0 20px rgba(0,0,0,0.6), 0 35px 50px -10px rgba(0,0,0,0.8);
     border: 1.5px solid var(--primary-light);
 }
 
@@ -88,8 +78,7 @@ body {
     height: 100%;
     position: relative;
     overflow: hidden;
-    background: #fdfaf2; /* Solid warm book paper color */
-    border: 1px solid #e5dfd3;
+    background: #fdfaf2;    border: 1px solid #e5dfd3;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -113,8 +102,7 @@ body {
 
 /* 1. LEFT STATIC PAGE (Branding) - Amber Theme */
 .left-page {
-    background: linear-gradient(135deg, #1b3d34 0%, #0b1412 100%); /* Solid dark theme */
-    color: var(--white);
+    background: linear-gradient(135deg, #1b3d34 0%, #0b1412 100%);    color: var(--white);
     padding: 2.25rem 2.25rem;
     border-radius: var(--border-radius-xl) 0 0 var(--border-radius-xl);
     border-right: none;
@@ -176,8 +164,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background: #fdfaf2; /* Solid paper color to prevent bleed through */
-    border: 1px solid #e5dfd3;
+    background: #fdfaf2;    border: 1px solid #e5dfd3;
     transition: opacity 0.5s ease;
 }
 
@@ -191,8 +178,7 @@ body {
 
 /* Back Side: Decorative/Back trigger info - Amber Theme */
 .page-back {
-    background: linear-gradient(135deg, #0b1412 0%, #1b3d34 100%); /* Solid dark theme */
-    padding: 2.25rem 2.25rem;
+    background: linear-gradient(135deg, #0b1412 0%, #1b3d34 100%);    padding: 2.25rem 2.25rem;
     border-radius: var(--border-radius-xl) 0 0 var(--border-radius-xl);
     border-right: none;
     transform: rotateY(180deg);
@@ -476,12 +462,10 @@ body {
     }
 
     .left-page {
-        display: none; /* Hide static brand cover page */
-    }
+        display: none;    }
 
     .right-page {
-        display: none; /* Manage via CSS state inside JS in mobiles */
-        border-radius: var(--border-radius-xl);
+        display: none;        border-radius: var(--border-radius-xl);
         background: rgba(255, 255, 255, 0.55);
         border: 1px solid rgba(255, 255, 255, 0.3);
         padding: 2rem 2rem;
@@ -495,8 +479,7 @@ body {
         position: relative;
         width: 100%;
         height: auto;
-        transform: none !important; /* No 3D rotation on mobile */
-    }
+        transform: none !important;    }
 
     .middle-page.flipped .page-front {
         display: none;
