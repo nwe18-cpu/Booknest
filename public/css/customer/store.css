@@ -4058,18 +4058,18 @@ html.dark-theme .detail-recommendations-card {
 /* Translucent Glass Card Backgrounds */
 html.light-theme .recommendation-card,
 .recommendation-card {
-    background: rgba(255, 255, 255, 0.3) !important;
-    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    background: rgba(255, 255, 255, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.45) !important;
 }
 
 html.warm-theme .recommendation-card {
-    background: rgba(255, 255, 255, 0.4) !important;
-    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    background: rgba(255, 255, 255, 0.7) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
 }
 
 html.dark-theme .recommendation-card {
-    background: rgba(255, 255, 255, 0.03) !important;
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    background: rgba(0, 0, 0, 0.45) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
 .recommendation-card:hover {
@@ -4078,19 +4078,19 @@ html.dark-theme .recommendation-card {
 
 html.light-theme .recommendation-card:hover,
 .recommendation-card:hover {
-    background: rgba(255, 255, 255, 0.6) !important;
+    background: rgba(255, 255, 255, 0.8) !important;
     border-color: var(--brand-gold) !important;
     box-shadow: 0 8px 20px rgba(11, 20, 18, 0.06);
 }
 
 html.warm-theme .recommendation-card:hover {
-    background: rgba(255, 255, 255, 0.75) !important;
+    background: rgba(255, 255, 255, 0.9) !important;
     border-color: var(--brand-gold) !important;
     box-shadow: 0 8px 20px rgba(142, 101, 73, 0.08);
 }
 
 html.dark-theme .recommendation-card:hover {
-    background: rgba(255, 255, 255, 0.08) !important;
+    background: rgba(0, 0, 0, 0.65) !important;
     border-color: var(--brand-gold) !important;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }

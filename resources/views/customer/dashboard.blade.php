@@ -3,7 +3,7 @@
 @section('title', 'My Library - Booknest')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.4.9">
+<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.5.0">
 <link rel="stylesheet" href="{{ asset('css/customer/dashboard.css') }}?v=1.3.9">
 @endsection
 

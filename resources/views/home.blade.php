@@ -3,7 +3,7 @@
 @section('title', 'Booknest - Best Books Collection')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.5.4">
+<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.5.5">
 @endsection
 
 @section('content')

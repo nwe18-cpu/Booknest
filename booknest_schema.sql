@@ -336,6 +336,7 @@ CREATE TABLE `staff` (
   `status` varchar(255) NOT NULL DEFAULT 'active',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `remember_token` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `staff_email_unique` (`email`),
   KEY `staff_role_id_foreign` (`role_id`),
