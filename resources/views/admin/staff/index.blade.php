@@ -160,17 +160,17 @@
                 @csrf
                 <div class="form-group-modern">
                     <label for="add-name">Full Name <span class="required-star">*</span></label>
-                    <input type="text" name="name" id="add-name" placeholder="e.g. John Doe" required>
+                    <input type="text" name="name" id="add-name" placeholder="Name" required>
                 </div>
                 
                 <div class="form-group-modern">
                     <label for="add-email">Email Address <span class="required-star">*</span></label>
-                    <input type="email" name="email" id="add-email" placeholder="e.g. johndoe@booknest.com" required>
+                    <input type="email" name="email" id="add-email" placeholder="example@gmail.com" required>
                 </div>
 
                 <div class="form-group-modern">
                     <label for="add-phone">Phone Number</label>
-                    <input type="text" name="phone" id="add-phone" placeholder="e.g. 09123456789" pattern="^[0-9]{9,11}$" minlength="9" maxlength="11" title="Phone number must be between 9 and 11 digits (numbers only)">
+                    <input type="text" name="phone" id="add-phone" placeholder="(09)*********" pattern="^[0-9]{9,11}$" minlength="9" maxlength="11" title="Phone number must be between 9 and 11 digits (numbers only)">
                 </div>
 
                 <div class="form-group-modern">

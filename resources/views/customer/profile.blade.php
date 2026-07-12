@@ -66,15 +66,15 @@
                         <div class="form-group-grid">
                             <div class="form-group">
                                 <label for="name">Full Name <span class="required-star">*</span></label>
-                                <input type="text" id="name" name="name" value="{{ old('name', $customer->name) }}" required placeholder="e.g. John Doe">
+                                <input type="text" id="name" name="name" value="{{ old('name', $customer->name) }}" required placeholder="Name">
                             </div>
                             <div class="form-group">
                                 <label for="email">Email Address <span class="required-star">*</span></label>
-                                <input type="email" id="email" name="email" value="{{ old('email', $customer->email) }}" required placeholder="example@domain.com">
+                                <input type="email" id="email" name="email" value="{{ old('email', $customer->email) }}" required placeholder="example@gmail.com">
                             </div>
                             <div class="form-group">
                                 <label for="phone">Phone Number <span class="required-star">*</span></label>
-                                <input type="text" id="phone" name="phone" value="{{ old('phone', $customer->phone) }}" required placeholder="e.g. 09xxxxxxxx" pattern="^[0-9]{9,11}$" minlength="9" maxlength="11" title="Phone number must be between 9 and 11 digits (numbers only)">
+                                <input type="text" id="phone" name="phone" value="{{ old('phone', $customer->phone) }}" required placeholder="(09)*********" pattern="^[0-9]{9,11}$" minlength="9" maxlength="11" title="Phone number must be between 9 and 11 digits (numbers only)">
                             </div>
                             <div class="form-group">
                                 <label for="gender">Gender</label>
@@ -187,15 +187,15 @@
                     <input type="hidden" id="address-id" name="id">
                     <div class="address-form-group">
                         <label for="addr_receiver_name">Receiver Name <span class="required-star">*</span></label>
-                        <input type="text" id="addr_receiver_name" required placeholder="e.g. John Doe">
+                        <input type="text" id="addr_receiver_name" required placeholder="Name">
                     </div>
                     <div class="address-form-group">
                         <label for="addr_phone_number">Phone Number <span class="required-star">*</span></label>
-                        <input type="text" id="addr_phone_number" required placeholder="e.g. 09123456789" pattern="^[0-9]{9,11}$" minlength="9" maxlength="11" title="Phone number must be between 9 and 11 digits (numbers only)">
+                        <input type="text" id="addr_phone_number" required placeholder="(09)*********" pattern="^[0-9]{9,11}$" minlength="9" maxlength="11" title="Phone number must be between 9 and 11 digits (numbers only)">
                     </div>
                     <div class="address-form-group">
                         <label for="addr_email">Email Address (Optional)</label>
-                        <input type="email" id="addr_email" placeholder="e.g. email@domain.com">
+                        <input type="email" id="addr_email" placeholder="example@gmail.com">
                     </div>
                     <div class="address-form-group">
                         <label for="addr_address_line">Full Address <span class="required-star">*</span></label>

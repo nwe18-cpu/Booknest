@@ -49,7 +49,7 @@
 
                 <div class="form-group">
                     <label for="phone_number">Phone Number</label>
-                    <input type="text" id="phone_number" name="phone_number" class="form-control" required placeholder="e.g. 09123456789" pattern="^[0-9]{9,11}$" minlength="9" maxlength="11" title="Phone number must be between 9 and 11 digits (numbers only)">
+                    <input type="text" id="phone_number" name="phone_number" class="form-control" required placeholder="(09)*********" pattern="^[0-9]{9,11}$" minlength="9" maxlength="11" title="Phone number must be between 9 and 11 digits (numbers only)">
                 </div>
 
                 <div class="form-group">

@@ -73,7 +73,7 @@
                     <div class="form-group">
                         <label class="form-label" for="reg-email">Email Address</label>
                         <div class="input-wrapper">
-                            <input class="form-input @error('reg_email') is-invalid @enderror" type="email" id="reg-email" name="reg_email" placeholder="Email" value="{{ old('reg_email') }}" required>
+                            <input class="form-input @error('reg_email') is-invalid @enderror" type="email" id="reg-email" name="reg_email" placeholder="example@gmail.com" value="{{ old('reg_email') }}" required>
                             <i class="fa-solid fa-envelope"></i>
                         </div>
                         @error('reg_email')
@@ -87,7 +87,7 @@
                     <div class="form-group">
                         <label class="form-label" for="reg-phone">Phone Number</label>
                         <div class="input-wrapper">
-                            <input class="form-input @error('reg_phone') is-invalid @enderror" type="tel" id="reg-phone" name="reg_phone" placeholder="09xxxxxxxxx" value="{{ old('reg_phone') }}" required pattern="^[0-9]{9,11}$" minlength="9" maxlength="11" title="Phone number must be between 9 and 11 digits (numbers only)">
+                            <input class="form-input @error('reg_phone') is-invalid @enderror" type="tel" id="reg-phone" name="reg_phone" placeholder="(09)*********" value="{{ old('reg_phone') }}" required pattern="^[0-9]{9,11}$" minlength="9" maxlength="11" title="Phone number must be between 9 and 11 digits (numbers only)">
                             <i class="fa-solid fa-phone"></i>
                         </div>
                         @error('reg_phone')
@@ -139,7 +139,7 @@
                         <div class="form-group">
                             <label class="form-label" for="login-email">Email Address</label>
                             <div class="input-wrapper">
-                                <input class="form-input @error('email') is-invalid @enderror" type="email" id="login-email" name="email" placeholder="Email" value="{{ old('email') }}" required>
+                                <input class="form-input @error('email') is-invalid @enderror" type="email" id="login-email" name="email" placeholder="example@gmail.com" value="{{ old('email') }}" required>
                                 <i class="fa-solid fa-envelope"></i>
                             </div>
                             @error('email')

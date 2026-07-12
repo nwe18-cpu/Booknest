@@ -65,7 +65,7 @@
                     <div class="form-group">
                         <label class="form-label" for="reset-email">Email Address</label>
                         <div class="input-wrapper">
-                            <input class="form-input @error('email') is-invalid @enderror" type="email" id="reset-email" name="email" placeholder="Registered Email" value="{{ old('email') }}" required>
+                            <input class="form-input @error('email') is-invalid @enderror" type="email" id="reset-email" name="email" placeholder="example@gmail.com" value="{{ old('email') }}" required>
                             <i class="fa-solid fa-envelope"></i>
                         </div>
                         @error('email')
@@ -79,7 +79,7 @@
                     <div class="form-group">
                         <label class="form-label" for="reset-phone">Phone Number</label>
                         <div class="input-wrapper">
-                            <input class="form-input @error('phone') is-invalid @enderror" type="tel" id="reset-phone" name="phone" placeholder="Registered Phone" value="{{ old('phone') }}" required pattern="^[0-9]{9,11}$" minlength="9" maxlength="11" title="Phone number must be between 9 and 11 digits (numbers only)">
+                            <input class="form-input @error('phone') is-invalid @enderror" type="tel" id="reset-phone" name="phone" placeholder="(09)*********" value="{{ old('phone') }}" required pattern="^[0-9]{9,11}$" minlength="9" maxlength="11" title="Phone number must be between 9 and 11 digits (numbers only)">
                             <i class="fa-solid fa-phone"></i>
                         </div>
                         @error('phone')

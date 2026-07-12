@@ -66,7 +66,7 @@
                     <div class="form-group">
                         <label class="form-label login-label" for="login-email">Email Address</label>
                         <div class="input-wrapper">
-                            <input class="form-input @error('email') is-invalid @enderror" type="email" id="login-email" name="email" placeholder="staff@booknest.com" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <input class="form-input @error('email') is-invalid @enderror" type="email" id="login-email" name="email" placeholder="example@gmail.com" value="{{ old('email') }}" required autocomplete="email" autofocus>
                             <i class="fa-solid fa-envelope"></i>
                         </div>
                         @error('email')
