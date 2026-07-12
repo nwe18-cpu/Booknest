@@ -74,7 +74,8 @@
                 </div>
 
                 <!-- Account block toggle form -->
-                <form action="{{ route('admin.customers.toggleStatus', $customer->id) }}" method="POST">
+                <form action="{{ route('admin.customers.toggleStatus', $customer->id) }}" method="POST"
+                      onsubmit="return confirm('{{ $customer->status === 'active' ? 'Are you sure you want to deactivate/block this customer\'s account? They will lose access to the store.' : 'Are you sure you want to activate/unblock this customer\'s account?' }}')">
                     @csrf
                     @if($customer->status === 'active')
                         <button type="submit" class="btn-toggle-block btn-block-active">

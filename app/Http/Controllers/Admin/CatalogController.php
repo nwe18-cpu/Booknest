@@ -20,7 +20,6 @@ class CatalogController extends Controller
 
     public function store(Request $request)
     {
-        // စည်းကမ်းချက်များနှင့်အညီ Validation စစ်ဆေးခြင်း
         $request->validate([
             'name' => 'required|string|min:3|max:100',
             'author_id' => 'required|exists:authors,id',
@@ -29,25 +28,22 @@ class CatalogController extends Controller
             'stock_quantity' => 'required|integer|min:0',
             'status' => 'nullable|string|in:active,inactive',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Cover ပုံအတွက် (gif removed)
-            'pdf_file' => 'nullable|file|max:102400', // PDF ဖိုင်အတွက် (100MB limit, manually checked extension below)
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'pdf_file' => 'nullable|file|max:102400',
             'classifications' => 'nullable|array',
             'classifications.*' => 'exists:classifications,id',
         ]);
 
         $data = $request->all();
 
-        // အကယ်၍ ပုံတင်ထားလျှင် Storage ထဲ သိမ်းဆည်းခြင်း
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('books', 'public');
             $data['image'] = $imagePath;
         }
 
-        // အကယ်၍ PDF တင်ထားလျှင် Storage ထဲ သိမ်းဆည်းခြင်း
         if ($request->hasFile('pdf_file')) {
             $pdfFile = $request->file('pdf_file');
             
-            // Validate extension manually to bypass Windows/XAMPP MIME type detection bugs
             if (strtolower($pdfFile->getClientOriginalExtension()) !== 'pdf') {
                 if ($request->ajax() || $request->wantsJson()) {
                     return response()->json([
@@ -64,11 +60,9 @@ class CatalogController extends Controller
             $data['pdf_file'] = $pdfPath;
         }
 
-        // Database ထဲသို့ သိမ်းဆည်းခြင်း
         $book = Item::create($data);
         ActivityLogger::log('create', "Created book '{$book->name}' (ID: {$book->id}) with stock {$book->stock_quantity}.");
 
-        // Classifications Sync ပြုလုပ်ခြင်း
         if ($request->has('classifications')) {
             $book->classifications()->sync($request->input('classifications'));
         }
@@ -81,7 +75,6 @@ class CatalogController extends Controller
             ]);
         }
 
-        // အောင်မြင်ကြောင်း Alert ပြပြီး Dashboard သို့ ပြန်ညွှန်ကြားခြင်း
         return redirect()->route('admin.dashboard')->with('success', 'Book added successfully!');
     }
 

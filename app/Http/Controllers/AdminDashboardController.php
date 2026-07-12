@@ -49,7 +49,7 @@ class AdminDashboardController extends Controller
                 Carbon::now()->subDays(3)->format('Y-m-d') => 45000,
                 Carbon::now()->subDays(2)->format('Y-m-d') => 60000,
                 Carbon::now()->subDays(1)->format('Y-m-d') => 52000,
-                Carbon::now()->subDays(0)->format('Y-m-d') => 75000, // Today
+                Carbon::now()->subDays(0)->format('Y-m-d') => 75000,
             ];
             $maxVal = max($salesData);
         }

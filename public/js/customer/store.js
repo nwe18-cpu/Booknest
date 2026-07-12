@@ -331,7 +331,7 @@ function openBookDetail(id, title, author, desc, price, stock, totalPages, color
         }
     }
 
-    const pdfBtn = document.getElementById('btn-download-pdf-modal');
+    const pdfBtn = document.getElementById('btn-download-modal');
     if (pdfBtn) {
         if (pdfFile) {
             pdfBtn.href = '/store/books/' + id + '/download';

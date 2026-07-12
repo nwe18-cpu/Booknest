@@ -10,9 +10,7 @@ use App\Helpers\ActivityLogger;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of orders.
-     */
+    
     public function index(Request $request)
     {
         $query = Order::with('customer')->orderBy('created_at', 'desc');

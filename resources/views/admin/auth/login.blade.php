@@ -17,7 +17,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/variables.css') }}">
     <link rel="stylesheet" href="{{ asset('css/auth/auth.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/admin/login.css') }}?v=1.0.1">
+    <link rel="stylesheet" href="{{ asset('css/admin/login.css') }}?v=1.0.2">
 </head>
 <body>
 
@@ -80,8 +80,9 @@
                     <div class="form-group">
                         <label class="form-label login-label" for="login-password">Password</label>
                         <div class="input-wrapper">
-                            <input class="form-input @error('password') is-invalid @enderror" type="password" id="login-password" name="password" placeholder="••••••••" required autocomplete="current-password">
+                            <input class="form-input password-field @error('password') is-invalid @enderror" type="password" id="login-password" name="password" placeholder="••••••••" required autocomplete="current-password">
                             <i class="fa-solid fa-lock"></i>
+                            <i class="fa-solid fa-eye-slash password-toggle-icon" data-target="login-password"></i>
                         </div>
                         @error('password')
                             <span class="error-message error-message-inline">
