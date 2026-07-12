@@ -627,7 +627,7 @@ class CustomerController extends Controller
                 foreach ($cart as $itemId => $details) {
                     $lineItems[] = [
                         'price_data' => [
-                            'currency' => 'usd',
+                            'currency' => 'mmk',
                             'product_data' => [
                                 'name' => $details['name'],
                                 'description' => 'By ' . ($details['author'] ?? 'Unknown'),
