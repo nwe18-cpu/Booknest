@@ -302,10 +302,6 @@ class CustomerController extends Controller
      */
     public function cart()
     {
-        $customer = Auth::guard('customer')->user();
-        if (!$customer || !$customer->hasActiveSubscription()) {
-            return redirect()->route('customer.subscription.index')->with('error', 'Please subscribe to a membership plan to purchase books.');
-        }
         return view('customer.store.cart');
     }
 
@@ -361,14 +357,6 @@ class CustomerController extends Controller
      */
     public function addToCart(Request $request)
     {
-        $customer = Auth::guard('customer')->user();
-        if (!$customer || !$customer->hasActiveSubscription()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Please subscribe to a membership plan to purchase books.'
-            ]);
-        }
-
         $request->validate([
             'item_id' => 'required|exists:items,id',
             'quantity' => 'required|integer|min:1'
@@ -503,10 +491,6 @@ class CustomerController extends Controller
     public function checkout()
     {
         $customer = Auth::guard('customer')->user();
-        if (!$customer || !$customer->hasActiveSubscription()) {
-            return redirect()->route('customer.subscription.index')->with('error', 'Please subscribe to a membership plan to purchase books.');
-        }
-
         $cart = session()->get('cart', []);
 
         if (empty($cart)) {
@@ -530,14 +514,6 @@ class CustomerController extends Controller
      */
     public function processCheckout(Request $request)
     {
-        $customer = Auth::guard('customer')->user();
-        if (!$customer || !$customer->hasActiveSubscription()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Please subscribe to a membership plan to purchase books.'
-            ]);
-        }
-
         $request->validate([
             'receiver_name' => 'required|string|max:255',
             'phone_number' => 'required|string|max:255',
