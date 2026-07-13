@@ -3,7 +3,7 @@
 @section('title', 'Edit Profile - Booknest')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/customer/dashboard.css') }}?v=1.3.2">
+<link rel="stylesheet" href="{{ asset('css/customer/dashboard.css') }}?v=1.4.4">
 @endsection
 
 @section('content')
@@ -105,37 +105,37 @@
                     <div class="profile-card" id="saved-addresses-card">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap: wrap; gap: 10px;">
                             <h3 style="margin-bottom:0;"><i class="fa-solid fa-address-book"></i> Saved Shipping Addresses</h3>
-                            <button type="button" class="test-btn" style="padding:6px 12px; font-size:0.8rem; margin:0;" onclick="openAddressModal()">
+                            <button type="button" class="btn-add-address" onclick="openAddressModal()">
                                 <i class="fa-solid fa-plus"></i> Add New Address
                             </button>
                         </div>
                         
                         <div class="address-list-container" id="address-list">
                             @forelse($customer->addresses as $addr)
-                                <div class="address-item-row" id="address-row-{{ $addr->id }}" style="padding:12px; background:rgba(0,0,0,0.02); border:1px solid rgba(0,0,0,0.05); border-radius:8px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; gap: 15px; flex-wrap: wrap;">
+                                <div class="address-item-row" id="address-row-{{ $addr->id }}">
                                     <div style="flex-grow:1;">
-                                        <div style="font-weight:700; font-size:0.9rem; color:#5c3a21; display:flex; align-items:center; gap:8px;">
+                                        <div class="address-receiver-name">
                                             <span>{{ $addr->receiver_name }}</span>
                                             @if($addr->is_default)
                                                 <span style="font-size:0.65rem; background:#e2f2e5; color:#2d7a43; padding:2px 6px; border-radius:4px; font-weight:700;">DEFAULT</span>
                                             @endif
                                         </div>
-                                        <div style="font-size:0.82rem; color:#4a5568; margin-top:4px;">
+                                        <div class="address-details">
                                             <i class="fa-solid fa-phone" style="font-size:0.75rem;"></i> {{ $addr->phone_number }}
                                             @if($addr->email)
                                                 | <i class="fa-solid fa-envelope" style="font-size:0.75rem;"></i> {{ $addr->email }}
                                             @endif
                                         </div>
-                                        <div style="font-size:0.82rem; color:#718096; margin-top:4px;">
+                                        <div class="address-line-text">
                                             <i class="fa-solid fa-location-pin" style="font-size:0.75rem;"></i> {{ $addr->address_line }}
                                         </div>
                                     </div>
                                     <div style="display:flex; gap:6px; flex-shrink:0;">
                                         @if(!$addr->is_default)
-                                            <button type="button" class="test-btn" style="padding:4px 8px; font-size:0.75rem; background:none; border:1px solid #718096; color:#718096; margin:0;" onclick="setDefaultAddress({{ $addr->id }})">Set Default</button>
+                                            <button type="button" class="btn-address-action btn-default-set" onclick="setDefaultAddress({{ $addr->id }})">Set Default</button>
                                         @endif
-                                        <button type="button" class="test-btn" style="padding:4px 8px; font-size:0.75rem; background:none; border:1px solid #e0a96d; color:#5c3a21; margin:0;" onclick="editAddress({{ json_encode($addr) }})"><i class="fa-solid fa-pen"></i></button>
-                                        <button type="button" class="test-btn" style="padding:4px 8px; font-size:0.75rem; background:none; border:1px solid #e53e3e; color:#e53e3e; margin:0;" onclick="deleteAddress({{ $addr->id }})"><i class="fa-solid fa-trash"></i></button>
+                                        <button type="button" class="btn-address-action" onclick="editAddress({{ json_encode($addr) }})" title="Edit Address"><i class="fa-solid fa-pen"></i></button>
+                                        <button type="button" class="btn-address-action btn-delete" onclick="deleteAddress({{ $addr->id }})" title="Delete Address"><i class="fa-solid fa-trash"></i></button>
                                     </div>
                                 </div>
                             @empty

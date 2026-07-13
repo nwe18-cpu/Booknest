@@ -3,8 +3,8 @@
 @section('title', 'My Library - Booknest')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.5.0">
-<link rel="stylesheet" href="{{ asset('css/customer/dashboard.css') }}?v=1.3.9">
+<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.5.7">
+<link rel="stylesheet" href="{{ asset('css/customer/dashboard.css') }}?v=1.4.4">
 @endsection
 
 @section('content')
@@ -764,5 +764,5 @@
         window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
     }
 </script>
-<script src="{{ asset('js/customer/dashboard_custom.js') }}?v=1.3.6"></script>
+<script src="{{ asset('js/customer/dashboard_custom.js') }}?v=1.3.7"></script>
 @endsection

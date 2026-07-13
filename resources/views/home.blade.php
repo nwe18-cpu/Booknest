@@ -3,7 +3,7 @@
 @section('title', 'Booknest - Best Books Collection')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.5.6">
+<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.5.7">
 @endsection
 
 @section('content')
@@ -483,7 +483,7 @@
                     </div>
 
                     <div class="details-action-buttons">
-                        <button id="btn-buy-modal" class="btn-buy-book" onclick="addToCartFromModal(this)">
+                        <button id="btn-add-to-cart-modal" class="btn-buy-book">
                             <i class="fa-solid fa-cart-plus"></i> Buy Book
                         </button>
                         <a id="btn-download-modal" href="#" class="btn-download-pdf display-none">
@@ -641,5 +641,5 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/customer/store.js') }}?v=1.2.1"></script>
+<script src="{{ asset('js/customer/store.js') }}?v=1.2.2"></script>
 @endsection

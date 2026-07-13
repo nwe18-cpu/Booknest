@@ -520,6 +520,7 @@ class CustomerController extends Controller
             'address_line' => 'required|string',
             'email' => 'required|email|max:255',
             'payment_method' => 'required|in:cod,kpay,wave,stripe',
+            'note' => 'nullable|string',
         ]);
 
         $cart = session()->get('cart', []);
@@ -565,7 +566,8 @@ class CustomerController extends Controller
                 'total_amount' => $totalAmount,
                 'payment_method' => $request->payment_method,
                 'payment_status' => 'pending',
-                'status' => 'pending'
+                'status' => 'pending',
+                'note' => $request->note
             ]);
 
             // Save order items and decrement stocks

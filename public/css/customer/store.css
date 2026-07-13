@@ -1316,15 +1316,17 @@ body {
     width: 100%;
     padding: 1rem;
     background-color: var(--brand-chocolate);
-    color: #fff;
+    color: var(--tab-active-color);
     font-weight: 700;
     text-align: center;
     border-radius: var(--border-radius);
     box-shadow: 0 4px 15px rgba(77, 45, 29, 0.2);
+    transition: var(--transition-premium);
 }
 
 .btn-checkout:hover {
-    background-color: #2b170e;
+    background-color: var(--brand-gold);
+    color: #0b1412;
     transform: translateY(-2px);
 }
 
@@ -1488,9 +1490,22 @@ body {
     background-color: var(--brand-gold-light);
 }
 .payment-method-card.selected {
-    border-color: var(--brand-chocolate);
-    background-color: #fff;
-    box-shadow: 0 4px 12px rgba(77, 45, 29, 0.05);
+    border-color: var(--brand-gold);
+    background-color: var(--tab-active-bg);
+    box-shadow: 0 4px 12px rgba(204, 163, 83, 0.15);
+}
+
+.payment-method-card.selected .payment-method-name {
+    color: var(--tab-active-color) !important;
+}
+
+.payment-method-card.selected .payment-method-desc {
+    color: var(--tab-active-color) !important;
+    opacity: 0.85;
+}
+
+.payment-method-card.selected .payment-method-icon {
+    color: var(--tab-active-color);
 }
 .payment-method-icon {
     font-size: 1.5rem;

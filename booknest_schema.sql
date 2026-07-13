@@ -202,6 +202,7 @@ CREATE TABLE `orders` (
   `stripe_session_id` varchar(255) DEFAULT NULL,
   `payment_status` varchar(255) NOT NULL DEFAULT 'pending',
   `status` varchar(255) NOT NULL DEFAULT 'pending',
+  `note` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),

@@ -81,6 +81,13 @@
                         ℹ️ No shipping details associated with this digital-only order.
                     </div>
                 @endif
+
+                @if($order->note)
+                    <div style="margin: 15px; padding: 12px; background: rgba(204, 163, 83, 0.08); border-left: 4px solid var(--brand-gold, #cca353); border-radius: 6px;">
+                        <strong style="color: var(--brand-gold, #cca353); font-size: 0.85rem; display: block; margin-bottom: 4px;"><i class="fa-solid fa-note-sticky"></i> Customer Note:</strong>
+                        <span style="font-size: 0.88rem; font-style: italic; color: #222; line-height: 1.4;">"{{ $order->note }}"</span>
+                    </div>
+                @endif
             </div>
         </div>
 

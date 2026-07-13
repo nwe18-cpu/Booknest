@@ -120,6 +120,12 @@
                                                     @endif
                                                 </span>
                                             </p>
+                                            @if($order->note)
+                                                <div style="margin-top: 12px; padding: 10px 14px; background: rgba(204, 163, 83, 0.06); border-left: 3px solid var(--brand-gold, #cca353); border-radius: 4px; font-size: 0.85rem; line-height: 1.4;">
+                                                    <strong style="color: var(--brand-gold, #cca353);"><i class="fa-solid fa-note-sticky"></i> Note:</strong>
+                                                    <span style="display: block; margin-top: 4px; color: var(--text-chocolate-dark);">{{ $order->note }}</span>
+                                                </div>
+                                            @endif
                                         </div>
                                         
                                         <!-- Items Summary Column -->

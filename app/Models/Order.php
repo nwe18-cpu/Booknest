@@ -13,6 +13,7 @@ class Order extends Model
         'stripe_session_id',
         'payment_status',
         'status',
+        'note',
     ];
 
     public function customer()

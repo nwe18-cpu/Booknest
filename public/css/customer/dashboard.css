@@ -7,11 +7,23 @@
     --shadow-premium: 0 10px 30px rgba(0, 0, 0, 0.4);
     --shadow-premium-hover: 0 15px 35px rgba(0, 0, 0, 0.55);
     --transition-premium: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    
+    --tab-active-bg: var(--brand-gold);
+    --tab-active-color: #0b1412;
+    
+    --header-text: #e5eae7;
+    --header-text-hover: #ffffff;
 }
 
 html.warm-theme {
     --bg-cream: #f6f3eb;    --bg-cream-dark: #e2ded4;    --card-cream: #FAF6EB;    --border-cream: #d2d9cf;    --text-chocolate-dark: #162a24;    --text-chocolate-mid: #3f5e56;    --text-chocolate-light: #5c7a71;    --brand-chocolate: #1b3d34;    --brand-gold: #cca353;    --brand-gold-light: #e8ece5;    --shadow-premium: 0 10px 30px rgba(27, 61, 52, 0.05);
     --shadow-premium-hover: 0 15px 35px rgba(27, 61, 52, 0.12);
+    
+    --tab-active-bg: var(--brand-chocolate);
+    --tab-active-color: #ffffff;
+    
+    --header-text: #faf5e6;
+    --header-text-hover: #ffffff;
 }
 
 body {
@@ -593,9 +605,9 @@ body {
 }
 
 .filter-tab.active {
-    background-color: var(--brand-chocolate);
-    border-color: var(--brand-chocolate);
-    color: #fff;
+    background-color: var(--tab-active-bg);
+    border-color: var(--tab-active-bg);
+    color: var(--tab-active-color);
 }
 
 /* 3D Wooden Shelves Grid Layout */
@@ -1717,7 +1729,7 @@ body {
 }
 
 .nav-link {
-    color: var(--brand-gold-light);
+    color: var(--header-text);
     background: none;
     -webkit-background-clip: initial;
     -webkit-text-fill-color: initial;
@@ -1728,7 +1740,7 @@ body {
 
 .nav-link:hover,
 .nav-link.active {
-    color: var(--white);
+    color: var(--header-text-hover);
     font-weight: 500;
 }
 
@@ -1983,7 +1995,7 @@ body {
     gap: 0.5rem;
     padding: 0.65rem 1.25rem;
     background-color: var(--brand-chocolate);
-    color: #fff;
+    color: var(--tab-active-color);
     border-radius: var(--border-radius);
     font-size: 0.9rem;
     font-weight: 600;
@@ -1993,7 +2005,8 @@ body {
 }
 
 .avatar-upload-label:hover {
-    background-color: var(--primary-dark);
+    background-color: var(--brand-gold);
+    color: #0b1412;
     transform: translateY(-1px);
 }
 
@@ -2088,7 +2101,7 @@ body {
     gap: 0.5rem;
     padding: 0.9rem 2rem;
     background-color: var(--brand-chocolate);
-    color: #fff;
+    color: var(--tab-active-color);
     border-radius: var(--border-radius);
     font-size: 1rem;
     font-weight: 600;
@@ -2099,7 +2112,8 @@ body {
 }
 
 .profile-save-btn:hover {
-    background-color: var(--primary-dark);
+    background-color: var(--brand-gold);
+    color: #0b1412;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(11, 20, 18, 0.25);
 }
@@ -3117,8 +3131,12 @@ html.warm-theme {
 
 .theme-opt-btn.active {
     border-color: var(--brand-gold);
-    background-color: #FAF9F5;
+    background-color: var(--tab-active-bg);
     box-shadow: 0 0 0 3px rgba(204, 163, 83, 0.15);
+}
+
+.theme-opt-btn.active .theme-opt-label {
+    color: var(--tab-active-color);
 }
 
 .theme-color-dot {
@@ -3164,11 +3182,16 @@ html.warm-theme {
     padding: 10px 12px;
     border: 1.5px solid var(--border-cream);
     border-radius: 10px;
-    background-color: #FFFFFF;
+    background-color: var(--bg-cream-dark);
     font-size: 0.88rem;
     color: var(--text-chocolate-dark);
     font-family: inherit;
     cursor: pointer;
+}
+
+.settings-select option {
+    background-color: var(--bg-cream-dark);
+    color: var(--text-chocolate-dark);
 }
 
 .settings-select:focus {
@@ -3297,7 +3320,7 @@ html.warm-theme {
 
 .btn-settings-save {
     background-color: var(--brand-chocolate);
-    color: #FFFFFF;
+    color: var(--tab-active-color);
     border: none;
     border-radius: 10px;
     padding: 10px 20px;
@@ -3311,7 +3334,8 @@ html.warm-theme {
 }
 
 .btn-settings-save:hover {
-    background-color: var(--primary-dark);
+    background-color: var(--brand-gold);
+    color: #0b1412;
 }
 
 /* ==========================================================================
@@ -4335,4 +4359,109 @@ html.warm-theme {
 
 #settings-modal.active .settings-modal-content {
     transform: translateX(0) !important;
+}
+
+/* ==========================================================================
+   SAVED ADDRESS ACTIONS & ROW STYLING
+   ========================================================================== */
+.btn-add-address {
+    background-color: var(--brand-gold);
+    color: #0b1412 !important;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition-premium);
+}
+
+.btn-add-address:hover {
+    background-color: var(--text-chocolate-dark);
+    color: #0b1412 !important;
+    transform: translateY(-1px);
+}
+
+.address-item-row {
+    padding: 14px;
+    background-color: var(--bg-cream-dark) !important;
+    border: 1px solid var(--border-cream) !important;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    transition: var(--transition-premium);
+}
+
+.address-item-row:hover {
+    border-color: var(--brand-gold) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.address-receiver-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text-chocolate-dark) !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.address-details {
+    font-size: 0.82rem;
+    color: var(--text-chocolate-mid) !important;
+    margin-top: 4px;
+}
+
+.address-line-text {
+    font-size: 0.82rem;
+    color: var(--text-chocolate-light) !important;
+    margin-top: 4px;
+}
+
+.btn-address-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid var(--border-cream) !important;
+    background-color: var(--card-cream) !important;
+    color: var(--text-chocolate-mid) !important;
+    cursor: pointer;
+    transition: var(--transition-premium);
+}
+
+.btn-address-action:hover {
+    border-color: var(--brand-gold) !important;
+    color: var(--brand-gold) !important;
+    background-color: var(--border-cream) !important;
+    transform: translateY(-1.5px);
+}
+
+.btn-address-action.btn-delete {
+    color: #C84B31 !important;
+    border-color: rgba(200, 75, 49, 0.2) !important;
+    background-color: rgba(200, 75, 49, 0.05) !important;
+}
+
+.btn-address-action.btn-delete:hover {
+    background-color: #C84B31 !important;
+    color: #ffffff !important;
+    border-color: #C84B31 !important;
+}
+
+.btn-address-action.btn-default-set {
+    padding: 6px 12px;
+    width: auto;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 20px;
 }

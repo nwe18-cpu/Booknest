@@ -1690,6 +1690,26 @@ function saveAppSettings() {
     
     // Apply changes to Reader Overlay in real-time
     applySettingsToDOM();
+
+    // Dynamically play/pause ambient music based on toggled settings
+    if (!booknestSettings.autoMusic) {
+        if (cozyAudio && isMusicPlaying) {
+            cozyAudio.pause();
+            isMusicPlaying = false;
+            if (typeof updateMusicUI === 'function') updateMusicUI();
+        }
+    } else {
+        const readerOverlay = document.getElementById('reader-overlay');
+        if (readerOverlay && readerOverlay.classList.contains('active') && !isMusicPlaying) {
+            initCozyMusic();
+            if (cozyAudio) {
+                cozyAudio.play().then(() => {
+                    isMusicPlaying = true;
+                    if (typeof updateMusicUI === 'function') updateMusicUI();
+                }).catch(err => console.log("Audio play failed: ", err));
+            }
+        }
+    }
     
     // Close modal
     closeAppSettingsModal();

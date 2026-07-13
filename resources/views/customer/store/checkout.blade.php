@@ -3,7 +3,7 @@
 @section('title', 'Checkout - Booknest')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.4.4">
+<link rel="stylesheet" href="{{ asset('css/customer/store.css') }}?v=1.5.7">
 @endsection
 
 @section('content')
@@ -60,6 +60,11 @@
                 <div class="form-group">
                     <label for="address_line">Shipping Address</label>
                     <textarea id="address_line" name="address_line" class="form-control" rows="3" required placeholder="Enter house number, street, township, region..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="note">Order Note (Optional)</label>
+                    <textarea id="note" name="note" class="form-control" rows="2" placeholder="Write any instructions for delivery or notes for your order here..."></textarea>
                 </div>
 
                 <h3 class="checkout-form-title">Select Payment Method</h3>
