@@ -1730,7 +1730,7 @@ function applySettingsToDOM() {
         readerOverlay.classList.add(`reader-theme-${booknestSettings.theme}`);
         readerOverlay.classList.add(`reader-font-${booknestSettings.fontSize}`);
         readerOverlay.classList.add(`reader-font-${booknestSettings.fontStyle}`);
-    }
+    } 
 }
 
 // Run settings initialization on page load

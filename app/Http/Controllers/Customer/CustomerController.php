@@ -121,6 +121,8 @@ class CustomerController extends Controller
             $filePath = public_path('storage/' . $book->pdf_file);
         }
 
+         // ဖိုင်ကို user ရဲ့ browser ဆီ တိုက်ရိုက်ဆွဲချပေးခြင်း (ဖိုင်လမ်းကြောင်းကို client မမြင်ရပါ)
+
         if (file_exists($filePath)) {
             return response()->download($filePath, $book->name . '.pdf');
         }
