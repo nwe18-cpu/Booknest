@@ -175,7 +175,7 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/customer/store.js') }}?v=1.1.3"></script>
+<script src="{{ asset('js/customer/store.js') }}?v=1.2.3"></script>
 <script>
     function toggleOrderDetails(btn, orderId) {
         const detailsRow = document.getElementById('details-row-' + orderId);

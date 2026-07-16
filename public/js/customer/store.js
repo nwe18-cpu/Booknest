@@ -198,6 +198,12 @@ function renderCartDrawer(data) {
 
 // Add Item to Cart
 function addToCart(itemId, quantity = 1) {
+    const authCheck = document.querySelector('meta[name="auth-check"]');
+    if (authCheck && authCheck.getAttribute('content') === 'false') {
+        window.location.href = '/login';
+        return;
+    }
+
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     
     fetch('/store/cart/add', {
@@ -1189,6 +1195,12 @@ function escapeHtml(text) {
 }
 
 function toggleWishlist(itemId, element) {
+    const authCheck = document.querySelector('meta[name="auth-check"]');
+    if (authCheck && authCheck.getAttribute('content') === 'false') {
+        window.location.href = '/login';
+        return;
+    }
+
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     
     fetch(`/store/books/${itemId}/wishlist`, {

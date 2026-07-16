@@ -641,5 +641,5 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/customer/store.js') }}?v=1.2.2"></script>
+<script src="{{ asset('js/customer/store.js') }}?v=1.2.3"></script>
 @endsection
